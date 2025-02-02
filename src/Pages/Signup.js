@@ -1,0 +1,307 @@
+/*
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../index.css';
+import '../components/Styles/Login.css'; // Reusing the same CSS
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, db} from "../components/firebase";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';  // Import icons
+import {setDoc, doc} from "firebase/firestore";
+
+function Signup() {
+    const navigate = useNavigate();
+    const [firstName, setFirstName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    useEffect(() => {
+        const initializeGoogleSignIn = () => {
+            window.google.accounts.id.initialize({
+                client_id: 'YOUR_GOOGLE_CLIENT_ID',  // Replace with actual Client ID
+                callback: (response) => {
+                    console.log('Google Sign-In Response:', response.credential);
+                    alert('Signed in successfully with Google!');
+                    navigate('/Mainpage');
+                },
+            });
+
+            window.google.accounts.id.renderButton(
+                document.getElementById('google-signin-button'),
+                { theme: 'outline', size: 'large', text: 'signin_with', width: 300 }
+            );
+        };
+
+        if (window.google) {
+            initializeGoogleSignIn();
+        } else {
+            const script = document.createElement('script');
+            script.src = 'https://accounts.google.com/gsi/client';
+            script.async = true;
+            script.defer = true;
+            script.onload = initializeGoogleSignIn;
+            document.body.appendChild(script);
+        }
+    }, [navigate]);
+
+    const handleSignup = async (e) => {
+        e.preventDefault();
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            const user = auth.currentUser;
+            console.log(user);
+            if(user){
+                await setDoc(doc(db, "Users", user.uid),{
+                    firstName: firstName, 
+                })
+            }            
+            console.log("User Registered Successfully");
+        }   catch (error) {
+            console.log(error.message);
+        }
+
+        if (password !== confirmPassword) {
+            alert('Passwords do not match.');
+            return;
+        }
+
+        alert(`Account created successfully for ${firstName} (${email})!`);
+        navigate('/Mainpage');
+    };
+
+    return (
+        <div className="login-page">
+            <div className="login-card">
+                <h2>Create Account</h2>
+                <form onSubmit={handleSignup}>
+                    <div className="input-group">
+                        <label>Name</label>
+                        <input
+                            type="text"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            placeholder="Enter your Name"
+                            required
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Enter your email"
+                            required
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label>Password</label>
+                        <div className="password-wrapper">
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter your password"
+                                required
+                            />
+                            <span
+                                className="password-toggle-icon"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
+                    </div>
+                    <div className="input-group">
+                        <label>Confirm Password</label>
+                        <div className="password-wrapper">
+                            <input
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                placeholder="Confirm your password"
+                                required
+                            />
+                            <span
+                                className="password-toggle-icon"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            >
+                                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
+                    </div>
+                    <button type="submit">Sign Up</button>
+                </form>
+
+                <div className="options">
+                    <p>Already have an account? <span className="create-account" onClick={() => navigate('/Login')}>Log In</span></p>
+                    <div id="google-signin-button" style={{ marginTop: '15px' }}></div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Signup;
+*/
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../index.css';
+import '../components/Styles/Login.css'; // Reusing the same CSS
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from "../components/firebase";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';  // Import icons
+import { setDoc, doc } from "firebase/firestore";
+
+function Signup() {
+    const navigate = useNavigate();
+    const [firstName, setFirstName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    useEffect(() => {
+        const initializeGoogleSignIn = () => {
+            window.google.accounts.id.initialize({
+                client_id: 'YOUR_GOOGLE_CLIENT_ID',  // Replace with actual Client ID
+                callback: (response) => {
+                    console.log('Google Sign-In Response:', response.credential);
+                    alert('Signed in successfully with Google!');
+                    navigate('/Mainpage');
+                },
+            });
+
+            window.google.accounts.id.renderButton(
+                document.getElementById('google-signin-button'),
+                { theme: 'outline', size: 'large', text: 'signin_with', width: 300 }
+            );
+        };
+
+        if (window.google) {
+            initializeGoogleSignIn();
+        } else {
+            const script = document.createElement('script');
+            script.src = 'https://accounts.google.com/gsi/client';
+            script.async = true;
+            script.defer = true;
+            script.onload = initializeGoogleSignIn;
+            document.body.appendChild(script);
+        }
+    }, [navigate]);
+
+    // Password validation function
+    const validatePassword = (password) => {
+        const minLength = password.length >= 6;
+        const hasCapitalLetter = /[A-Z]/.test(password);  // Check for at least one capital letter
+        return minLength && hasCapitalLetter;
+    };
+
+    const handleSignup = async (e) => {
+        e.preventDefault();
+
+        if (!validatePassword(password)) {
+            alert('Password must be at least 6 characters long and contain at least one uppercase letter.');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            alert('Passwords do not match.');
+            return;
+        }
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            if (user) {
+                await setDoc(doc(db, "Users", user.uid), {
+                    firstName: firstName,
+                });
+            }
+
+            alert(`Account created successfully for ${firstName} (${email})!`);
+            navigate('/Mainpage');
+        } catch (error) {
+            console.log('Error creating user:', error.message);
+        }
+    };
+
+    return (
+        <div className="login-page">
+            <div className="login-card">
+                <h2>Create Account</h2>
+                <form onSubmit={handleSignup}>
+                    <div className="input-group">
+                        <label>Name</label>
+                        <input
+                            type="text"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            placeholder="Enter your Name"
+                            required
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Enter your email"
+                            required
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label>Password</label>
+                        <div className="password-wrapper">
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter your password"
+                                required
+                            />
+                            <span
+                                className="password-toggle-icon"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
+                    </div>
+                    <div className="input-group">
+                        <label>Confirm Password</label>
+                        <div className="password-wrapper">
+                            <input
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                placeholder="Confirm your password"
+                                required
+                            />
+                            <span
+                                className="password-toggle-icon"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            >
+                                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
+                    </div>
+                    <button type="submit">Sign Up</button>
+                </form>
+
+                <div className="options">
+                    <p>Already have an account? <span className="create-account" onClick={() => navigate('/Login')}>Log In</span></p>
+                    <div id="google-signin-button" style={{ marginTop: '15px' }}></div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Signup;
+
