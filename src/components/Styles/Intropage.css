@@ -1,0 +1,160 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(0deg, #4D3674 0%, #312841 53%, #18151D 100%);
+    overflow: hidden;
+}
+
+.intro-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Navbar styles */
+.navbar {
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.logo {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.login-btn {
+    width: 150px; /* Set a base width */
+    background-color: #6A5ACD;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s, width 0.3s;
+    text-align: center;
+}
+.login-btn:hover {
+    background-color: #483D8B;
+}
+
+/* Main content */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    height: 100%; /* Ensure it takes up the full container height */
+}
+
+
+.center-title {
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.intro-text {
+    font-size: 1.2rem;
+    color: white;
+    margin-bottom: 30px;
+    line-height: 1.5;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Button styles */
+.button-group {
+    margin-top: 20px;
+}
+
+.get-started-btn {
+    padding: 10px 25px;
+    width: 180px;
+    background-color: #6A5ACD;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.get-started-btn:hover {
+    background-color: #483D8B;
+}
+
+.get-started-btn:active {
+    transform: scale(0.98);
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .logo {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .login-btn {
+        font-size: 0.8rem;
+        width: 120px;
+        padding: 5px 10px;
+    }
+
+    .center-title {
+        font-size: 2.5rem;
+    }
+
+    .intro-text {
+        font-size: 1rem;
+        padding: 0 15px;
+    }
+
+    .get-started-btn {
+        padding: 8px 20px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .center-title {
+        font-size: 2rem;
+    }
+    .login-btn {
+        font-size: 0.8rem;
+        width: 100px;
+        padding: 5px 10px;
+    }
+
+    .intro-text {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+
+    .get-started-btn {
+        padding: 7px 15px;
+        font-size: 0.9rem;
+    }
+}
