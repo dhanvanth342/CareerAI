@@ -36,64 +36,98 @@ class LLMHandler:
         )
         self.groq_model = groq_model
 
-    def generate_questions(self, initial_context):
+    def generate_questions(self, initial_context, highest_education, country):
         """
         Generate questions based on initial context
         """
-        prompt = f"""Based on the user's initial context: {initial_context}
-        Generate 8-12 focused questions to gather necessary information 
-        for creating personalized career advice. Include multiple choice 
+        prompt = f"""Based on the user's initial context: {initial_context},
+        highest education level: {highest_education}, and country user lives in: {country}.
+
+        Generate 8-12 focused questions to gather necessary information
+        for creating personalized career advice. Include multiple choice
         options where appropriate.
 
         The questions should help understand:
-        - Educational background
         - Career interests
         - Skills
-        - Geographic location
         - Personal preferences
         - Professional goals
 
-        Provide output in strict JSON format with optional choices."""
+        Provide output in strict JSON format with optional choices.
+        Return the questions in this exact JSON format:
+        [
+            {{"question": "Question 1", "choices": ["Choice 1", "Choice 2"]}},
+            {{"question": "Question 2"}},
+            {{"question": "Question 3", "choices": ["Choice 1", "Choice 2", "Choice 3"]}}
+        ]
+
+        For questions without multiple choice options, omit the 'choices' key.
+        Make choices relevant but not exhaustive, as users will have option for custom responses.
+        """
+
+        default_questions = [
+            {
+                "question": "What are your primary career interests?",
+                "choices": ["Technology", "Healthcare", "Business", "Creative Fields", "Other"]
+            },
+            {
+                "question": "If you were to wake up in your dream job, what would make you jump out of bed with excitement?",
+                "choices": ["Making an Impact", "Learning something new every day", "Money",
+                            "Freedom and Flexibility at work", "Other"]
+            }
+        ]
 
         try:
             response = self.groq_client.invoke(prompt)
-            # Process and validate the response
-            questions = json.loads(response.content)
+            response_text = response.content.strip()
+
+            if not response_text:
+                raise ValueError("Received empty response from LLM")
+
+            start_idx = response_text.find('[')
+            end_idx = response_text.rfind(']') + 1
+
+            if start_idx == -1 or end_idx == 0:
+                raise ValueError("Could not find JSON array in response")
+
+            json_str = response_text[start_idx:end_idx]
+            questions = json.loads(json_str)
+
+            if not isinstance(questions, list):
+                raise ValueError("Parsed JSON is not a list")
+
+            for question in questions:
+                if 'question' not in question:
+                    raise ValueError(f"Invalid question format: {question}")
+
             return questions
+
         except Exception as e:
-            return [
-                {"question": "What is your highest level of education?",
-                 "choices": ["High School", "Bachelor's", "Master's", "PhD"]},
-                {"question": "Which country are you currently located in?"},
-                {"question": "What are your primary career interests?",
-                 "choices": ["Technology", "Healthcare", "Business", "Creative Fields", "Other"]}
-            ]
+            print(f"Error in generate_questions: {e}")
+            return default_questions
 
     def generate_prompt(self, initial_context, questions, answers):
         """
         Generate a comprehensive prompt for career recommendations
         """
-        # Format questions and answers
         formatted_answers = []
         for i, question in enumerate(questions):
-            # Use str(i) to match the string keys in the answers dictionary
             answer = answers.get(str(i), "")
             formatted_answers.append(f"Q: {question['question']}\nA: {answer}")
 
         answers_text = "\n".join(formatted_answers)
 
-        # Create detailed prompt
         prompt = f"""Your task is to generate a prompt for career recommendation generation using the below context and answers:
-        
+
                 Initial Context given by user: {initial_context}
-            
+
                 Detailed User Responses:
                 {answers_text}
                 Please follow the below instructions while drafting the prompt: 
                 1. Use the complete information in the context and answers.
                 2. You should draft best suitable prompt that can be used for generating personalized career recommendations based on information provided by user.
                 3. Generate only the prompt and STRICTLY NO PREAMBLE.
-                
+
                 The goal is by using this prompt, the user can obtain personalized career recommendation that gives extreme clarity on what career paths you would choose."""
 
         try:
@@ -102,97 +136,57 @@ class LLMHandler:
         except Exception as e:
             return f"Unable to generate personalized prompt. Error: {str(e)}"
 
-    def generate_recommendations(self, final_prompt):
+    def generate_recommendations(self, prompt):
         """
-        Generate top 5 career recommendations
+        Generate career recommendations based on the provided prompt
         """
-        enhanced_prompt = f"""{final_prompt}
+        system_prompt = """You are a career advisor expert. Analyze the provided information and generate exactly 2 career recommendations. 
+        Your response must be in the following strict JSON format:
+        {
+            "recommendations": [
+                {
+                    "title": "Job Title",
+                    "description": "Brief role description",
+                    "education_roadmap": "Educational path based on current background",
+                    "salary_range": "Salary range specific to the country",
+                    "required_skills": ["skill1", "skill2", "skill3"],
+                    "growth_opportunities": "Career growth possibilities",
+                    "work_life_balance": "Work-life balance details"
+                }
+            ]
+        }
 
-        IMPORTANT INSTRUCTIONS FOR GENERATING CAREER RECOMMENDATIONS:
-        1. Provide EXACTLY 5 career recommendations
-        2. Ensure each recommendation is comprehensive and detailed
-        3. Format MUST be a valid JSON array of objects
-        4. Include the following detailed information for each career:
-
-        Recommended JSON Structure:
-        {{
-            "career": "Exact Job Title",
-            "overview": "Comprehensive 2-3 sentence description of the role",
-            "job_responsibilities": [
-                "Key responsibility 1",
-                "Key responsibility 2",
-                "Key responsibility 3"
-            ],
-            "education": {{
-                "minimum_requirement": "Degree type required",
-                "recommended_majors": ["Major 1", "Major 2"],
-                "certifications": ["Optional cert 1", "Optional cert 2"]
-            }},
-            "average_salary": {{
-                "entry_level": {{"range": "$X - $Y", "median": "$Z"}},
-                "mid_level": {{"range": "$X - $Y", "median": "$Z"}},
-                "senior_level": {{"range": "$X - $Y", "median": "$Z"}}
-            }},
-            "skills_required": {{
-                "technical_skills": ["Skill 1", "Skill 2"],
-                "soft_skills": ["Skill 1", "Skill 2"]
-            }},
-            "career_growth_potential": {{
-                "promotion_paths": ["Path 1", "Path 2"],
-                "industry_demand": "High/Medium/Low"
-            }},
-            "work_environment": {{
-                "typical_work_settings": ["Office", "Remote", "Hybrid"],
-                "work_life_balance_score": "X/10"
-            }}
-        }}
-
-        CRITICAL REQUIREMENTS:
-        - Ensure JSON is perfectly formatted
-        - Provide realistic, data-driven information
-        - Tailor recommendations to the user's specific context
-        - Include diverse career options
-        - Provide actionable insights"""
+        Ensure that:
+        1. All text fields contain detailed information
+        2. Salary ranges are specific to the user's country
+        3. Education roadmap is tailored to user's current education level
+        4. The response is properly formatted JSON
+        """
 
         try:
             response = self.openrouter_client.chat.completions.create(
                 model=self.openrouter_model,
-                response_format={"type": "json_object"},
                 messages=[
-                    {"role": "system",
-                     "content": "You are an expert career advisor AI. Provide precise, structured career recommendations."},
-                    {"role": "user", "content": enhanced_prompt}
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": prompt}
                 ],
-                max_tokens=1500  # Increased token limit for detailed response
+                temperature=0.7,
+                max_tokens=500
             )
 
-            # Extract and parse the response
-            response_content = response.choices[0].message.content
+            content = response.choices[0].message.content.strip()
+            print(content)
+            # Validate JSON before returning
+            recommendations = json.loads(content)
+            if "recommendations" not in recommendations:
+                raise ValueError("Response missing 'recommendations' key")
+            if not isinstance(recommendations["recommendations"], list):
+                raise ValueError("Recommendations must be a list")
+            if len(recommendations["recommendations"]) != 3:
+                raise ValueError("Must provide exactly 3 recommendations")
 
-            # Additional parsing to ensure valid JSON
-            try:
-                recommendations = json.loads(response_content)
-
-                # Validate the structure
-                if not isinstance(recommendations, list) or len(recommendations) != 5:
-                    raise ValueError("Recommendations must be a list of 5 items")
-
-                return recommendations
-
-
-            except (json.JSONDecodeError, ValueError) as json_err:
-
-                error_message = f"JSON Parsing Error: {str(json_err)}"
-
-                print(error_message)
-
-                return error_message
-
-
+            return recommendations
+        except json.JSONDecodeError as e:
+            raise ValueError(f"Invalid JSON response from LLM: {str(e)}")
         except Exception as e:
-
-            error_message = f"Recommendation Generation Error: {str(e)}"
-
-            print(error_message)
-
-            return error_message
+            raise Exception(f"Error generating recommendations: {str(e)}")
