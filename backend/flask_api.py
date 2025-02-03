@@ -18,16 +18,24 @@ llm_handler = LLMHandler()
 @app.route('/generate-questions', methods=['POST'])
 def generate_questions():
     try:
-        data = request.json
+        data = request.get_json()
         initial_context = data.get('initial_context', '')
+        highest_education = data.get('highest_education', '')  # Fixed field name to match request
+        country = data.get('country', '')
 
         if not initial_context:
             return jsonify({"error": "Initial context is required"}), 400
 
-        questions = llm_handler.generate_questions(initial_context)
-        return jsonify(questions)
+        questions = llm_handler.generate_questions(initial_context, highest_education, country)
+
+        if not isinstance(questions, list):
+            return jsonify({"error": "Invalid response format from LLM"}), 500
+
+        return jsonify({"questions": questions})
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 
 @app.route('/generate-prompt', methods=['POST'])
@@ -59,30 +67,21 @@ def generate_prompt():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route('/get-recommendations', methods=['POST'])
-def get_recommendations():
+@app.route('/generate-recommendations', methods=['POST'])
+def generate_recommendations():
     try:
         data = request.json
-        final_prompt = data.get('final_prompt', '')
+        prompt = data.get('prompt')
 
-        if not final_prompt:
-            return jsonify({"error": "Final prompt is required"}), 400
+        if not prompt:
+            return jsonify({"error": "Prompt is required"}), 400
 
-        recommendations = llm_handler.generate_recommendations(final_prompt)
-
-        # Check if recommendations is a string (error message)
-        if isinstance(recommendations, str):
-            return jsonify({
-                "error": "Unable to generate recommendations",
-                "details": recommendations
-            }), 500
-
+        recommendations = llm_handler.generate_recommendations(prompt)
         return jsonify(recommendations)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 422
     except Exception as e:
-        return jsonify({
-            "error": "Unable to generate recommendations",
-            "details": str(e)
-        }), 500
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':
