@@ -1,0 +1,220 @@
+/*
+.prompt-container {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #4D3674 0%, #312841 53%, #18151D 100%);
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .logo {
+    color: white;
+    font-size: 24px;
+  }
+  
+  .logout-btn {
+    background: #ffffff;
+    color: rgb(6, 6, 6);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+  
+  .prompt-text {
+    color: rgb(238, 241, 243);
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-align: center;
+    width: 80%;
+    max-width: 800px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+  
+
+.response-box {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  width: 80%;
+  max-width: 800px;
+  min-height: 200px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(70, 37, 71, 0.2); 
+}
+
+.generated-text {
+  color: white;
+  font-size: 16px;
+  line-height: 1.5;
+  width: 100%;
+  height: 200px;
+  background: transparent;
+  border: none;
+  resize: vertical;
+  outline: none;
+}
+
+.generated-text::placeholder {
+  color: rgba(255, 255, 255, 0.5); 
+}
+
+
+
+.button-container {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.icon-btn {
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  background-size: 24px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.edit-btn {
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M18.363 8.464l1.433 1.431-12.67 12.669-7.125 1.436 1.439-7.127 12.665-12.668 1.431 1.431L12.255 16.12H7.88v-4.375l10.483-3.281zm3.586-3.586l-1.431-1.434-5.689 5.689 1.435 1.434 5.685-5.689z"/></svg>');
+}
+
+.ok-btn {
+  background-color: #4CAF50;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="%23fff"/></svg>');
+}
+
+.edit-btn:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.1);
+}
+
+.ok-btn:hover {
+  background-color: #45a049;
+  transform: scale(1.1);
+}
+*/
+.prompt-container {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.logout-btn {
+  background-color: #ff4b4b;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.main-content {
+  padding: 20px;
+  color: white;
+}
+
+.prompt-text {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.dropdown-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.dropdown-box {
+  flex: 1;
+}
+
+.dropdown-box label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.dropdown-box select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  background-color: #fff;
+  color: #000;
+}
+
+.response-box {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.generated-text {
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #000;
+  font-size: 1rem;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.icon-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #6A5ACD;
+  color: white;
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  background-color: #483D8B;
+}
