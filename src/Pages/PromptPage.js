@@ -91,6 +91,7 @@ const PromptPage = () => {
 
   return (
     <div className="prompt-container">
+
       <nav className="navbar">
         <div className="logo">Career AI</div>
         <button className="logout-btn">Logout</button>

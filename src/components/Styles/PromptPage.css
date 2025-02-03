@@ -140,7 +140,7 @@
 }
 
 .logout-btn {
-  background-color: #ff4b4b;
+  background-color: #82cded;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -210,7 +210,7 @@
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #6A5ACD;
+  background-color: #82cded;
   color: white;
   cursor: pointer;
 }
