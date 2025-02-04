@@ -6,7 +6,7 @@ flask==2.3.2
 flask-cors==4.0.0
 
 # AI and Machine Learning Libraries
-openai==1.3.7
+openai==1.58.1
 langchain-groq==0.1.0
 tiktoken==0.5.1
 
@@ -24,7 +24,7 @@ pandas==2.0.1
 numpy==1.24.3
 
 # Typing support
-typing-extensions==4.8.0
+typing-extensions==4.11,<5
 
 # Async support (optional)
 asyncio==3.4.3
