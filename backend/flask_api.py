@@ -9,23 +9,40 @@ from LLM_API_Handler import LLMHandler
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app)
 
 # Initialize LLM Handler
 llm_handler = LLMHandler()
 
+# Store questions temporarily
+generated_questions = []
 
 @app.route('/generate-questions', methods=['POST'])
 def generate_questions():
+    global generated_questions
     try:
-        data = request.json
+        data = request.get_json()
         initial_context = data.get('initial_context', '')
+        highest_education = data.get('highest_education', '')
+        country = data.get('country', '')
 
         if not initial_context:
             return jsonify({"error": "Initial context is required"}), 400
 
-        questions = llm_handler.generate_questions(initial_context)
-        return jsonify(questions)
+        questions = llm_handler.generate_questions(initial_context, highest_education, country)
+        
+        generated_questions = questions
+
+        return jsonify({"questions": questions})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/get-questions', methods=['GET'])
+def get_questions():
+    try:
+        return jsonify({"questions": generated_questions})
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -57,32 +74,22 @@ def generate_prompt():
         return jsonify({"prompt": prompt})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-
-@app.route('/get-recommendations', methods=['POST'])
-def get_recommendations():
+    
+@app.route('/generate-recommendations', methods=['POST'])
+def generate_recommendations():
     try:
         data = request.json
-        final_prompt = data.get('final_prompt', '')
+        prompt = data.get('prompt')
 
-        if not final_prompt:
-            return jsonify({"error": "Final prompt is required"}), 400
+        if not prompt:
+            return jsonify({"error": "Prompt is required"}), 400
 
-        recommendations = llm_handler.generate_recommendations(final_prompt)
-
-        # Check if recommendations is a string (error message)
-        if isinstance(recommendations, str):
-            return jsonify({
-                "error": "Unable to generate recommendations",
-                "details": recommendations
-            }), 500
-
+        recommendations = llm_handler.generate_recommendations(prompt)
         return jsonify(recommendations)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 422
     except Exception as e:
-        return jsonify({
-            "error": "Unable to generate recommendations",
-            "details": str(e)
-        }), 500
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':
