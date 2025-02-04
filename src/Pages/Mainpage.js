@@ -153,7 +153,7 @@ export default MainPage;
 */
 
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Card from '../components/Card';
 import '../index.css';
@@ -162,7 +162,8 @@ import { doc, getDoc } from "firebase/firestore";
 
 function Mainpage() {
     const [userDetails, setUserDetails] = useState(null);
-    const location = useLocation(); // Access state passed through navigate
+    const location = useLocation();
+    const navigate = useNavigate(); // Access state passed through navigate
 
     // Fetch user details from Firestore or use passed state
     useEffect(() => {
@@ -190,8 +191,9 @@ function Mainpage() {
     }, [location.state]);
 
     const handleAIPrompt = () => {
-        alert("AI Prompt generation coming soon!");
+        navigate("/PromptPage");  // Redirect to the PromptPage
     };
+
 
     const handleManualPrompt = () => {
         alert("Manual prompt input coming soon!");
