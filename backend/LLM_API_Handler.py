@@ -60,9 +60,10 @@ class LLMHandler:
             {{"question": "Question 2"}},
             {{"question": "Question 3", "choices": ["Choice 1", "Choice 2", "Choice 3"]}}
         ]
+
         For multiple choice questions, keep Other as compulsory option as must. 
-        For questions without multiple choice options, omit the 'choices' key.
-        Make choices relevant but not exhaustive, as users will have option for custom responses.
+
+        
         """
 
         default_questions = [
