@@ -23,13 +23,16 @@ def generate_questions():
     try:
         data = request.get_json()
         initial_context = data.get('initial_context', '')
+
         highest_education = data.get('highest_education', '')
+
         country = data.get('country', '')
 
         if not initial_context:
             return jsonify({"error": "Initial context is required"}), 400
 
         questions = llm_handler.generate_questions(initial_context, highest_education, country)
+
         
         generated_questions = questions
 
@@ -43,8 +46,10 @@ def get_questions():
     try:
         return jsonify({"questions": generated_questions})
 
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 
 @app.route('/generate-prompt', methods=['POST'])
@@ -74,7 +79,7 @@ def generate_prompt():
         return jsonify({"prompt": prompt})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+
 @app.route('/generate-recommendations', methods=['POST'])
 def generate_recommendations():
     try:
