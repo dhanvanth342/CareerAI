@@ -9,18 +9,23 @@ from LLM_API_Handler import LLMHandler
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app)
 
 # Initialize LLM Handler
 llm_handler = LLMHandler()
 
+# Store questions temporarily
+generated_questions = []
 
 @app.route('/generate-questions', methods=['POST'])
 def generate_questions():
+    global generated_questions
     try:
         data = request.get_json()
         initial_context = data.get('initial_context', '')
-        highest_education = data.get('highest_education', '')  # Fixed field name to match request
+
+        highest_education = data.get('highest_education', '')
+
         country = data.get('country', '')
 
         if not initial_context:
@@ -28,10 +33,19 @@ def generate_questions():
 
         questions = llm_handler.generate_questions(initial_context, highest_education, country)
 
-        if not isinstance(questions, list):
-            return jsonify({"error": "Invalid response format from LLM"}), 500
+        
+        generated_questions = questions
 
         return jsonify({"questions": questions})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/get-questions', methods=['GET'])
+def get_questions():
+    try:
+        return jsonify({"questions": generated_questions})
+
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -65,7 +79,6 @@ def generate_prompt():
         return jsonify({"prompt": prompt})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 @app.route('/generate-recommendations', methods=['POST'])
 def generate_recommendations():

@@ -1,13 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Questrial&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap');
+
 body, html {
     margin: 0;
     padding: 0;
     height: 100%;
     width: 100%;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(0deg, #4D3674 0%, #312841 53%, #18151D 100%);
-    overflow: hidden;
+    font-family: 'Questrial','dosis';
+    background: linear-gradient(to bottom, #0a192f 65%, #172a45);
+    overflow-x: hidden;
+    position: relative;
+    /* animation: gradientShift 15s infinite alternate; */
+}
+.dosis-style {
+    font-family: 'Dosis', sans-serif;
+    font-weight: 400; /* Adjust the weight to your preference */
+    font-size: 1.2rem; /* Customize the size */
+    color: white; /* Match the rest of the design */
+    line-height: 1.6;
+    margin: 0 7%;
+  }
+
+/* Animate the gradient to shift colors */
+@keyframes gradientShift {
+    0% {
+        background: linear-gradient(180deg, #0a192f 70%, #172a45);
+    }
+    100% {
+        background: linear-gradient(180deg, #0a192f, #172a45);
+    }
 }
 
+/* Symbol styles for background animation */
+.symbol {
+    position: absolute;
+    font-family: 'Courier New', monospace;
+    color: rgba(130, 205, 237, 0.8);
+    text-shadow: 0px 0px 12px rgba(130, 205, 237, 0.9);
+    animation: moveSymbols 10s linear infinite, rotateSymbols 6s linear infinite;
+    opacity: 0.9;
+}
+
+.symbol.blue {
+    color: rgba(80, 170, 255, 0.9);
+    text-shadow: 0px 0px 12px rgba(80, 170, 255, 1);
+}
+.symbol.green {
+    color: rgba(123, 252, 190, 0.9);
+    text-shadow: 0px 0px 12px rgba(80, 255, 170, 1);
+}
+
+/* Keyframes for symbol movement and rotation */
+@keyframes moveSymbols {
+    0% {
+        transform: translateY(-20vh) translateX(0);
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+    }
+}
+
+@keyframes rotateSymbols {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Container and Navbar Styling */
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: none;
+    z-index: 1;
+    box-sizing: border-box;
+}
+
+/* Logo styling with consistent spacing */
+.logo {
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 5%;
+    transition: transform 0.3s ease;
+    flex-direction: left;
+}
+
+.logo:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+}
+
+/* Login button aligned to the right */
+.animated-button {
+    max-width: 150px; 
+    font-family: 'Questrial';
+    background-color: #82cded;
+    flex-grow: 1;
+    color: rgb(19, 18, 18);
+    border: none;
+    padding: 8px 16px; 
+    border-radius: 4px;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    white-space: nowrap; 
+    text-align: center;
+}
+
+
+.animated-button {
+    margin-left: auto;
+    margin-right: 5%;
+}
 .intro-container {
     display: flex;
     flex-direction: column;
@@ -18,41 +134,38 @@ body, html {
     padding: 0;
     box-sizing: border-box;
     text-align: center;
+    overflow: hidden;
+    z-index: 1;
 }
 
-/* Navbar styles */
-.navbar {
-    width: 100%;
-    background-color: transparent;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 
-}
 
-.logo {
-    color: white;
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-.login-btn {
-    width: 150px; /* Set a base width */
-    background-color: #6A5ACD;
-    color: white;
+.animated-get-button {
+    font-family: 'Questrial';
+    padding: 10px 25px;
+    width: 200px;
+    margin-top:60px;
+    background-color: #82cded;
+    color: rgb(10, 10, 10);
     border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-size: 0.9rem;
+    border-radius: 5px;
+    font-size: 1.4rem;
     cursor: pointer;
-    transition: background-color 0.3s, width 0.3s;
-    text-align: center;
-}
-.login-btn:hover {
-    background-color: #483D8B;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-/* Main content */
+.animated-button:hover, .animated-get-button:hover {
+    background: linear-gradient(135deg, #205b67, #82cded);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(130, 205, 237, 0.5);
+}
+
+.animated-button:active, .animated-get-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Main content area */
 .main-content {
     display: flex;
     flex-direction: column;
@@ -60,67 +173,32 @@ body, html {
     align-items: center;
     text-align: center;
     padding: 20px;
-    height: 100%; /* Ensure it takes up the full container height */
+    height: 100%;
 }
 
-
 .center-title {
-    font-size: 3rem;
+    font-size: 3.5rem;
     color: white;
     margin-bottom: 20px;
 }
 
-.intro-text {
-    font-size: 1.2rem;
-    color: white;
-    margin-bottom: 30px;
-    line-height: 1.5;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
 
-/* Button styles */
-.button-group {
-    margin-top: 20px;
-}
 
-.get-started-btn {
-    padding: 10px 25px;
-    width: 180px;
-    background-color: #6A5ACD;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.get-started-btn:hover {
-    background-color: #483D8B;
-}
-
-.get-started-btn:active {
-    transform: scale(0.98);
-}
-
-/* Responsive Media Queries */
+/* Responsive styles */
 @media (max-width: 768px) {
     .navbar {
-        flex-direction: column;
-        padding: 10px;
+        padding: 10px 20px;
     }
 
     .logo {
-        font-size: 1.2rem;
-        margin-bottom: 10px;
+        font-size: 1.8rem;
+        margin-left: 5%;
     }
 
-    .login-btn {
-        font-size: 0.8rem;
-        width: 120px;
-        padding: 5px 10px;
+    .animated-button, .animated-get-button {
+        padding: 8px 20px;
+        font-size: 1rem;
+        
     }
 
     .center-title {
@@ -128,33 +206,134 @@ body, html {
     }
 
     .intro-text {
-        font-size: 1rem;
+        font-size: 1.2rem;
         padding: 0 15px;
-    }
-
-    .get-started-btn {
-        padding: 8px 20px;
-        font-size: 1rem;
     }
 }
 
 @media (max-width: 480px) {
+    .logo {
+        font-size: 1.5rem;
+        margin-left: 5%;
+    }
+
+    .animated-button, .animated-get-button {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+
     .center-title {
         font-size: 2rem;
     }
-    .login-btn {
-        font-size: 0.8rem;
-        width: 100px;
-        padding: 5px 10px;
-    }
 
     .intro-text {
-        font-size: 0.9rem;
+        font-size: 1rem;
         line-height: 1.4;
     }
+}
 
-    .get-started-btn {
-        padding: 7px 15px;
-        font-size: 0.9rem;
+/* Typewriter animation for the heading */
+/* Typewriter animation for "Welcome to Career AI" */
+@keyframes typewriter {
+    from {
+        width: 0;
     }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink {
+    0%, 100% {
+        border-right-color: rgba(255, 255, 255, 0.75);
+    }
+    50% {
+        border-right-color: transparent;
+    }
+}
+
+/* Typewriter effect for the heading */
+.typewriter-effect {
+    font-family: 'Questrial', sans-serif;
+    font-size: 7.5rem;
+    color: white;
+    margin-bottom: 20px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: none;
+    animation: typewriter 2s steps(25, end), blink 0.7s step-end 2s;
+}
+
+/* Stop cursor blinking after typewriter animation finishes */
+.typewriter-effect.no-cursor {
+    border-right: none;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.intro-text span {
+    display: inline-block;
+    margin-right: 10px; /* Adjust this value to increase/decrease spacing */
+}
+
+/* Delay and animate "How long will you think..." text */
+.intro-text {
+    font-family: 'Questrial', sans-serif;
+    font-size: 1.4rem;
+    color: white;
+    text-align: center;
+    margin-top: -45px;
+    line-height: 1.6;
+    margin-left: 7%;
+    margin-right: 7%;
+    opacity: 0;
+    animation: fadeInUp 2s ease-in-out forwards;
+    animation-delay: 2.5s; /* Delay to start AFTER typewriter animation */
+}
+
+/* Extra bold styling for "IT MUST END HERE." */
+.intro-text strong {
+    font-weight: 800;
+    font-size: 2rem;
+    color: white;
+}
+
+.intro-text span:nth-child(1) {
+    opacity: 0;
+    display: block;
+    animation: fadeInUp 1.5s ease-in-out forwards;
+    animation-delay: 2.5s; /* Starts after typewriter effect */
+}
+
+/* Animate the second line */
+.intro-text span:nth-child(2) {
+    opacity: 0;
+    display: block;
+    animation: fadeInUp 1.5s ease-in-out forwards;
+    animation-delay: 4.0s; /* Appears after first line */
+}
+
+/* Animate the third line */
+.intro-text span:nth-child(3) {
+    opacity: 0;
+    display: block;
+    animation: fadeInUp 1.5s ease-in-out forwards;
+    animation-delay: 5.5s; /* Appears after second line */
+}
+
+.intro-text span:nth-child(4) {
+    opacity: 0;
+    display: block;
+    animation: fadeInUp 1.5s ease-in-out forwards;
+    animation-delay: 7.0s; /* Appears after second line */
 }

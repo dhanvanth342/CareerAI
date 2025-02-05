@@ -5,6 +5,10 @@ import Login from './Pages/Login';
 import Intropage from './Pages/Intropage';
 import Signup from './Pages/Signup';
 import PromptPage from './Pages/PromptPage';
+import QuestionsPage from './Pages/Questionspage';
+import Aiprompt from './Pages/Aiprompt';
+
+
 function App() {
     return (
         <Router>
@@ -14,6 +18,8 @@ function App() {
                 <Route path="/Login" element={<Login />} />
                 <Route path="/Mainpage" element={<MainPage />} />
                 <Route path ="/PromptPage" element ={<PromptPage />} />
+                <Route path ="/questions" element ={<QuestionsPage/>} />
+                <Route path = "/Aiprompt" element={<Aiprompt/>} />
                 {/* Future routes for new pages */}
             </Routes>
         </Router>
