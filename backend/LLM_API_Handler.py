@@ -3,10 +3,11 @@ from openai import OpenAI
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 import json
-
+import logging
 load_dotenv()
 
-
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 class LLMHandler:
     def __init__(self, openrouter_model="perplexity/sonar-reasoning",
                  groq_model="llama-3.3-70b-specdec"):
@@ -101,11 +102,11 @@ class LLMHandler:
                 if 'question' not in question:
                     raise ValueError(f"Invalid question format: {question}")
 
-            return questions
+            return questions, initial_context
 
         except Exception as e:
             print(f"Error in generate_questions: {e}")
-            return default_questions
+            return default_questions, initial_context
 
     def generate_prompt(self, initial_context, questions, answers):
         """
@@ -140,31 +141,47 @@ class LLMHandler:
     def generate_recommendations(self, prompt):
         """
         Generate career recommendations based on the provided prompt
+        with comprehensive error handling and logging
         """
-        system_prompt = """You are a career advisor expert. Analyze the provided information and generate exactly 2 career recommendations. 
-        Your response must be in the following strict JSON format:
-        {
-            "recommendations": [
-                {
-                    "title": "Job Title",
-                    "description": "Brief role description",
-                    "education_roadmap": "Educational path based on current background",
-                    "salary_range": "Salary range specific to the country",
-                    "required_skills": ["skill1", "skill2", "skill3"],
-                    "growth_opportunities": "Career growth possibilities",
-                    "work_life_balance": "Work-life balance details"
-                }
-            ]
-        }
+        # Validate input
+        if not prompt or not isinstance(prompt, str):
+            logger.error("Invalid prompt provided")
+            return {
+                "error": "Invalid or empty prompt",
+                "career_recommendations": []
+            }
 
-        Ensure that:
-        1. All text fields contain detailed information
-        2. Salary ranges are specific to the user's country
-        3. Education roadmap is tailored to user's current education level
-        4. The response is properly formatted JSON
-        """
+        # System prompt
+        system_prompt = """You are a career advisor expert. Based on the user's information,  
+        provide the top 2 career recommendations. For each recommendation, include:  
+        1. Job role title  
+        2. Brief description of the role  
+        3. The top 5 influential individuals in this field, ranked based on their significant contributions.  
+           - Include their name and a relevant profile URL (e.g., LinkedIn, personal website, or research page).  
+
+        Provide the output strictly in a valid, well-structured JSON format.  
+        Ensure the response **only** contains a JSON object without extra text.  
+
+        ### Example Output Format:  
+        {
+          "career_recommendations": [
+            {
+              "job_role": "Example Job Role",
+              "description": "Brief description of the role.",
+              "influential_figures": [
+                {"name": "Influential 1", "profile_url": "https://example.com"},
+                {"name": "Influential 2", "profile_url": "https://example.com"},
+                {"name": "Influential 3", "profile_url": "https://example.com"},
+                {"name": "Influential 4", "profile_url": "https://example.com"},
+                {"name": "Influential 5", "profile_url": "https://example.com"}
+              ]
+            }
+          ]
+        }
+        }"""
 
         try:
+            # API Call
             response = self.openrouter_client.chat.completions.create(
                 model=self.openrouter_model,
                 messages=[
@@ -172,22 +189,46 @@ class LLMHandler:
                     {"role": "user", "content": prompt}
                 ],
                 temperature=0.7,
-                max_tokens=500
+                max_tokens=1500
             )
 
-            content = response.choices[0].message.content.strip()
-            print(content)
-            # Validate JSON before returning
-            recommendations = json.loads(content)
-            if "recommendations" not in recommendations:
-                raise ValueError("Response missing 'recommendations' key")
-            if not isinstance(recommendations["recommendations"], list):
-                raise ValueError("Recommendations must be a list")
-            if len(recommendations["recommendations"]) != 3:
-                raise ValueError("Must provide exactly 3 recommendations")
+            # Extract response content
+            response_content = response.choices[0].message.content.strip()
 
-            return recommendations
-        except json.JSONDecodeError as e:
-            raise ValueError(f"Invalid JSON response from LLM: {str(e)}")
+            # **Fix: Remove triple backticks if present**
+            if response_content.startswith("```json"):
+                response_content = response_content[7:]  # Remove ```json\n
+            if response_content.endswith("```"):
+                response_content = response_content[:-3]  # Remove \n```
+
+            # Parse JSON
+            parsed_response = json.loads(response_content)
+
+            # Validate structure
+            if isinstance(parsed_response, dict) and "career_recommendations" in parsed_response:
+                logger.info("Recommendations generated successfully")
+                return parsed_response
+
+            # If structure is unexpected, return error
+            logger.error("Unexpected response structure")
+            return {
+                "error": "Unexpected response structure",
+                "raw_response": response_content,
+                "career_recommendations": []
+            }
+
+        except json.JSONDecodeError as json_err:
+            logger.error(f"JSON Parsing Error: {json_err}")
+            logger.error(f"Problematic Response Content: {response_content}")
+            return {
+                "error": "Failed to parse model response",
+                "raw_response": response_content,
+                "career_recommendations": []
+            }
+
         except Exception as e:
-            raise Exception(f"Error generating recommendations: {str(e)}")
+            logger.error(f"Recommendation Generation Error: {str(e)}")
+            return {
+                "error": f"Failed to generate recommendations: {str(e)}",
+                "career_recommendations": []
+            }
