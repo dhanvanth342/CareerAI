@@ -118,26 +118,7 @@
   transform: scale(1.1);
 }
 */
-.prompt-container {
-  width: 100%;
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 8px;
-}
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-}
-
-.logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #fff;
-}
 
 .logout-btn {
   background-color: #82cded;
@@ -148,10 +129,12 @@
   cursor: pointer;
 }
 
+/*
 .main-content {
   padding: 20px;
   color: white;
-}
+}*/
+
 
 .prompt-text {
   font-size: 1.2rem;
