@@ -236,7 +236,6 @@ const PromptPage = ({ onQuestionsGenerated = () => {} }) => {
   const [question2, setQuestion2] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -244,7 +243,6 @@ const PromptPage = ({ onQuestionsGenerated = () => {} }) => {
     const savedText = localStorage.getItem('text');
     const savedQuestion1 = localStorage.getItem('question1');
     const savedQuestion2 = localStorage.getItem('question2');
-    
     if (savedText) setText(savedText);
     if (savedQuestion1) setQuestion1(savedQuestion1);
     if (savedQuestion2) setQuestion2(savedQuestion2);
@@ -292,6 +290,7 @@ const PromptPage = ({ onQuestionsGenerated = () => {} }) => {
     setIsLoading(true);
     setError('');
 
+
     const requestData = {
       initial_context: text,
       highest_education: question1,
@@ -310,7 +309,8 @@ const PromptPage = ({ onQuestionsGenerated = () => {} }) => {
 
       if (!response.ok) {
         const errorData = await response.text();
-        throw new Error(`Server error: ${response.status}`);
+        console.error(`Server error ${response.status}:`, errorData);
+        throw new Error(`Server error: ${response.status}: ${errorData}`);
       }
 
       const result = await response.json();
@@ -327,7 +327,10 @@ const PromptPage = ({ onQuestionsGenerated = () => {} }) => {
       onQuestionsGenerated(result.questions);
 
       // Redirect to QuestionsPage with generated questions
-      navigate('/questions', { state: { questions: result.questions } });
+      navigate('/questions', { state: { questions: result.questions,
+initial_context: result.initial_context
+       } });
+      
 
     } catch (error) {
       console.error('Error in handleGenerateQuestions:', error);

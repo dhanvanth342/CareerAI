@@ -16,39 +16,45 @@ llm_handler = LLMHandler()
 
 # Store questions temporarily
 generated_questions = []
+initial_context = ""
 
 @app.route('/generate-questions', methods=['POST'])
 def generate_questions():
-    global generated_questions
+    global generated_questions, initial_context
+    #global initial_context
     try:
         data = request.get_json()
         initial_context = data.get('initial_context', '')
-
         highest_education = data.get('highest_education', '')
-
         country = data.get('country', '')
 
         if not initial_context:
             return jsonify({"error": "Initial context is required"}), 400
 
-        questions = llm_handler.generate_questions(initial_context, highest_education, country)
+        questions, returned_initial_context = llm_handler.generate_questions(initial_context, highest_education, country)
 
-        
         generated_questions = questions
 
-        return jsonify({"questions": questions})
+        return jsonify({
+            "questions": questions,
+            "initial_context": returned_initial_context
+        })
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @app.route('/get-questions', methods=['GET'])
 def get_questions():
     try:
-        return jsonify({"questions": generated_questions})
-
+        return jsonify({
+            "questions": generated_questions,
+            "initial_context": initial_context
+        })
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 
 
@@ -84,15 +90,13 @@ def generate_prompt():
 def generate_recommendations():
     try:
         data = request.json
-        prompt = data.get('prompt')
+        prompt = data.get('prompt', '')
 
         if not prompt:
             return jsonify({"error": "Prompt is required"}), 400
 
         recommendations = llm_handler.generate_recommendations(prompt)
         return jsonify(recommendations)
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 422
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
