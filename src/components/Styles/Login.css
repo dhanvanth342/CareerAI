@@ -1,13 +1,4 @@
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    color: white;
-    /* Rotating sphere background */
-
-position: relative;
-}
-
 .login-page {
 
     height: 100vh;

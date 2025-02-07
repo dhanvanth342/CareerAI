@@ -1,6 +1,7 @@
 /*
 import React, { useState } from 'react';
 import '../components/Styles/Aiprompt.css';
+import '../index.css';
 
 const Aiprompt = () => {
   const [text, setText] = useState('');

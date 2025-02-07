@@ -1,16 +1,4 @@
-/* PromptPage.css */
-.prompt-container {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    color: white;
-    background: linear-gradient(180deg, #0a192f 53%, #172a45 100%);
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
+
   
   .navbar {
     display: flex;
@@ -53,14 +41,15 @@
     background: rgba(255, 255, 255, 0.3);
     transform: scale(1.05);
   }
-  
+  /*
   .main-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 40px 20px;
-  }
+  }*/
+
   
   .prompt-textai {
     color: rgb(238, 241, 243);
