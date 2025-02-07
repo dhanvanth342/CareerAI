@@ -1,0 +1,119 @@
+/* Reset some default margins and paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.header {
+    width: 100%;
+    position: sticky;
+   
+    z-index: 1000;
+    background-color: transparent;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+
+}
+
+/* Change background color on scroll */
+.header-bg {
+    background-color: #0d6efd;
+}
+
+/* Logo styling */
+.logo h1 {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: -20vh;
+    margin-left: -35vh;
+}
+
+/* Navigation Menu */
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin-top: -35vh;
+    margin-right: -35vh;
+}
+
+.nav-menu li {
+    display: inline-block;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.nav-menu a:hover {
+    color: #ffcc00;
+}
+
+/* Responsive button for smaller devices */
+.animated-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.animated-button:hover {
+    background-color: #ff1a1a;
+}
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.bar {
+    height: 3px;
+    width: 25px;
+    background-color: white;
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
+/* Responsive Design - Mobile Devices */
+@media screen and (max-width: 768px) {
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background-color: #0d6efd;
+        width: 200px;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .nav-menu li {
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .logo h1 {
+        font-size: 20px;
+    }
+    .hamburger {
+        display: flex;
+    }
+}
