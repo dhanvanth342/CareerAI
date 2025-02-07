@@ -2,6 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../components/Styles/Intropage.css'; // Ensure this file has the required styles
+import '../index.css';
 
 const symbolsArray = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789∑π√∆∫∞≠≈'.split('');
 
