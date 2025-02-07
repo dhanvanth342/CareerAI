@@ -1,7 +1,8 @@
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  padding: 0;
+  font-family: 'Questrial','dosis';
   color: white;
   background: linear-gradient(180deg, #0a192f 53%, #172a45 100%);
   height: 100vh;
@@ -9,8 +10,61 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow-x: hidden;
   position: relative;
 }
+
+
+
+/* Container and Navbar Styling */
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: none;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+/* Logo styling with consistent spacing */
+.logo {
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 5%;
+  transition: transform 0.3s ease;
+  flex-direction: left;
+}
+
+.logo:hover {
+  transform: scale(1.1); /* Slight zoom on hover */
+}
+
+/* Main content area */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  height: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 .app {
   width: 100%;
@@ -163,3 +217,19 @@ body {
   }
 }
 
+
+
+#teamspromptaiprompt
+
+.prompt-container {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+    background: linear-gradient(180deg, #0a192f 53%, #172a45 100%);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
