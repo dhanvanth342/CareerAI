@@ -195,22 +195,25 @@ const QuestionsPage = () => {
 
   const handleSubmit = async () => {
     if (questions.some((_, index) => !answers[index])) {
-      setError('Please answer all questions before submitting.');
+      setError('Please answer all questions before submitting.'+initial_context);
       return;
     }
+
     try {
       const response = await fetch('http://localhost:5000/generate-prompt', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ initial_context, answers, questions }),
+        body: JSON.stringify({ initial_context,answers, questions }),
       });
       if (!response.ok) throw new Error('Submission failed');
       const result = await response.json();
-      navigate('/results', { state: { recommendations: result } });
+      
+      navigate('/aiprompt', { state: { prompt: result.prompt } }); // Navigate to Aiprompt with the generated prompt
     } catch (err) {
       setError('Failed to submit answers. Please try again.');
     }
   };
+  
 
   const scrollToTop = () => {
     scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
@@ -227,35 +230,44 @@ const QuestionsPage = () => {
         </Alert>
       )}
       <div ref={scrollContainerRef} className="questions-box">
-        {questions.map((question, index) => (
-          <div key={index} className="question-item">
-            <h2 className="question-text">{question.question}</h2>
-            {question.choices ? (
-              <div className="choices-container">
-                {question.choices.map((choice, idx) => (
-                  <label key={idx} className="choice-label">
-                    <input
-                      type="radio"
-                      name={`question-${index}`}
-                      value={choice}
-                      checked={answers[index] === choice}
-                      onChange={(e) => handleAnswerChange(index, e.target.value)}
-                    />
-                    {choice}
-                  </label>
-                ))}
-              </div>
-            ) : (
-              <textarea
-                className="text-answer"
-                value={answers[index] || ''}
+  {questions.map((question, index) => (
+    <div key={index} className="question-item">
+      <h2 className="question-text">{question.question}</h2>
+      {question.choices ? (
+        <div className="choices-container">
+          {question.choices.map((choice, idx) => (
+            <label key={idx} className="choice-label">
+              <input
+                type="radio"
+                name={`question-${index}`}
+                value={choice}
+                checked={answers[index] === choice || (choice === 'Other' && answers[index]?.startsWith('Other:'))}
                 onChange={(e) => handleAnswerChange(index, e.target.value)}
-                placeholder="Enter your answer here..."
               />
-            )}
-          </div>
-        ))}
-      </div>
+              {choice}
+            </label>
+          ))}
+          {answers[index] === 'Other' || answers[index]?.startsWith('Other:') ? (
+            <textarea
+              className="text-answer"
+              value={answers[index]?.replace('Other: ', '') || ''}
+              onChange={(e) => handleAnswerChange(index, `Other: ${e.target.value}`)}
+              placeholder="Enter your custom answer..."
+            />
+          ) : null}
+        </div>
+      ) : (
+        <textarea
+          className="text-answer"
+          value={answers[index] || ''}
+          onChange={(e) => handleAnswerChange(index, e.target.value)}
+          placeholder="Enter your answer here..."
+        />
+      )}
+    </div>
+  ))}
+</div>
+
       <div className="actions-container">
         {isScrolled && (
           <button onClick={scrollToTop} className="scroll-top-btn">
