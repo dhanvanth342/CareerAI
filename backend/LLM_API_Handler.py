@@ -4,20 +4,14 @@ from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 import json
 import logging
-<<<<<<< Updated upstream
-=======
 from graphviz import Source
 
->>>>>>> Stashed changes
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-<<<<<<< Updated upstream
-=======
 
 
->>>>>>> Stashed changes
 class LLMHandler:
     def __init__(self, openrouter_model="anthropic/claude-3.5-haiku-20241022:beta",
                  groq_model="llama-3.3-70b-specdec"):
@@ -163,16 +157,6 @@ class LLMHandler:
 
         # System prompt
         system_prompt = """You are a career advisor expert. Based on the user's information,  
-<<<<<<< Updated upstream
-        provide the top 2 career recommendations. For each recommendation, include:  
-        1. Job role title  
-        2. Brief description of the role  
-        3. The top 5 influential individuals in this field, ranked based on their significant contributions.  
-           - Include their name and a relevant profile URL (e.g., LinkedIn, personal website, or research page).  
-
-        Provide the output strictly in a valid, well-structured JSON format.  
-        Ensure the response **only** contains a JSON object without extra text.  
-=======
         provide the top 5 career recommendations. For each recommendation, include:  
         1. Job role title  
         2. Brief description of the role in less than 30 words
@@ -181,7 +165,6 @@ class LLMHandler:
         Provide the output strictly in a valid, well-structured JSON format.  
         Ensure the recommedations order is sorted based on the match percentage, highest being at the top.
         STRICTLY the response should **only** contain a JSON object without extra text.  
->>>>>>> Stashed changes
 
         ### Example Output Format:  
         {
@@ -189,25 +172,11 @@ class LLMHandler:
             {
               "job_role": "Example Job Role",
               "description": "Brief description of the role.",
-<<<<<<< Updated upstream
-              "influential_figures": [
-                {"name": "Influential 1", "profile_url": "https://example.com"},
-                {"name": "Influential 2", "profile_url": "https://example.com"},
-                {"name": "Influential 3", "profile_url": "https://example.com"},
-                {"name": "Influential 4", "profile_url": "https://example.com"},
-                {"name": "Influential 5", "profile_url": "https://example.com"}
-              ]
-            }
-          ]
-        }
-        }"""
-=======
               "match_percentage": "85%"
             }
           ]
         }
         """
->>>>>>> Stashed changes
 
         try:
             # API Call
@@ -261,8 +230,6 @@ class LLMHandler:
                 "error": f"Failed to generate recommendations: {str(e)}",
                 "career_recommendations": []
             }
-<<<<<<< Updated upstream
-=======
 
     def generate_dot_code(self, user_prompt, job_title):
         """
@@ -429,4 +396,3 @@ class LLMHandler:
                     dot_code = self.fix_dot_code(dot_code, str(e))
                 else:
                     raise RuntimeError(f"DOT code validation failed after {max_retries} attempts. Error: {e}")
->>>>>>> Stashed changes
