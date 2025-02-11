@@ -28,13 +28,13 @@ const Navbar = () => {
         console.log("Logout button clicked");
         // Clear any session data if needed
         // Redirect to IntroPage
-        navigate("/intropage");
+        navigate("/");
     };
 
     return (
         <div className={color ? "header header-bg" : "header"}>
             <Link to="/" className="logo">
-                <h1>Career AI</h1>
+                <h1>Next Enti?</h1>
             </Link>
 
             <ul className={click ? "nav-menu active" : "nav-menu"}>
