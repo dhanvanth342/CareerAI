@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 class LLMHandler:
     def __init__(self, openrouter_model="anthropic/claude-3.5-haiku-20241022:beta",
-                 groq_model="llama-3.3-70b-specdec"):
+                 groq_model="llama-3.3-70b-versatile"):
         # OpenRouter initialization
         self.openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
         if not self.openrouter_api_key:
@@ -359,23 +359,66 @@ class LLMHandler:
             f"5. Return the response strictly in **JSON format** with the following keys:\n\n"
             f"Example JSON structure:\n"
             f"{{\n"
-            f'  "What does {job_title} do?": "Brief job description in less than 50 words.",\n'
-            f'  "How it aligns with your requirements": "Explanation based on user prompt.",\n'
-            f'  "Average Salary": {{\n'
-            f'      "Local Salary": "XX,XXX - YY,YYY [Currency]",\n'
-            f'      "USA Salary ": "XX,XXX - YY,YYY USD"\n'
+            f'  "job_description": "Brief job description in less than 50 words.",\n'
+            f'  "alignment": "Explanation based on user prompt.",\n'
+            f'  "average_salary": {{\n'
+            f'      "local_salary": "XX,XXX - YY,YYY [Currency]",\n'
+            f'      "usa_salary ": "XX,XXX - YY,YYY USD"\n'
             f"  }}\n"
             f"}}\n\n"
             f"Ensure that the JSON output is **well-structured, accurate, and free from unnecessary text**."
+            f"STRICTLY the response should **only** contain a JSON object without extra text."
         )
 
         try:
             response = self.groq_client.invoke(system_prompt)
+            response_content = response.content.strip()
 
-            return response.content.strip()
+        # Debugging: Print raw response
+            print("Raw Response from LLM:", repr(response_content))
+
+        # **Fix: Remove triple backticks if present**
+            if response_content.startswith("```json"):
+                response_content = response_content[7:]  # Remove ```json\n
+            if response_content.endswith("```"):
+                response_content = response_content[:-3]  # Remove \n```
+
+        # Handle empty response
+            if not response_content:
+                return {"error": "Empty response from LLM", "raw_response": ""}
+
+        # Attempt to parse JSON
+            try:
+                response_json = json.loads(response_content)
+            except json.JSONDecodeError:
+                print("error" "Invalid JSON format from model");
+                return {"raw_response": response_content}
+
+        # Normalize key names (case and spacing)
+            normalized_response = {k.strip().lower(): v for k, v in response_json.items()}
+
+            if "average salary" in normalized_response:
+                avg_salary = normalized_response.pop("average salary")
+                normalized_avg_salary = {k.strip().lower().replace(" ", "_"): v for k, v in avg_salary.items()}
+                normalized_response["average_salary"] = normalized_avg_salary
+
+        # Ensure correct format
+            explanation = {
+            "job_description": normalized_response.get("job_description", ""),
+            "alignment": normalized_response.get("alignment", ""),
+            "average_salary": {
+                "local_salary": normalized_response.get("average_salary", {}).get("local_salary", ""),
+                "usa_salary": normalized_response.get("average_salary", {}).get("usa_salary", "")
+            }
+        }
+
+        # Debugging: Print parsed output
+            print("Parsed Explanation:", json.dumps(explanation, indent=2))
+
+            return explanation
 
         except Exception as e:
-            raise Exception(f"Error in Groq API call: {e}")
+           raise Exception(f"Error in Groq API call: {e}")
 
     def validate_and_render_dot_code(self, dot_code, output_file="flowchart"):
         """
