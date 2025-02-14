@@ -120,6 +120,7 @@ export default Aiprompt;
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../components/Styles/Aiprompt.css';
+import NavBar from '../components/Navbar';
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -127,6 +128,8 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Card, CardMedia, IconButton, Dialog, DialogContent } from '@mui/material';
+
+
 
 const Aiprompt = () => {
   const [text, setText] = useState('');
@@ -250,7 +253,11 @@ const Aiprompt = () => {
   
 
   return (
+    <>
+    <NavBar />
+    
     <div className="aiprompt-container" style={{ marginTop: '60px' }}>
+  
       <div className="prompt-box">
         <h2>Here is your AI-generated Prompt!</h2>
         <div className="textbox-container">
@@ -284,7 +291,7 @@ const Aiprompt = () => {
               aria-controls={`panel${index}-content`}
               id={`panel${index}-header`}
             >
-              <Typography>{rec.job_role} : {rec.description}</Typography>
+              <Typography><strong>{rec.job_role} : {rec.description}</strong></Typography>
               <Typography variant="caption">match percentage: {rec.match_percentage}</Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -300,8 +307,10 @@ const Aiprompt = () => {
                   <div className="image-placeholder">Loading image...</div>
                 )}
                 <div className="accordion-text">
-                <Typography><strong>What does a {rec.job_role} do?</strong>: {expandedData[index]?.explanation?.job_description|| 'Loading...'}</Typography>
-                <Typography><strong>How it aligns with your requirements</strong>: {expandedData[index]?.explanation?.alignment || 'Loading...'}</Typography>
+                <Typography sx={{ paddingTop: "0 !important", marginTop: "0 !important" }}><strong>What does a {rec.job_role} do?</strong> <br />
+                 {expandedData[index]?.explanation?.job_description|| 'Loading...'}</Typography>
+                <Typography><strong>How it aligns with your requirements?</strong> <br />
+                 {expandedData[index]?.explanation?.alignment || 'Loading...'}</Typography>
                 <Typography><strong>Average Salary</strong>:</Typography>
                 <ul>
                   <li><strong>Local Salary:</strong> {expandedData[index]?.explanation?.average_salary?.local_salary || 'XX,XXX - YY,YYY [Currency]'}</li>
@@ -316,6 +325,7 @@ const Aiprompt = () => {
         <p></p>
       )}
     </div>
+    </>
   );
 };
 
