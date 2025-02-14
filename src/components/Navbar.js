@@ -8,8 +8,6 @@ const Navbar = () => {
     const [color, setColor] = useState(false);
     const navigate = useNavigate();
 
-
-
     // Changes navbar color on scroll
     useEffect(() => {
         const changeColor = () => {
@@ -39,8 +37,8 @@ const Navbar = () => {
 
             <ul className={click ? "nav-menu active" : "nav-menu"}>
                 <li><Link to="/Mainpage">Home</Link></li>
-                <li><Link to="/Mainpage">Team</Link></li>
-                <li><Link to="/Mainpage">About</Link></li>
+                <li><Link to="/Team">Team</Link></li>
+                <li><Link to="/About">About</Link></li>
                 <li>
                     <button className="animated-button" onClick={handleLogoutClick}>Logout</button>
                 </li>
