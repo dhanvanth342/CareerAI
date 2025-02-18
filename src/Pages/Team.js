@@ -8,7 +8,8 @@ import expert1 from '../assets/1.png';
 import expert2 from '../assets/2.png';  
 import expert3 from '../assets/3.png';  
 import expert4 from '../assets/4.png';  
-import expert5 from '../assets/5.png';  
+import expert5 from '../assets/5.png'; 
+import NavBar from '../components/Navbar'; 
 
 const experts = [
     {
@@ -61,6 +62,7 @@ const experts = [
 const Team = () => {
     return (
         <div className="prompt-container">
+            <NavBar/>
             <div className="teams-header">
                 <h1>Meet our team..</h1>
                 <p>Partner with our team of scientists, thinkers and industry experts to take your talent strategy to the next level. We have consulted with the world's top minds and created innovative solutions that transform talent.</p>
