@@ -86,7 +86,7 @@ body {
   justify-content: center;
   margin-top: 40px;
 }
-
+/*
 .card {
   background-color: rgba(255, 255, 255, 0.1);
   padding: 20px;
@@ -120,7 +120,7 @@ body {
 .card button:hover {
   background-color: #483D8B;
 }
-
+*/
 .animated-button {
   background: transparent; /* Semi-transparent background */
   color: white;
@@ -233,7 +233,4 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-
-
-
   }
