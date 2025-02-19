@@ -50,7 +50,7 @@ const Aiprompt = () => {
 
     if (!expandedData[index]) {
       try {
-        const response = await fetch('http://localhost:5000/generate-roadmap', {
+        const response = await fetch('${process.env.REACT_APP_API_URL}', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_prompt: userPrompt, job_title: jobRole })
@@ -83,7 +83,7 @@ const Aiprompt = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/generate-recommendations', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt })
@@ -287,7 +287,7 @@ const Aiprompt = () => {
 
     if (!expandedData[index]) {
       try {
-        const response = await fetch('http://localhost:5000/generate-roadmap', {
+        const response = await fetch('${process.env.REACT_APP_API_URL}', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_prompt: userPrompt, job_title: jobRole })
@@ -321,7 +321,7 @@ const Aiprompt = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/generate-recommendations', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt })
@@ -488,7 +488,7 @@ const Aiprompt = () => {
 
     if (!expandedData[index]) {
       try {
-        const response = await fetch('http://localhost:5000/generate-roadmap', {
+        const response = await fetch('${process.env.REACT_APP_API_URL}', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_prompt: userPrompt, job_title: jobRole })
@@ -522,7 +522,7 @@ const Aiprompt = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/generate-recommendations', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt })
@@ -716,7 +716,7 @@ const Aiprompt = () => {
 
     if (!expandedData[index]) {
       try {
-        const response = await fetch('http://localhost:5000/generate-roadmap', {
+        const response = await fetch('${process.env.REACT_APP_API_URL}', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_prompt: userPrompt, job_title: jobRole })
@@ -753,7 +753,7 @@ const Aiprompt = () => {
     setInitialSubmit(false);
 
     try {
-      const response = await fetch('http://localhost:5000/generate-recommendations', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt })
@@ -958,7 +958,7 @@ const Aiprompt = () => {
 
     if (!expandedData[index]) {
       try {
-        const response = await fetch('http://localhost:5000/generate-roadmap', {
+        const response = await fetch('${process.env.REACT_APP_API_URL}', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_prompt: userPrompt, job_title: jobRole })
@@ -995,7 +995,7 @@ const Aiprompt = () => {
     setInitialSubmit(false);
 
     try {
-      const response = await fetch('http://localhost:5000/generate-recommendations', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt })

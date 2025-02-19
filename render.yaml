@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: NextEnti?
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./build
+    headers:
+      - source: /static/**
+        headers:
+          - key: Cache-Control
+            value: public, max-age=31536000, immutable
+      - source: /**
+        headers:
+          - key: Cache-Control
+            value: no-cache
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: REACT_APP_CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: REACT_APP_API_URL
+        value: https://nextenti.onrender.com
+    startCommand: gunicorn --timeout 60 --graceful-timeout 60 --keep-alive 5
