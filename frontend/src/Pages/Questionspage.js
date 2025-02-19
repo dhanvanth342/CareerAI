@@ -1261,7 +1261,7 @@ const QuestionsPage = () => {
     }
 
     try {
-      const response = await fetch('${process.env.REACT_APP_API_URL}/generate-prompt', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-prompt`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ initial_context, answers, questions }),
