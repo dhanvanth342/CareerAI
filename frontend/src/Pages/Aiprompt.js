@@ -908,6 +908,7 @@ export default Aiprompt;
 
 
 import React, { useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../components/Styles/Aiprompt.css';
 import NavBar from '../components/Navbar';
@@ -930,7 +931,7 @@ const Aiprompt = () => {
   const [initialSubmit, setInitialSubmit] = useState(true);
   const location = useLocation();
   const [prompt, setPrompt] = useState(location.state?.prompt || 'No prompt available');
-
+  const ongoingRequests = useRef(new Set());
   const count = useMotionValue(10);
   const rounded = useTransform(count, Math.round);
 
@@ -945,7 +946,7 @@ const Aiprompt = () => {
       return () => animation.stop();
     }
   }, [loading]);
-
+  
   const handleTextChange = (e) => {
     setPrompt(e.target.value);
   };
@@ -955,7 +956,10 @@ const Aiprompt = () => {
       ...prev,
       [index]: !prev[index]
     }));
+const requestKey=`${index}-${jobRole}`;
+if (ongoingRequests.current.has(requestKey)) return;
 
+  ongoingRequests.current.add(requestKey);
     if (!expandedData[index]) {
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-roadmap`, {
@@ -985,6 +989,8 @@ const Aiprompt = () => {
       } catch (error) {
         console.error("Error fetching roadmap data:", error);
         alert(`Failed to load roadmap for. Please try again.`);
+            } finally{
+              ongoingRequests.current.delete(requestKey);
             }
     }
   };
