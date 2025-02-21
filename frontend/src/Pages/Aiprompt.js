@@ -952,48 +952,47 @@ const Aiprompt = () => {
   };
 
   const handleAccordionToggle = async (index, jobRole, userPrompt) => {
-    setOpenAccordions((prev) => ({
+    // Check if data already exists
+    if (expandedData[index]) {
+      setOpenAccordions(prev => ({
+        ...prev,
+        [index]: !prev[index]
+      }));
+      return;
+    }
+  
+    // Add loading state
+    setOpenAccordions(prev => ({
       ...prev,
-      [index]: !prev[index]
+      [index]: true
     }));
-const requestKey=`${index}-${jobRole}`;
-if (ongoingRequests.current.has(requestKey)) return;
-
-  ongoingRequests.current.add(requestKey);
-    if (!expandedData[index]) {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-roadmap`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ user_prompt: userPrompt, job_title: jobRole })
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        if (!data || !data.flowchart || !data.explanation) {
-          throw new Error("Invalid response format: Missing flowchart or explanation");
-        }
-        if (data) {
-          setExpandedData((prevData) => ({
-            ...prevData,
-            [index]: {
-              flowchart: data.flowchart,
-              explanation: data.explanation,
-              loaded: true
-            }
-          }));
-        }
-      } catch (error) {
-        console.error("Error fetching roadmap data:", error);
-        alert(`Failed to load roadmap for. Please try again.`);
-            } finally{
-              ongoingRequests.current.delete(requestKey);
-            }
+  
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-roadmap`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          user_prompt: userPrompt, 
+          job_title: jobRole 
+        })
+      });
+  
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      
+      const data = await response.json();
+      setExpandedData(prev => ({
+        ...prev,
+        [index]: data
+      }));
+    } catch (error) {
+      console.error("Error fetching roadmap data:", error);
+      setOpenAccordions(prev => ({
+        ...prev,
+        [index]: false
+      }));
     }
   };
+  
 
   const handleEditClick = () => {
     setIsEditable(true);
