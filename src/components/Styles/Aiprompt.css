@@ -1,4 +1,4 @@
-
+/* General Reset */
 * {
   margin: 0;
   padding: 0;
@@ -6,85 +6,167 @@
 }
 
 html, body {
-  overflow: auto;
   height: 100vh;
   width: 100vw;
+  overflow: auto;
+
 }
 
-h2 {
+/* --- Heading Styles --- */
+
+.aiprompt-container .prompt-box p{
+  padding-bottom: 10px;
+  font-size: 2rem;
+  text-align: left;
+  
+}
+.aiprompt-container .prompt-box h4{
+  font-size: 5rem;
+  text-align: left;
   padding-bottom: 5px;
-  font-size: 3rem;
+  color: #83c9fc;
 }
 
+/* --- Main Container --- */
 .aiprompt-container {
   padding: 20px;
   min-height: 100vh;
-  background: transparent;
-  overflow: hidden;
+  color: white;
+  margin:auto;
+  position: relative;
+  margin: auto;
+  max-width: 85%;
+  
 }
 
+/* --- Prompt Box --- */
 .prompt-box {
+  margin-top: 30px;
   margin-bottom: 20px;
-  height: auto;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 15px;
+  width: 100%;
+  
 }
 
 .textbox-container {
-  position: relative; /* ✅ Allows absolute positioning of icons */
+  position: relative;
   padding: 15px;
   border: 2px solid #d3d3d3;
-  border-radius: 8px;
+  border-radius: 15px;
+  background: #f1f5f6; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  height: 230px; /* ✅ Increased height to create space for icons */
+  height: 180px;
   overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  scroll-behavior: smooth;
+}
+.textbox-container::-webkit-scrollbar {
+  width: 4px; /* Thinner scrollbar */
+  height: 4px;
+  border-radius: 10px;
+  background: transparent; /* Hidden by default */
+}
+.textbox-container:hover::-webkit-scrollbar {
+  background: rgba(0, 0, 0, 0.05); /* Light visibility on hover */
 }
 
+
+.textbox-container::-webkit-scrollbar-thumb {
+  background: rgb(4 41 95) ;/* Stylish blue thumb */
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.textbox-container::-webkit-scrollbar-thumb:hover {
+  background: rgb(4 41 95); /* Darker shade on hover */
+}
+
+/* Firefox Scrollbar */
+.textbox-container {
+  scrollbar-width: thin;
+  scrollbar-color:  rgb(4 41 95) transparent;
+}
+/* --- AI Text (Editable/Static) --- */
 .ai-text {
-  flex: 1; /* ✅ Ensures the text area fills the space but leaves room below */
+  flex: 1;
+  text-align: left;
   width: 100%;
   padding: 10px;
   border-radius: 5px;
-  font-size: 20px;
+  font-size: 1.2rem;
   resize: none;
+  background: transparent;
+  color: rgb(32, 32, 32); 
+  border: none;
+
 }
 
-.button-container {
+.static-text {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* --- Button & Icon Styles --- */
+.icon-container {
   display: flex;
   justify-content: flex-end;
-  gap: 20px;
-  position: absolute;
-  right: 15px;
+  margin-top: 5px;
 }
 
-.edit-button, .ok-button {
-  font-size: 1em;
-  border: none;
-  border-radius: 5px;
+.edit-icon, .submit-icon {
+  font-size: 1.5rem;
+  color: rgb(4 41 95);
   cursor: pointer;
-  background-color: #fefefe;
-  color: #0a77bc;
-  font-size: 0.9em;
-  max-width: 200px;
+  transition: transform 0.2s ease-in-out;
 }
 
-.edit-button:hover, .ok-button:hover {
+.edit-icon:hover, .submit-icon:hover {
+  transform: scale(1.1);
+}
+
+/* --- Submit Button --- */
+.initial-submit-container {
+  display: flex;
+  margin-top: 20px;
+  justify-content: end;
+}
+
+.initial-submit-button {
+  background-color: #83c9fc;
+  width: 100%;
+  max-width: 250px;
+  color: white;
+  font-size: 1rem;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  white-space: nowrap;
+  cursor: pointer;
+  display: flex;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+}
+
+.initial-submit-button:hover {
   transform: scale(1.05);
+  box-shadow: 0px 4px 10px rgba(0, 119, 188, 0.4);
 }
 
-.ok-button:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
+/* --- Loading Countdown Animation --- */
 .loading-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
 }
-
+/*
 .countdown {
   font-size: 6rem;
   color: #8decfd;
@@ -101,44 +183,68 @@ h2 {
   0% { text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00; }
   100% { text-shadow: 0 0 20px #ffe066, 0 0 30px #ffd700; }
 }
-
+*/
+.loading-text {
+  color: #b0b0b0;
+  font-size: 1rem;
+  padding-right: 5px;
+}
+.countdown{
+  color: #b0b0b0;
+  font-size: 1rem;
+}
+/* --- Accordion (Mui) Styles --- */
 .MuiAccordion-root {
-  width: 95%;
+  width: 100%;
   max-width: 1700px;
-  font-size: 2.7rem;
-  min-height: 120px !important; 
-  margin: 20px 20px;
-  border: 3px solid #b6eafa;
-  box-shadow: 1px 1px 1px rgba(0, 187, 250, 0.2);
-  border-radius: 8px !important;
-  background-color: #0a192f;
-  transition: none !important;
+  min-height: 120px;
+  margin-top: 30px;
+  color:#82cded;
+  background: rgba(31, 67, 120, 0.594); /* Semi-transparent dark blue */
+  border-radius: 10px;
+  -webkit-backdrop-filter: blur(8px); /* ✅ Ensures compatibility */
+  backdrop-filter: blur(8px); /* ✅ Subtle glass blur effect */
+  
+  transition: all 0.3s ease-in-out;
+  border-radius: 10px; /* Soft rounded corners */
+  /*border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: linear-gradient(135deg, #0a192f 20%, #112240 100%);
+  transition: all 0.3s ease-in-out;
+  border-radius: 10px; /* Soft rounded corners */
 }
 
 .MuiAccordion-root:hover {
-  box-shadow: 0px 0px 15px rgba(0, 173, 255, 0.6);
-  background-color: #112240 !important;
-  transform: scale(1.02);
+  /*box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.3);
+  background-color: linear-gradient(135deg, #112240 20%, #0a192f 100%);
+  transform: translateY(-3px);*/
+  box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.3);
+  background: rgba(17, 34, 64, 0.5); /* Slightly more transparency */
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px); /* Increased blur */
+  transform: translateY(-3px);
 }
 
 .MuiAccordionSummary-root {
   background-color: #0a192f !important;
-  color: white !important;
-  position: relative; 
-  padding: 15px;
-  min-height: 120px !important; 
-  align-items: center; 
+  border-radius: 8px;
   padding: 20px;
   display: flex;
   justify-content: space-between;
 }
+.MuiAccordionSummary-content {
+  display: flex !important;
+  text-align: start;
+  flex-grow: 1;
+  margin: 12px 0;
+  transition: margin 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  justify-content: space-between !important; /* Ensure spacing */
+  align-items: center; /* Keep items aligned */
+}
 
 .MuiAccordionSummary-root .MuiSvgIcon-root {
   color: white !important;
-}
-
-.MuiAccordionSummary-root:hover {
-  background-color: #112240 !important;
+  padding-left: 0%;
+  
 }
 
 .MuiAccordionDetails-root {
@@ -149,149 +255,17 @@ h2 {
   background-color: #0a192f !important;
   color: white !important;
 }
-/*
+.ExpandableImageHolder{
+  z-index: 10;
+  display: flex;
+  background: rgba(0, 0, 0, 0.1);
+
+}
+/* --- Accordion Content --- */
 .accordion-content {
   display: flex;
-  flex-wrap: wrap;
-  color: #fff;
-  background-color: transparent;
-}
-
-.accordion-image-holder {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  max-height: 300px;
-  padding: 10px;
-}
-*/
-.accordion-image-holder img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-/*
-.accordion-text {
-  flex: 2;
-  padding: 0 10px;
-  min-width: 50%;
-  color: #ffffff;
-}
-*/
-.accordion-text ul {
-  list-style-type: none;
-}
-
-
-.match-percentage {
-  font-size: 2.2rem !important; /* ✅ Slightly larger for clarity */
-  font-weight: bold;
-  color: #c5f9c5;
-  text-align: center;
-  display: flex;
-  flex-direction: column; /* ✅ Stack number and text vertically */
-  align-items: center;
-  justify-content: center;
-  width: auto; /* ✅ No fixed width */
-  height: auto; /* ✅ No forced height */
-}
-
-.MuiAccordionSummary-content {
-  display: flex;
-  align-items: center;
-  width: 90%;
-  white-space: normal; 
-  word-wrap: break-word;
-  max-width: 100%;
-  justify-content: space-between; 
-}
-
-
-.match-rate-text {
-  font-size: 0.9rem; /* ✅ Adjusted smaller size */
-  font-weight: normal;
-  color: #fafcfa;
-  margin-top: -3px; /* ✅ Reduces unnecessary gap */
-}
-
-.question-heading {
-  color: #82cded;
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin-bottom: 5px;
-}
-
-.job-title-blue {
-  color: #82cded;
-  font-family:"Questrial";
-  font-size: 1.5rem;
-}
-
-.job-description {
-  font-size: 1.5rem;
-  font-family:"Questrial";
-  color: #ffffff;
-  max-width: 95%; 
-  display: inline-block; 
-  overflow-wrap: break-word; 
-  line-height: 1.4;
-}
-
-.answer-text {
-  font-size: 1.2rem;
-  color: #ebe6e6;
-  line-height: 1.6;
-  text-align: left;
-}
-
-
-@media (max-width: 768px) {
-  .MuiAccordion-root {
-    width: 90%;
-  }
-
-  .aiprompt-container {
-    padding: 10px;
-  }
-
-  .textbox-container {
-    padding: 10px;
-  }
-
-  .button-container {
-    flex-wrap: wrap;
-  }
-
-  .edit-button, .ok-button {
-    font-size: 0.85em;
-    max-width: 120px;
-  }
-
-  .MuiAccordionSummary-root {
-    padding: 10px;
-  }
-
-  .accordion-image-holder, .accordion-text {
-    min-width: 50%;
-  }
-}
-
-@media (max-width: 480px) {
-  .edit-button, .ok-button {
-    width: 100%;
-  }
-
-  .button-container {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-
-.accordion-content {
-  display: flex;
-  align-items: center;
+  align-items: flex-start;
+  gap: 20px;
   flex-wrap: wrap;
   opacity: 0;
   transform: translateX(0px) !important;
@@ -305,72 +279,377 @@ h2 {
 
 .accordion-image-holder {
   display: flex;
+  flex: 1;
+  max-width: 50%; /* ✅ Keeps image width unchanged */
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-height: 100%; 
+  max-height: 100%;
   overflow: hidden;
   padding: 10px;
-  object-fit: contain; 
+  object-fit: contain;
 }
+.accordion-text-container {
+  flex: 1;
+  background: #f1f5f6; 
+  padding: 20px;
+  border-radius: 10px; /* ✅ Optional: Adds soft corners */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* ✅ Optional: Adds a subtle shadow */
+  overflow-y: auto;
+  min-height: 550px;
+  overflow-wrap: break-word; /* Ensures long words break properly */
+  word-wrap: break-word;
+  
 
-
-.accordion-content.loaded .accordion-image-holder {
-  transform: translateX(-10px);
+  /*border-radius: 12px; 
+  padding: 20px;
+  -webkit-backdrop-filter: blur(8px); 
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+  max-width: 100%;*/
 }
-
 .accordion-text {
   flex: 2;
-  padding-left: 20px;
+  padding: 10px;
   opacity: 0;
+  color: black; /* ✅ Adjust text color to improve readability */
+  overflow-y: auto;
   transform: translateX(50px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  justify-content: center;
+  align-items: center;
 }
 
 .accordion-content.loaded .accordion-text {
   opacity: 1;
   transform: translateX(0);
 }
-
-.initial-submit-container {
+.accordion-header {
   display: flex;
+  justify-content: space-between; /* ✅ Pushes content to both sides */
+  align-items: center;
+  flex-wrap: nowrap;
+  width: 100%;
+  padding: 20px;
+  gap: 10px;
+}
+
+.accordion-left {
+  display: flex;
+  flex-direction: column; /* ✅ Stack job title & description */
   justify-content: center;
-  margin-top: 20px;
+  flex: 1;
 }
-
-.initial-submit-button {
-  background-color: #0a77bc;
-  color: white;
-  font-size: 1.2rem;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s;
-}
-
-.initial-submit-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 4px 10px rgba(0, 119, 188, 0.4);
-}
-
-.icon-container {
-  position: relative; /* ✅ Now positioned naturally inside the box */
-  bottom: 0; /* ✅ Moves to bottom of the `.textbox-container` */
-  right: 0;
+.match-container {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 5px; /* ✅ Adds space between text box & buttons */
+  align-items: center;
+  justify-content: flex-end; /* ✅ Pushes match percentage to the right */
+  flex-shrink: 0; /* ✅ Prevents it from getting squeezed */
+  width: 180px;
+  text-align: right; /* ✅ Ensures it doesn’t overlap */
+  padding-left: 10px;
+}
+/* --- Text Styling --- */
+.job-title-blue {
+  color: #83c9fc;
+  font-size: 2rem;
+  font-weight:500;
+  white-space: nowrap; /* Prevents text from wrapping */
+  overflow: hidden; /* Hides overflow text */
+  text-overflow: ellipsis; 
 }
 
-.edit-icon, .submit-icon {
-  font-size: 1.5rem;
-  color: #82cded;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
+.job-description {
+  font-size: 1rem;
+  color: #f1f5f6;
+  max-width:  600px;
+  display: block;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: normal;
+ /* line-height: 1.4;*/
+  font-weight: 300
 }
 
-.edit-icon:hover, .submit-icon:hover {
-  transform: scale(1.1);
+
+.question-heading {
+  color: rgb(4 41 95)!important;
+  font-weight: bold!important;
+  font-size: 1.25rem !important;
+  margin-bottom: 5px!important;
+}
+.accordion-text{
+flex: 2;
+padding: 0 10px;
+min-width: 50%;
+color: #ffffff;
+}
+.answer-text {
+  font-size: 1.2rem;
+  color: rgb(32, 32, 32);
+  line-height: 1.6;
+  text-align: left;
+}
+.accordion-text ul {
+  list-style-type: none;
 }
 
+/* --- Match Percentage --- */
+.match-percentage {
+  font-size: 2rem !important;
+  font-weight: bold;
+  color: #c5f9c5;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap; /* ✅ Prevents text wrapping */
+ /* width: 100%; /* ✅ Ensures full width utilization */
+}
+
+.match-rate-text {
+  font-size: 0.7rem;
+  font-weight: normal;
+  color: #fafcfa;
+}
+
+/* Tablets & Medium Screens (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .aiprompt-container {
+    padding: 15px;
+    max-width: 95%;
+  }
+  .accordion-content {
+    flex-direction: column;
+    align-items: center;
+  }
+  .aiprompt-container .prompt-box p {
+    font-size: 1.3rem;
+  }
+  .aiprompt-container .prompt-box h4 {
+    font-size: 2.5rem;
+  }
+  .textbox-container {
+    min-height: 130px;
+    font-size: 1rem;
+  } 
+  .ai-text {
+    font-size: 1rem;
+  }
+  .job-title-blue {
+    font-size: 1.8rem;
+  }
+  .job-description {
+    font-size: 0.95rem;
+    max-width: 500px;
+  }
+  .match-container {
+    width: 150px;
+  }
+  .match-percentage {
+    font-size: 1.8rem;
+  }
+  .MuiAccordionSummary-root {
+    padding: 15px;
+  }
+  .ExpandableImageHolder {
+    width: 450px !important;
+    height: 450px !important;
+  }
+  .accordion-image-holder {
+    max-width: 80%;
+  }
+
+  .accordion-text-container {
+    min-height: auto;
+    max-width: 90%;
+  }
+}
+
+/* Mobile Screens (max-width: 768px) */
+@media (max-width: 768px) {
+  .aiprompt-container {
+    max-width: 100%;
+    padding: 10px;
+  }
+  aiprompt-container .prompt-box p {
+    font-size: 1.2rem;
+  }
+  .aiprompt-container .prompt-box h4 {
+    font-size: 2rem;
+  }
+ 
+  .textbox-container {
+    min-height: 120px;
+  }
+
+  .initial-submit-container {
+    justify-content: center;
+  }
+
+  .initial-submit-button {
+    width: 100%;
+    max-width: 300px;
+    font-size: 0.9rem;
+  }
+
+  .MuiAccordionSummary-root {
+    padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .match-container {
+    width: 100%;
+    text-align: left;
+  }
+
+  .ExpandableImageHolder {
+    width: 350px !important;
+    height: 350px !important;
+  }
+  .accordion-content {
+    flex-direction: column;
+    align-items: center;
+  }
+  .accordion-image-holder {
+    max-width: 90%;
+  }
+  .accordion-text-container {
+    min-height: auto;
+    max-width: 95%;
+    padding: 15px;
+  }
+  .match-percentage {
+    font-size: 1.5rem;
+    text-align: left;
+  }
+  .job-title-blue {
+    font-size: 1.5rem;
+    max-width: 90%; 
+  }
+
+  .job-description {
+    font-size: 0.9rem;
+  }
+
+  .answer-text {
+    font-size: 1rem;
+  }
+}
+
+/* Small Mobile Screens (max-width: 600px) */
+@media (max-width: 600px) {
+  .aiprompt-container {
+    margin: 5px;
+    padding: 5px;
+  }
+
+  .prompt-box h4 {
+    font-size: 2.2rem;
+  }
+
+  .textbox-container {
+    min-height: 100px;
+  }
+
+  .initial-submit-button {
+    font-size: 0.85rem;
+    padding: 8px 18px;
+  }
+
+  .job-title-blue {
+    font-size: 1.2rem;
+  }
+
+  .job-description {
+    font-size: 0.85rem;
+    max-width: 100%;
+  }
+  .match-container {
+    width: 100%;
+    text-align: left;
+  }
+  .match-percentage {
+    font-size: 1.2rem !important;
+    text-align: left;
+  }
+
+  .ExpandableImageHolder {
+    width: 250px !important;
+    height: 250px !important;
+  }
+  .accordion-image-holder {
+    width: 250px !important;
+    height: 250px !important;
+  }
+  .accordion-text-container {
+    min-height: auto;
+    padding: 10px;
+    max-width: 100%;
+  }
+
+  .answer-text {
+    font-size: 0.9rem;
+  }
+
+  .edit-icon,
+  .submit-icon {
+    font-size: 1rem;
+  }
+}
+
+/* Extra Small Mobile Screens (max-width: 480px) */
+@media (max-width: 480px) {
+  .aiprompt-container {
+    margin: 0;
+    padding: 0;
+  }
+
+  .prompt-box h4 {
+    font-size: 2rem;
+  }
+
+  .textbox-container {
+    min-height: 80px;
+  }
+
+  .initial-submit-button {
+    font-size: 0.75rem;
+    padding: 6px 14px;
+  }
+
+  .job-title-blue {
+    font-size: 1rem;
+  }
+
+  .job-description {
+    font-size: 0.8rem;
+    max-width: 100%;
+  }
+  .match-container {
+    width: 100%;
+    text-align: left;
+  }
+
+  .match-percentage {
+    font-size: 1.2rem;
+    text-align: left;
+  }
+
+  .ExpandableImageHolder {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  .accordion-image-holder {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  .accordion-text-container {
+    padding: 8px;
+    max-width: 100%;
+  }
+
+  .answer-text {
+    font-size: 0.85rem;
+  }
+}

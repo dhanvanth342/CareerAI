@@ -1,100 +1,13 @@
-
-
-.how-it-works-container {
-  padding: 20px;
-  font-family: 'Questrial', sans-serif;
-}
-
-.how-it-works-title {
-  font-family: 'Questrial', sans-serif !important;
-  font-size: 3rem !important;
-  text-align: center !important;
-  color: #ffffff !important;
-  font-weight: bold !important;
-}
-
-.how-it-works-description {
-  text-align: center;
-  color: #ffffff; 
-  font-size: 1.2rem !important; 
-  margin-bottom: 3rem !important; 
-  line-height: 1.5; 
-  margin: 0 auto;
-}
-
-.cards-container {
-  max-width: 1100px !important; 
-  margin: auto !important;
-  
-}
-
-.custom-card {
-  position: relative;
-  overflow: hidden;
-  height: 50vh;
-  padding: 4px;
-  display: flex;
-  border-radius: 16px !important;
-  flex-direction: column;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1) !important;
-  transition: box-shadow 0.3s ease !important;
-}
-
-.custom-card:hover {
-  box-shadow: 0px 16px 20px rgba(0, 0, 0, 0.2) !important;
-}
-
-
-.card-content {
-  position: relative;
-  height: 100%;
-  display: flex;
-  text-align: center;
-  flex-direction: column;
-  transition: transform 0.3s ease;
-}
-
-.custom-card:hover .card-content {
-  transform: translateY(-50%); 
-}
-
-.card-image {
-  transition: transform 0.3s ease;
-}
-
-.card-text {
-  padding: 16px;
-  font-family: 'Questrial', sans-serif !important;
-}
-
-.detailed-text {
-  display: none;
-  font-family: 'Questrial', sans-serif !important;
-  font-weight: bold !important;
-}
-
-.custom-card:hover .detailed-text {
-  display: block;
-}
-
-@media (max-width: 768px) {
-  .how-it-works-title {
-    font-size: 2rem; 
-    margin-bottom: 15px;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+    background: linear-gradient(180deg, #0a192f 53%, #172a45 100%);
+    height: 100vh;
+    display: flex;
+    font-family: 'Questrial';
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
   }
-
-  .how-it-works-description {
-    font-size: 0.9rem; 
-    margin-bottom: 20px;
-    line-height: 1.5;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .cards-container {
-    padding-left: 10px; 
-    padding-right: 10px;
-    max-width: none;
-  }
-}
-  
