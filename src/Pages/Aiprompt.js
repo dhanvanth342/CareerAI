@@ -98,8 +98,8 @@ const Aiprompt = () => {
       <NavBar />
       <div className="aiprompt-container">
         <div className="prompt-box">
-          <h4>There you go,  </h4>
-          <p>Here is your AI-generated Prompt!</p>
+          <p>Here is your </p>
+          <h4> AI-generated Prompt!</h4>
           <div className="textbox-container">
             {isEditable ? (
               <textarea className="ai-text" value={prompt} onChange={handleTextChange} />
@@ -125,20 +125,18 @@ const Aiprompt = () => {
           </div>
         ) : (
           recommendations.map((rec, index) => (
-            <Accordion key={index} expanded={openAccordions[index]} onChange={() => handleAccordionToggle(index, rec.job_role, prompt)}>
+            <Accordion variant='div' key={index} expanded={openAccordions[index]} onChange={() => handleAccordionToggle(index, rec.job_role, prompt)}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />} className="accordion-header">
-              <div className="job-accordion-left">
-                <Typography component={'div'}>
-                      <h1><span className="job-title-blue">{rec.job_role}:</span> </h1>
-                     
+                <div className="job-accordion-left">
+                  <Typography component={'div'}>
+                    <h1><span className="job-title-blue">{rec.job_role}:</span> </h1>
                     <div className="job-description">{rec.description}</div>
-                  
-                </Typography>
+                  </Typography>
                 </div>
                 <div className="match-container">
-                <Typography className="match-percentage">
-                  {rec.match_percentage} <div className="match-rate-text">Match Rate</div>
-                </Typography>
+                  <Typography className="match-percentage">
+                    {rec.match_percentage} <div className="match-rate-text">Match Rate</div>
+                  </Typography>
                 </div>
               </AccordionSummary>
               <AccordionDetails>
@@ -152,12 +150,13 @@ const Aiprompt = () => {
                   ) : (
                     <div className="image-placeholder">Loading image...</div>
                   )}
+                  <div className="accordion-text-container">
                   <div className="accordion-text">
                     <Typography className="question-heading"><strong>What does a {rec.job_role} do?</strong></Typography>
                     <Typography className="answer-text">{expandedData[index]?.explanation?.job_description || <div className="loading-container">
-            <motion.h1 className="loading-text">{loadingText}</motion.h1>
-            <motion.h1 className="countdown">{rounded}</motion.h1>
-          </div>}</Typography>
+                      <motion.h1 className="loading-text">{loadingText}</motion.h1>
+                      <motion.h1 className="countdown">{rounded}</motion.h1>
+                    </div>}</Typography>
 
                     <Typography className="question-heading"><strong>How it aligns with your requirements?</strong></Typography>
                     <Typography className="answer-text">{expandedData[index]?.explanation?.alignment || 'Loading...'}</Typography>
@@ -167,6 +166,7 @@ const Aiprompt = () => {
                       <li className="answer-text"><strong>Local Salary:</strong> {expandedData[index]?.explanation?.average_salary?.local_salary || 'XX,XXX - YY,YYY [Currency]'}</li>
                       <li className="answer-text"><strong>USA Salary:</strong> {expandedData[index]?.explanation?.average_salary?.usa_salary || 'XX,XXX - YY,YYY USD'}</li>
                     </ul>
+                  </div>
                   </div>
                 </div>
               </AccordionDetails>

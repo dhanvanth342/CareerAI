@@ -14,16 +14,16 @@ html, body {
 
 /* --- Heading Styles --- */
 
-
+.aiprompt-container .prompt-box p{
+  padding-bottom: 10px;
+  font-size: 2rem;
+  text-align: left;
+  
+}
 .aiprompt-container .prompt-box h4{
   font-size: 5rem;
   text-align: left;
   padding-bottom: 5px;
-}
-.aiprompt-container .prompt-box p {
-  padding-bottom: 10px;
-  font-size: 2rem;
-  text-align: left;
   color: #83c9fc;
 }
 
@@ -32,10 +32,10 @@ html, body {
   padding: 20px;
   min-height: 100vh;
   color: white;
-  margin-left: 50px;
-  margin-right: 50px;
-  position: absolute;
-  margin-top: 30px;
+  margin:auto;
+  position: relative;
+  margin: auto;
+  max-width: 85%;
   
 }
 
@@ -43,6 +43,10 @@ html, body {
 .prompt-box {
   margin-top: 30px;
   margin-bottom: 20px;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 15px;
+  width: 100%;
   
 }
 
@@ -133,8 +137,9 @@ html, body {
 }
 
 .initial-submit-button {
-  background-color: #83c9fc;;
-  max-width: 200px;
+  background-color: #83c9fc;
+  width: 100%;
+  max-width: 250px;
   color: white;
   font-size: 1rem;
   flex-direction: column;
@@ -156,6 +161,7 @@ html, body {
 /* --- Loading Countdown Animation --- */
 .loading-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
@@ -195,7 +201,7 @@ html, body {
   margin-top: 30px;
   color:#82cded;
   background: rgba(31, 67, 120, 0.594); /* Semi-transparent dark blue */
-  
+  border-radius: 10px;
   -webkit-backdrop-filter: blur(8px); /* ✅ Ensures compatibility */
   backdrop-filter: blur(8px); /* ✅ Subtle glass blur effect */
   
@@ -258,7 +264,8 @@ html, body {
 /* --- Accordion Content --- */
 .accordion-content {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  gap: 20px;
   flex-wrap: wrap;
   opacity: 0;
   transform: translateX(0px) !important;
@@ -272,6 +279,8 @@ html, body {
 
 .accordion-image-holder {
   display: flex;
+  flex: 1;
+  max-width: 50%; /* ✅ Keeps image width unchanged */
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -280,13 +289,35 @@ html, body {
   padding: 10px;
   object-fit: contain;
 }
+.accordion-text-container {
+  flex: 1;
+  background: #f1f5f6; 
+  padding: 20px;
+  border-radius: 10px; /* ✅ Optional: Adds soft corners */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* ✅ Optional: Adds a subtle shadow */
+  overflow-y: auto;
+  min-height: 550px;
+  overflow-wrap: break-word; /* Ensures long words break properly */
+  word-wrap: break-word;
+  
 
+  /*border-radius: 12px; 
+  padding: 20px;
+  -webkit-backdrop-filter: blur(8px); 
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+  max-width: 100%;*/
+}
 .accordion-text {
   flex: 2;
-  padding-left: 20px;
+  padding: 10px;
   opacity: 0;
+  color: black; /* ✅ Adjust text color to improve readability */
+  overflow-y: auto;
   transform: translateX(50px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  justify-content: center;
+  align-items: center;
 }
 
 .accordion-content.loaded .accordion-text {
@@ -297,6 +328,7 @@ html, body {
   display: flex;
   justify-content: space-between; /* ✅ Pushes content to both sides */
   align-items: center;
+  flex-wrap: nowrap;
   width: 100%;
   padding: 20px;
   gap: 10px;
@@ -322,6 +354,9 @@ html, body {
   color: #83c9fc;
   font-size: 2rem;
   font-weight:500;
+  white-space: nowrap; /* Prevents text from wrapping */
+  overflow: hidden; /* Hides overflow text */
+  text-overflow: ellipsis; 
 }
 
 .job-description {
@@ -336,11 +371,12 @@ html, body {
   font-weight: 300
 }
 
+
 .question-heading {
-  color: #82cded;
-  font-weight: bold;
-  font-size: 2rem;
-  margin-bottom: 5px;
+  color: rgb(4 41 95)!important;
+  font-weight: bold!important;
+  font-size: 1.25rem !important;
+  margin-bottom: 5px!important;
 }
 .accordion-text{
 flex: 2;
@@ -350,7 +386,7 @@ color: #ffffff;
 }
 .answer-text {
   font-size: 1.2rem;
-  color: #ebe6e6;
+  color: rgb(32, 32, 32);
   line-height: 1.6;
   text-align: left;
 }
@@ -367,7 +403,7 @@ color: #ffffff;
   display: flex;
   flex-direction: column;
   white-space: nowrap; /* ✅ Prevents text wrapping */
-  width: 100%; /* ✅ Ensures full width utilization */
+ /* width: 100%; /* ✅ Ensures full width utilization */
 }
 
 .match-rate-text {
@@ -376,37 +412,244 @@ color: #ffffff;
   color: #fafcfa;
 }
 
-/* --- Responsive Styles --- */
-@media (max-width: 768px) {
-  .MuiAccordion-root {
-    width: 90%;
-  }
-
+/* Tablets & Medium Screens (max-width: 1024px) */
+@media (max-width: 1024px) {
   .aiprompt-container {
-    padding: 10px;
+    padding: 15px;
+    max-width: 95%;
+  }
+  .accordion-content {
+    flex-direction: column;
+    align-items: center;
+  }
+  .aiprompt-container .prompt-box p {
+    font-size: 1.3rem;
+  }
+  .aiprompt-container .prompt-box h4 {
+    font-size: 2.5rem;
+  }
+  .textbox-container {
+    min-height: 130px;
+    font-size: 1rem;
+  } 
+  .ai-text {
+    font-size: 1rem;
+  }
+  .job-title-blue {
+    font-size: 1.8rem;
+  }
+  .job-description {
+    font-size: 0.95rem;
+    max-width: 500px;
+  }
+  .match-container {
+    width: 150px;
+  }
+  .match-percentage {
+    font-size: 1.8rem;
+  }
+  .MuiAccordionSummary-root {
+    padding: 15px;
+  }
+  .ExpandableImageHolder {
+    width: 450px !important;
+    height: 450px !important;
+  }
+  .accordion-image-holder {
+    max-width: 80%;
   }
 
-  .textbox-container {
+  .accordion-text-container {
+    min-height: auto;
+    max-width: 90%;
+  }
+}
+
+/* Mobile Screens (max-width: 768px) */
+@media (max-width: 768px) {
+  .aiprompt-container {
+    max-width: 100%;
     padding: 10px;
+  }
+  aiprompt-container .prompt-box p {
+    font-size: 1.2rem;
+  }
+  .aiprompt-container .prompt-box h4 {
+    font-size: 2rem;
+  }
+ 
+  .textbox-container {
+    min-height: 120px;
+  }
+
+  .initial-submit-container {
+    justify-content: center;
+  }
+
+  .initial-submit-button {
+    width: 100%;
+    max-width: 300px;
+    font-size: 0.9rem;
   }
 
   .MuiAccordionSummary-root {
     padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .accordion-text {
-    padding-left: 10px;
+  .match-container {
+    width: 100%;
+    text-align: left;
+  }
+
+  .ExpandableImageHolder {
+    width: 350px !important;
+    height: 350px !important;
+  }
+  .accordion-content {
+    flex-direction: column;
+    align-items: center;
+  }
+  .accordion-image-holder {
+    max-width: 90%;
+  }
+  .accordion-text-container {
+    min-height: auto;
+    max-width: 95%;
+    padding: 15px;
+  }
+  .match-percentage {
+    font-size: 1.5rem;
+    text-align: left;
+  }
+  .job-title-blue {
+    font-size: 1.5rem;
+    max-width: 90%; 
+  }
+
+  .job-description {
+    font-size: 0.9rem;
+  }
+
+  .answer-text {
+    font-size: 1rem;
   }
 }
 
-@media (max-width: 480px) {
-  .edit-icon, .submit-icon {
+/* Small Mobile Screens (max-width: 600px) */
+@media (max-width: 600px) {
+  .aiprompt-container {
+    margin: 5px;
+    padding: 5px;
+  }
+
+  .prompt-box h4 {
+    font-size: 2.2rem;
+  }
+
+  .textbox-container {
+    min-height: 100px;
+  }
+
+  .initial-submit-button {
+    font-size: 0.85rem;
+    padding: 8px 18px;
+  }
+
+  .job-title-blue {
     font-size: 1.2rem;
   }
 
-  .button-container {
-    flex-direction: column;
-    gap: 10px;
+  .job-description {
+    font-size: 0.85rem;
+    max-width: 100%;
+  }
+  .match-container {
+    width: 100%;
+    text-align: left;
+  }
+  .match-percentage {
+    font-size: 1.2rem !important;
+    text-align: left;
+  }
+
+  .ExpandableImageHolder {
+    width: 250px !important;
+    height: 250px !important;
+  }
+  .accordion-image-holder {
+    width: 250px !important;
+    height: 250px !important;
+  }
+  .accordion-text-container {
+    min-height: auto;
+    padding: 10px;
+    max-width: 100%;
+  }
+
+  .answer-text {
+    font-size: 0.9rem;
+  }
+
+  .edit-icon,
+  .submit-icon {
+    font-size: 1rem;
   }
 }
 
+/* Extra Small Mobile Screens (max-width: 480px) */
+@media (max-width: 480px) {
+  .aiprompt-container {
+    margin: 0;
+    padding: 0;
+  }
+
+  .prompt-box h4 {
+    font-size: 2rem;
+  }
+
+  .textbox-container {
+    min-height: 80px;
+  }
+
+  .initial-submit-button {
+    font-size: 0.75rem;
+    padding: 6px 14px;
+  }
+
+  .job-title-blue {
+    font-size: 1rem;
+  }
+
+  .job-description {
+    font-size: 0.8rem;
+    max-width: 100%;
+  }
+  .match-container {
+    width: 100%;
+    text-align: left;
+  }
+
+  .match-percentage {
+    font-size: 1.2rem;
+    text-align: left;
+  }
+
+  .ExpandableImageHolder {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  .accordion-image-holder {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  .accordion-text-container {
+    padding: 8px;
+    max-width: 100%;
+  }
+
+  .answer-text {
+    font-size: 0.85rem;
+  }
+}
