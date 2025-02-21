@@ -9,8 +9,14 @@ import base64
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "https://nextenti-frontend.onrender.com"}})
-
+CORS(app, resources={
+    r"/*": {
+        "origins": "https://nextenti-frontend.onrender.com",
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"],
+        "supports_credentials": True
+    }
+})
 # Initialize LLM Handler
 llm_handler = LLMHandler()
 
