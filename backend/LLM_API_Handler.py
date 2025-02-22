@@ -249,7 +249,7 @@ class LLMHandler:
             f"to achieving the target job title: {job_title}. The roadmap can have multiple branches or a single path, depending on what best fits the user's background. "
 
             f"Follow these **guidelines** while generating the DOT code:\n\n"
-            f"1. Begin the DOT code with [resolution=900] to ensure high resolution.\n"
+            f"1. Begin the DOT code with [resolution=200] to ensure high resolution.\n"
             f"2. STRICTLY The graph name **must not** contain spaces, but node and edge names may include spaces."
             f"  - for example [digraph machinelearningengineer] is right way of naming a graph, but not [digraph machine learning engineer]\n"
             f"3. The DOT code must define the appropriate graph type (e.g., digraph for directed graphs or graph for undirected graphs) based on the user's query \n "
@@ -259,7 +259,7 @@ class LLMHandler:
             f"6. If the user query does not specify colors, default to pastel shades that are visually suitable for flowcharts with good text contrast to ensure readability.\n"
             f"7. Validate the DOT code to ensure it adheres to Graphviz syntax, including the use of valid node names and avoiding reserved keywords. \n"
             f"This is the example structure you can follow for the parameters to include in the start of the code:\n"
-            f"digraph nameofgraph {{resolution = 900 layout= circo; rest of the code}}"
+            f"digraph nameofgraph {{resolution = 200 layout= circo; rest of the code}}"
             f"8. If the input cannot be expressed in a flowchart (e.g., typos or meaningless queries), generate a generic response stating to elaborate the query"
             f"in the dot code with one square border to the text.:\n"
             f"9. The output should only be DOT CODE, STRICTLY Avoid preamble, unnecessary comments, or extraneous symbols,  \n\n"
@@ -307,7 +307,7 @@ class LLMHandler:
             f"2. Ensure the graph name does not contain spaces. For example, [digraph EducationRoadmap] is correct, but not [digraph Education Roadmap].\n"
             f"3. If node or edge labels include spaces, enclose them in double quotes to avoid syntax errors.\n"
             f"   - Example: [\"High School\" -> \"Bachelor's Degree\"] is valid.\n"
-            f"4. Set the resolution of the DOT code as 900 [resolution=900] at the beginning.\n"
+            f"4. Set the resolution of the DOT code as 200 [resolution=200] at the beginning.\n"
             f"5. The corrected DOT code must preserve the intended roadmap structure, ensuring logical education progression towards the given job title.\n"
             f"6. The response DOT code MUST use 'digraph' since education roadmaps represent a directional progression.\n"
             f"7. Validate the DOT code to ensure compliance with Graphviz syntax, avoiding reserved keywords or invalid node names.\n"
@@ -431,6 +431,7 @@ class LLMHandler:
                 os.environ["PATH"] += os.pathsep + graphviz_path
 
                 src = Source(dot_code, format="jpeg", engine="dot")
+                #print()
                 output_path = src.render(output_file, cleanup=True)
                 return output_path
             except Exception as e:

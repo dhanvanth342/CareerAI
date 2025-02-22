@@ -130,7 +130,7 @@ def road_map():
         )
 
         if not output_image_path or not os.path.exists(output_image_path):
-            return jsonify({'error': 'Failed to generate flowchart image'}), 500
+            return jsonify({'error': 'Failed to generate flowchart image'}), 420
 
         explanation = llm_handler.generate_text_response(job_title, user_prompt)
         if not explanation:
@@ -140,7 +140,7 @@ def road_map():
             with open(output_image_path, "rb") as image_file:
                 encoded_image = base64.b64encode(image_file.read()).decode()
         except Exception as e:
-            return jsonify({'error': 'Failed to process the generated image'}), 500
+            return jsonify({'error': 'Failed to process the generated image'}), 450
 
         try:
             if os.path.exists(output_image_path):
