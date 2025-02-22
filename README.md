@@ -1,2 +1,3 @@
 Currently working...
 Updates Soon!!!
+To start both the servers at once type this command .\start-servers.ps1

@@ -1,277 +1,263 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Questrial&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap');
 
-
-
-
-/* Symbol styles for background animation */
-.symbol {
+.main-content {
     position: absolute;
-    font-family: 'Courier New', monospace;
-    color: rgba(130, 205, 237, 0.8);
-    text-shadow: 0px 0px 12px rgba(130, 205, 237, 0.9);
-    animation: moveSymbols 10s linear infinite, rotateSymbols 6s linear infinite;
-    opacity: 0.9;
-}
-
-.symbol.blue {
-    color: rgba(80, 170, 255, 0.9);
-    text-shadow: 0px 0px 12px rgba(80, 170, 255, 1);
-}
-.symbol.green {
-    color: rgba(123, 252, 190, 0.9);
-    text-shadow: 0px 0px 12px rgba(80, 255, 170, 1);
-}
-
-/* Keyframes for symbol movement and rotation */
-@keyframes moveSymbols {
-    0% {
-        transform: translateY(-20vh) translateX(0);
-        opacity: 0.7;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(100vh) translateX(0);
-        opacity: 0;
-    }
-}
-
-@keyframes rotateSymbols {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-
-
-/* Login button aligned to the right */
-.animated-button {
-    max-width: 150px; 
-    font-family: 'Questrial';
-    background-color: #82cded;
-    flex-grow: 1;
-    color: rgb(19, 18, 18);
-    border: none;
-    padding: 8px 16px; 
-    border-radius: 4px;
-    font-size: 1.25rem;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    white-space: nowrap; 
+    top: 50%; /* Move text to center */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center properly */
     text-align: center;
+    width: 80%;
+    z-index: 2; /* Higher than overlay */
+    pointer-events: none;
+    cursor: default;
 }
 
-
-.animated-button {
-    margin-left: auto;
-    margin-right: 5%;
+.center-title, .intro-text, .animated-get-button {
+    pointer-events: auto; /* Allow clicks on buttons while keeping text transparent to mouse */
 }
+
 .intro-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    position: relative; 
     width: 100%;
-    padding: 0;
-    box-sizing: border-box;
-    text-align: center;
+    height: 100vh;
     overflow: hidden;
-    z-index: 1;
+    background: #172a45;  /* Deep blue background */
+    color: white;
+    cursor: grab;
 }
 
+.intro-container:active {
+    cursor: grabbing; /* When user clicks, it changes to grabbing */
+}
+
+.canvas-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+/* Semi-transparent black overlay */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);  /* Black with 50% opacity */
+    z-index: 1;
+    pointer-events: none; /* Allows interactions with 3D scene */
+}
+
+.navbar {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between; /* Space out elements */
+    align-items: center;
+    width: 95%; /* Make it full width */
+    margin: auto;
+    z-index: 2;
+    cursor: default;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+    margin-left: 20px;
+}
+
+.animated-button{
+    font-size: 1.0rem; /* Make text small */
+    width:6%;
+    min-height:40px;
+    padding: 0px 5px; /* Reduce padding */
+    border: 2px solid white; /* White border */
+    background: transparent; /* No background */
+    color: white; /* Text color */
+    border-radius: 50px; /* Fully rounded button */
+    cursor: pointer;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    position: absolute;
+    right: 55px; /* Move to extreme right */
+}
 
 .animated-get-button {
-    font-family: 'Questrial';
-    padding: 10px 25px;
-    width: 200px;
-    margin-top:60px;
-    background-color: #82cded;
-    color: rgb(10, 10, 10);
-    border: none;
-    border-radius: 5px;
-    font-size: 1.4rem;
+    font-size: 1rem; /* Match the animated button size */
+    padding: 10px 25px; /* Consistent padding */
+    border: 2px solid white; /* White border */
+    background: transparent; /* Transparent background */
+    color: white; /* Text color */
+    border-radius: 50px; /* Fully rounded */
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.animated-button:hover, .animated-get-button:hover {
-    background: linear-gradient(135deg, #205b67, #82cded);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(130, 205, 237, 0.5);
-}
-
-.animated-button:active, .animated-get-button:active {
-    transform: scale(0.95);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px; /* Space below the intro text */
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content; /* Keep button size dynamic */
 }
 
 
+.animated-button:hover {
+    transform: scale(1.15); /* Slight zoom-in */
+    border-color: #82cded; /* Same blue color as Get Started button */
+    color: #82cded !important; /* Change text color on hover */
+}
+
+.animated-get-button:hover {
+    transform: scale(1.15); /* Slight zoom-in */
+    border-color: #ffffff; /* Keep border white */
+}
 
 .center-title {
-    font-size: 3.5rem;
+    font-size: 4.6rem;
+    font-weight: 900;
     color: white;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
+    padding-left: 6%;
+}
+
+.highlight-text {
+    background: linear-gradient(to right, #a855f7, #f43b98, #ef7588); /* Purple to Pink gradient */
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; /* Makes gradient visible */
+    display: inline-block;
 }
 
 
+.intro-text {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1.6;
+    margin-top: -10px;
+    position: relative;
+    z-index: 10;
+    max-width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    color: #fffdfd; /* Light gray for readability */
+}
 
-/* Responsive styles */
-@media (max-width: 768px) {
-    .navbar {
-        padding: 10px 20px;
-    }
+/* RESPONSIVE DESIGN */
 
-    .logo {
-        font-size: 1.8rem;
-        margin-left: 5%;
-    }
-
-    .animated-button, .animated-get-button {
-        padding: 8px 20px;
-        font-size: 1rem;
-        
-    }
-
+/* ✅ Adjust for screens smaller than 1200px */
+@media (max-width: 1200px) {
     .center-title {
-        font-size: 2.5rem;
+        font-size: 4rem; /* Reduce title size */
+        padding-left: 5%;
+    }
+
+    .intro-text {
+        font-size: 1.3rem; /* Adjust text size */
+        max-width: 80%;
+    }
+
+    .animated-get-button {
+        font-size: 0.9rem;
+        padding: 8px 20px;
+    }
+}
+
+/* ✅ Adjust for tablets and small desktops (max-width 992px) */
+@media (max-width: 992px) {
+    .center-title {
+        font-size: 3.5rem;
+        text-align: center;
+        padding-left: 0; /* Center the title */
     }
 
     .intro-text {
         font-size: 1.2rem;
-        padding: 0 15px;
+        max-width: 85%;
+    }
+
+    .animated-get-button {
+        font-size: 0.85rem;
+        padding: 8px 18px;
+    }
+
+    .navbar {
+        width: 100%;
+        padding: 0 20px;
+    }
+
+    .logo {
+        font-size: 1.6rem;
+    }
+
+    .animated-button {
+        width: 10%;
+        font-size: 0.9rem;
+        min-height: 35px;
     }
 }
 
-@media (max-width: 480px) {
+/* ✅ Adjust for mobile screens (max-width 768px) */
+@media (max-width: 768px) {
+    .center-title {
+        font-size: 2.8rem;
+        line-height: 1.2;
+        text-align: center;
+        padding-left: 0; /* Ensure centering */
+    }
+
+    .intro-text {
+        font-size: 1.1rem;
+        max-width: 90%;
+        line-height: 1.5;
+    }
+
+    .animated-get-button {
+        font-size: 0.8rem;
+        padding: 6px 15px;
+    }
+
     .logo {
         font-size: 1.5rem;
-        margin-left: 5%;
     }
 
-    .animated-button, .animated-get-button {
-        padding: 6px 12px;
-        font-size: 0.9rem;
+    .animated-button {
+        width: auto;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        min-height: 30px;
+        right: 20px;
     }
+}
 
+/* ✅ Adjust for very small screens (max-width 480px) */
+@media (max-width: 480px) {
     .center-title {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
 
     .intro-text {
         font-size: 1rem;
-        line-height: 1.4;
     }
-}
 
-/* Typewriter animation for the heading */
-/* Typewriter animation for "Welcome to Career AI" */
-@keyframes typewriter {
-    from {
-        width: 0;
+    .animated-get-button {
+        font-size: 0.75rem;
+        padding: 5px 12px;
     }
-    to {
-        width: 100%;
+
+    .logo {
+        font-size: 1.4rem;
     }
-}
 
-@keyframes blink {
-    0%, 100% {
-        border-right-color: rgba(255, 255, 255, 0.75);
+    .animated-button {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+        min-height: 28px;
+        right: 15px;
     }
-    50% {
-        border-right-color: transparent;
-    }
-}
-
-/* Typewriter effect for the heading */
-.typewriter-effect {
-    font-family: 'Questrial', sans-serif;
-    font-size: 7.5rem;
-    color: white;
-    margin-bottom: 20px;
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    border-right: none;
-    animation: typewriter 2s steps(25, end), blink 0.7s step-end 2s;
-}
-
-/* Stop cursor blinking after typewriter animation finishes */
-.typewriter-effect.no-cursor {
-    border-right: none;
-}
-
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.intro-text span {
-    display: inline-block;
-    margin-right: 10px; /* Adjust this value to increase/decrease spacing */
-}
-
-/* Delay and animate "How long will you think..." text */
-.intro-text {
-    font-family: 'Questrial', sans-serif;
-    font-size: 1.4rem;
-    color: white;
-    text-align: center;
-    margin-top: -45px;
-    line-height: 1.6;
-    margin-left: 7%;
-    margin-right: 7%;
-    opacity: 0;
-    animation: fadeInUp 2s ease-in-out forwards;
-    animation-delay: 2.5s; /* Delay to start AFTER typewriter animation */
-}
-
-/* Extra bold styling for "IT MUST END HERE." */
-.intro-text strong {
-    font-weight: 800;
-    font-size: 2rem;
-    color: white;
-}
-
-.intro-text span:nth-child(1) {
-    opacity: 0;
-    display: block;
-    animation: fadeInUp 1.5s ease-in-out forwards;
-    animation-delay: 2.5s; /* Starts after typewriter effect */
-}
-
-/* Animate the second line */
-.intro-text span:nth-child(2) {
-    opacity: 0;
-    display: block;
-    animation: fadeInUp 1.5s ease-in-out forwards;
-    animation-delay: 4.0s; /* Appears after first line */
-}
-
-/* Animate the third line */
-.intro-text span:nth-child(3) {
-    opacity: 0;
-    display: block;
-    animation: fadeInUp 1.5s ease-in-out forwards;
-    animation-delay: 5.5s; /* Appears after second line */
-}
-
-.intro-text span:nth-child(4) {
-    opacity: 0;
-    display: block;
-    animation: fadeInUp 1.5s ease-in-out forwards;
-    animation-delay: 7.0s; /* Appears after second line */
 }
