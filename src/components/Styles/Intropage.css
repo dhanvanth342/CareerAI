@@ -9,7 +9,7 @@
     text-align: center;
     width: 80%;
     z-index: 2; /* Higher than overlay */
-    pointer-events: none;
+    /* pointer-events: none;*/ 
     cursor: default;
 }
 
@@ -52,7 +52,13 @@
     pointer-events: none; /* Allows interactions with 3D scene */
 }
 
-.navbar {
+/* Hide the common navbar when inside Intropage */
+#common-navbar {
+    display: none !important; /* Ensure it doesn't load */
+}
+
+/* Ensure the Intropage navbar is positioned correctly */
+#intropage-navbar {
     position: absolute;
     top: 20px;
     left: 0;
@@ -60,11 +66,40 @@
     display: flex;
     justify-content: space-between; /* Space out elements */
     align-items: center;
-    width: 95%; /* Make it full width */
+    width: 95%;
     margin: auto;
-    z-index: 2;
-    cursor: default;
+    z-index: 10; /* Ensure it's above the content */
+    background: none; /* Keep it transparent */
+    backdrop-filter: blur(10px); /* Add slight glass effect */
+    padding: 15px 30px;
 }
+
+/* Ensure the logo and button inside navbar are aligned */
+#intropage-navbar .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+    margin-left: 20px;
+}
+
+#intropage-navbar .animated-button {
+    font-size: 1rem;
+    width: auto;
+    padding: 10px 20px;
+    border: 2px solid white;
+    background: transparent;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+#intropage-navbar .animated-button:hover {
+    transform: scale(1.15);
+    border-color: #82cded;
+    color: #82cded !important;
+}
+
 
 .logo {
     font-size: 1.8rem;
@@ -186,7 +221,7 @@
         padding: 8px 18px;
     }
 
-    .navbar {
+    .intropage-navbar {
         width: 100%;
         padding: 0 20px;
     }
