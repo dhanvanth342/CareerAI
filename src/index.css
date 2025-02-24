@@ -5,28 +5,66 @@ body {
   font-family: 'Questrial','dosis';
   color: white;
   background: linear-gradient(180deg, #0a192f 53%, #172a45 100%);
-  height: 100vh;
+  min-height: 100vh; 
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column; 
   overflow-x: hidden;
+  overflow-y: auto; 
   position: relative;
 }
 
-
+/*body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+}*/
 
 /* Container and Navbar Styling */
-.navbar {
+/* Show the common navbar only when NOT in Intropage */
+#common-navbar {
+  display: flex !important;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.7); /* Add slight transparency */
+  backdrop-filter: blur(5px); /* Glass effect */
+  padding: 15px 30px;
   width: 100%;
-  display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px;
-  background: none;
-  z-index: 1;
-  box-sizing: border-box;
 }
+
+/* Ensure logo and buttons inside common navbar are aligned */
+#common-navbar .logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white;
+  margin-left: 20px;
+}
+
+#common-navbar .animated-button {
+  font-size: 1rem;
+  width: auto;
+  padding: 10px 20px;
+  border: 2px solid white;
+  background: transparent;
+  color: white;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+#common-navbar .animated-button:hover {
+  transform: scale(1.15);
+  border-color: #82cded;
+  color: #82cded !important;
+}
+
 
 /* Logo styling with consistent spacing */
 .logo {
@@ -51,24 +89,13 @@ body {
   align-items: center;
   text-align: center;
   padding: 20px;
-  height: 100%;
+  flex-grow: 1; /* Allow the content to expand while keeping the navbar at the top */
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 .app {
   width: 100%;
   padding: 20px;
+  margin-top: 60px; /* Add spacing below the navbar if needed */
 }
 
 .navbar {
@@ -88,7 +115,7 @@ body {
   justify-content: center;
   margin-top: 40px;
 }
-
+/*
 .card {
   background-color: rgba(255, 255, 255, 0.1);
   padding: 20px;
@@ -122,22 +149,28 @@ body {
 .card button:hover {
   background-color: #483D8B;
 }
-
+*/
 .animated-button {
-  position: relative;
-  padding: 15px 40px;
-  color: #1670f0;
-  text-transform: uppercase;
-  text-decoration: none;
-  letter-spacing: 5px;
-  font-size: 18px;
-  border: none;
-  background: transparent;
+  background: transparent; /* Semi-transparent background */
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4); /* Light border for glass effect */
+  padding: 10px 20px;
+  border-radius: 8px; /* Smooth edges */
   cursor: pointer;
-  transition: color 0.3s ease;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+  font-weight: bold;
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  transition: all 0.3s ease-in-out;
 }
+
+.animated-button:hover {
+  background: rgba(255, 255, 255, 0.3); /* Slightly brighter on hover */
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
 
 /* Add animation spans inside the button */
 .animated-button span:nth-child(1) {
@@ -156,7 +189,7 @@ body {
   right: 0;
   width: 2px;
   height: 100%;
-  background: linear-gradient(to bottom, #0c002b, #1779ff);
+  background: linear-gradient(to bottom, #0c002b, #1ded02);
   animation: animate2 2s linear infinite;
 }
 
@@ -229,7 +262,4 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
   }
