@@ -16,7 +16,7 @@ const experts = [
         id: 1,
         image: expert1,
         name: 'Varshith Chandramukhi',
-        role: 'Batman',
+        role: 'Backend Developer',
         email: 'sarah@careerai.com',
         github: 'varsh2001',        
         linkedin: 'varshith1902' 
