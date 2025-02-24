@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from "react-router-dom";
-
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = () => {
     const [click, setClick] = useState(false);
     const [color, setColor] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     // Changes navbar color on scroll
     useEffect(() => {
@@ -24,10 +24,13 @@ const Navbar = () => {
 
     const handleLogoutClick = () => {
         console.log("Logout button clicked");
-        // Clear any session data if needed
-        // Redirect to IntroPage
         navigate("/");
     };
+
+    // Hide Navbar on Intropage
+    if (location.pathname === "/") {
+        return null;
+    }
 
     return (
         <div className={color ? "header header-bg" : "header"}>
@@ -39,15 +42,15 @@ const Navbar = () => {
                 <li><Link to="/Mainpage">Home</Link></li>
                 <li><Link to="/Team">Team</Link></li>
                 <li><Link to="/About">About</Link></li>
-                <li>
-                    <button className="animated-button" onClick={handleLogoutClick}>Logout</button>
-                </li>
+                {/* Logout as a list item */}
+                <li><Link to="/" onClick={handleLogoutClick}>Logout</Link></li>
             </ul>
+
             <div className="hamburger" onClick={() => setClick(!click)}>
-    <span className="bar"></span>
-    <span className="bar"></span>
-    <span className="bar"></span>
-</div>
+                <span className="bar"></span>
+                <span className="bar"></span>
+                <span className="bar"></span>
+            </div>
         </div>
     );
 };
