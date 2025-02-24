@@ -22,4 +22,4 @@ services:
         sync: false
       - key: REACT_APP_API_URL
         value: https://nextenti.onrender.com
-    startCommand: gunicorn --timeout 60 --graceful-timeout 60 --keep-alive 5
+    startCommand: gunicorn --timeout 120 --workers 2 --bind 0.0.0.0:5000 flask_api:app
