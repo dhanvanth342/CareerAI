@@ -141,37 +141,49 @@ const QuestionsPage = () => {
               <h2 className="question-text">{questions[currentQuestionIndex]?.question}</h2>
 
               {/* Choices */}
-              <div className="choices-container">
-                {questions[currentQuestionIndex]?.choices?.map((choice, idx) => (
-                  <label key={idx} className={`choice-label ${answers[currentQuestionIndex]?.includes(choice) ? 'selected' : ''}`}>
-                    <input
-                      type="checkbox"
-                      name={`question-${currentQuestionIndex}`}
-                      value={choice}
-                      checked={answers[currentQuestionIndex]?.includes(choice) || (choice === 'Other' && answers[currentQuestionIndex]?.some(a => a.startsWith('Other:')))}
-                      onChange={(e) =>
-                        choice === 'Other'
-                          ? handleAnswerChange(currentQuestionIndex, 'Other: ') // Initialize empty text field
-                          : handleAnswerChange(currentQuestionIndex, e.target.value)
-                      }
-                    />
-
-                    {/* If "Other" is selected, show a text box instead */}
-                    {choice === 'Other' && answers[currentQuestionIndex]?.some(a => a.startsWith('Other:')) ? (
-                      <input
-                        type="text"
-                        className="text-answer"
-                        value={answers[currentQuestionIndex]?.find(a => a.startsWith('Other:'))?.replace('Other: ', '') || ''}
-                        onChange={(e) => handleOtherTextChange(currentQuestionIndex, e.target.value)}
-                        placeholder="Enter your custom answer..."
-                        autoFocus
-                      />
-                    ) : (
-                      <span>{choice}</span>
-                    )}
-                  </label>
-                ))}
-              </div>
+{/* Choices */}
+  <div className="choices-container">
+  {questions[currentQuestionIndex]?.choices && questions[currentQuestionIndex]?.choices.length > 0 ? (
+    questions[currentQuestionIndex]?.choices?.map((choice, idx) => (
+      <label key={idx} className={`choice-label ${answers[currentQuestionIndex]?.includes(choice) ? 'selected' : ''}`}>
+        <input
+          type="checkbox"
+          name={`question-${currentQuestionIndex}`}
+          value={choice}
+          checked={answers[currentQuestionIndex]?.includes(choice) || (choice === 'Other' && answers[currentQuestionIndex]?.some(a => a.startsWith('Other:')))}
+          onChange={(e) =>
+            choice === 'Other'
+              ? handleAnswerChange(currentQuestionIndex, 'Other: ') // Initialize empty text field
+              : handleAnswerChange(currentQuestionIndex, e.target.value)
+          }
+        />
+        {choice === 'Other' && answers[currentQuestionIndex]?.some(a => a.startsWith('Other:')) ? (
+          <input
+            type="text"
+            className="text-answer"
+            style={{ color: 'black' }}
+            value={answers[currentQuestionIndex]?.find(a => a.startsWith('Other:'))?.replace('Other: ', '') || ''}
+            onChange={(e) => handleOtherTextChange(currentQuestionIndex, e.target.value)}
+            placeholder="Enter your custom answer..."
+            autoFocus
+          />
+        ) : (
+          <span>{choice}</span>
+        )}
+      </label>
+    ))
+  ) : (
+    // Render a text input by default when no choices exist
+    <input
+      type="text"
+      className="text-answer"
+      value={answers[currentQuestionIndex]?.[0] || ''}
+      onChange={(e) => setAnswers({ ...answers, [currentQuestionIndex]: [e.target.value] })}
+      placeholder="Enter your response..."
+      autoFocus
+    />
+  )}
+</div>
 
               {/* "Why are you asking me this?" text */}
               <p className="question-info" onClick={() => setShowPopup(true)}>

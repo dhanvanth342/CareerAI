@@ -296,3 +296,137 @@
         right: 15px;
     }
 }
+
+/* ✅ Blur effect ONLY behind the pop-up */
+/* ✅ Blur effect ONLY behind the pop-up */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(8px); /* Blurs only the background */
+    background: rgba(0, 0, 0, 0.3); /* Slightly darkens the blurred area */
+    z-index: 999; /* Ensures it's above everything except the pop-up */
+}
+
+/* ✅ Login pop-up specific styles (DOES NOT affect Signup Page) */
+.popup-overlay .login-popup-card {
+    background: rgba(255, 255, 255, 0.95); /* Almost solid white for clarity */
+    backdrop-filter: none; /* Prevents pop-up itself from blurring */
+    padding: 30px;
+    border-radius: 12px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Adds depth to the pop-up */
+    z-index: 1000; /* Ensures pop-up is above the blurred background */
+}
+
+/* ✅ Make sure text inside pop-up is black and clear */
+.popup-overlay .login-popup-card h2 {
+    font-size: 2rem;
+    color: rgb(4 41 95); /* Ensure readability */
+    margin-bottom: 20px;
+}
+
+.popup-overlay .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    background-color: white; /* Solid background inside input fields */
+    color: black;
+    font-size: 1rem;
+}
+
+/* ✅ Ensure "New user? Create an account" only applies to the login pop-up */
+.popup-overlay .create-account {
+    color: #172a45;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.popup-overlay .create-account:hover {
+    color: #205b67;
+}
+
+
+/* ✅ Make sure pop-up is clear and readable */
+.login-popup-card {
+    background: rgba(255, 255, 255, 0.95); /* Almost solid white for clarity */
+    backdrop-filter: none; /* Prevents pop-up itself from blurring */
+    padding: 30px;
+    border-radius: 12px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Adds depth to the pop-up */
+    z-index: 1000; /* Ensures pop-up is above the blurred background */
+}
+
+/* ✅ Make sure text inside pop-up is black and clear */
+.login-popup-card h2 {
+    font-size: 2rem;
+    color: black; /* Ensure readability */
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    background-color: white; /* Solid background inside input fields */
+    color: black;
+    font-size: 1rem;
+}
+
+/* ✅ Login button */
+button {
+    background-color: rgb(4 41 95);
+    color: white;
+    border: none;
+    font-style: "Questrial";
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #205b67;
+}
+
+/* ✅ Clicking outside the login box closes it */
+.popup-overlay {
+    cursor: pointer;
+}
+
+.login-popup-card {
+    cursor: default;
+}
+
+/* ✅ Style for the "New User? Create an Account" Text */
+.new-user-text {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: rgb(11, 11, 11);
+    text-align: center;
+}
+
+.new-user-text .create-account {
+    color: rgb(4 41 95);
+    font-weight: bold;
+    margin-left:5px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.new-user-text .create-account:hover {
+    color: #205b67;
+}

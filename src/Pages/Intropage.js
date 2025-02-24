@@ -144,159 +144,420 @@ export default Intropage;
 
 */
 
-import React, { useRef, useEffect, useState } from 'react';
+
+
+
+
+
+/* Login pop up box 24-02-25 (11:13PM)
+import React, { useState, useRef, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Grid } from '@react-three/drei';
 import { useNavigate } from 'react-router-dom';
 import * as THREE from 'three';
 import '../components/Styles/Intropage.css'; 
 import '../index.css';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from "../components/firebase";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 // 3D Spinning Logo
 function SpinningLogo() {
-  const groupRef = useRef(null);
-  useFrame((state, delta) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.5;
-    }
-  });
+    const groupRef = useRef(null);
+    useFrame((state, delta) => {
+        if (groupRef.current) {
+            groupRef.current.rotation.y += delta * 0.5;
+        }
+    });
 
-  return (
-    <group ref={groupRef}>
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="white" />
-      </mesh>
-      <mesh position={[0.5, 0.5, 0.5]}>
-        <boxGeometry args={[0.5, 0.5, 0.5]} />
-        <meshStandardMaterial color="white" />
-      </mesh>
-      <mesh position={[-0.5, -0.5, -0.5]}>
-        <boxGeometry args={[0.5, 0.5, 0.5]} />
-        <meshStandardMaterial color="white" />
-      </mesh>
-    </group>
-  );
+    return (
+        <group ref={groupRef}>
+            <mesh position={[0, 0, 0]}>
+                <boxGeometry args={[1, 1, 1]} />
+                <meshStandardMaterial color="white" />
+            </mesh>
+        </group>
+    );
 }
 
 // Floating Boxes (Dynamic movement)
 function AnimatedBox({ initialPosition }) {
-  const meshRef = useRef(null);
-  const [targetPosition, setTargetPosition] = useState(new THREE.Vector3(...initialPosition));
-  const currentPosition = useRef(new THREE.Vector3(...initialPosition));
+    const meshRef = useRef(null);
+    const [targetPosition, setTargetPosition] = useState(new THREE.Vector3(...initialPosition));
+    const currentPosition = useRef(new THREE.Vector3(...initialPosition));
 
-  const getAdjacentIntersection = (current) => {
-    const directions = [[3, 0], [-3, 0], [0, 3], [0, -3]];
-    const randomDirection = directions[Math.floor(Math.random() * directions.length)];
-    return new THREE.Vector3(current.x + randomDirection[0], 0.5, current.z + randomDirection[1]);
-  };
+    const getAdjacentIntersection = (current) => {
+        const directions = [[3, 0], [-3, 0], [0, 3], [0, -3]];
+        const randomDirection = directions[Math.floor(Math.random() * directions.length)];
+        return new THREE.Vector3(current.x + randomDirection[0], 0.5, current.z + randomDirection[1]);
+    };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const newPosition = getAdjacentIntersection(currentPosition.current);
-      newPosition.x = Math.max(-30, Math.min(30, newPosition.x));
-      newPosition.z = Math.max(-30, Math.min(30, newPosition.z));
-      setTargetPosition(newPosition);
-    }, 1500);
-    return () => clearInterval(interval);
-  }, []);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const newPosition = getAdjacentIntersection(currentPosition.current);
+            newPosition.x = Math.max(-30, Math.min(30, newPosition.x));
+            newPosition.z = Math.max(-30, Math.min(30, newPosition.z));
+            setTargetPosition(newPosition);
+        }, 1500);
+        return () => clearInterval(interval);
+    }, []);
 
-  useFrame(() => {
-    if (meshRef.current) {
-      currentPosition.current.lerp(targetPosition, 0.1);
-      meshRef.current.position.copy(currentPosition.current);
-    }
-  });
+    useFrame(() => {
+        if (meshRef.current) {
+            currentPosition.current.lerp(targetPosition, 0.1);
+            meshRef.current.position.copy(currentPosition.current);
+        }
+    });
 
-  return (
-    <mesh ref={meshRef} position={initialPosition}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="#82cded" opacity={0.9} transparent />
-      <lineSegments>
-        <edgesGeometry attach="geometry" args={[new THREE.BoxGeometry(1, 1, 1)]} />
-        <lineBasicMaterial attach="material" color="white" linewidth={2} />
-      </lineSegments>
-    </mesh>
-  );
+    return (
+        <mesh ref={meshRef} position={initialPosition}>
+            <boxGeometry args={[1, 1, 1]} />
+            <meshStandardMaterial color="#82cded" opacity={0.9} transparent />
+            <lineSegments>
+                <edgesGeometry attach="geometry" args={[new THREE.BoxGeometry(1, 1, 1)]} />
+                <lineBasicMaterial attach="material" color="white" linewidth={2} />
+            </lineSegments>
+        </mesh>
+    );
 }
 
 // Main Scene with Floating Cubes
 function Scene() {
-  const initialPositions = [
-    [-25, 0.5, -25], [25, 0.5, 25], [-20, 0.5, 15], [20, 0.5, -15], [10, 0.5, -25],
-    [-10, 0.5, 25], [-30, 0.5, -10], [30, 0.5, 10], [-15, 0.5, 20], [15, 0.5, -20],
-    [-5, 0.5, 5], [5, 0.5, -5], [-22, 0.5, -22], [22, 0.5, 22], [-18, 0.5, 18], [18, 0.5, -18],
-    [-12, 0.5, -12], [12, 0.5, 12], [-8, 0.5, 8], [8, 0.5, -8], [0, 0.5, 0]
-  ];
+    const initialPositions = [
+        [-25, 0.5, -25], [25, 0.5, 25], [-20, 0.5, 15], [20, 0.5, -15], [10, 0.5, -25],
+        [-10, 0.5, 25], [-30, 0.5, -10], [30, 0.5, 10], [-15, 0.5, 20], [15, 0.5, -20],
+        [-5, 0.5, 5], [5, 0.5, -5], [-22, 0.5, -22], [22, 0.5, 22], [-18, 0.5, 18], [18, 0.5, -18],
+        [-12, 0.5, -12], [12, 0.5, 12], [-8, 0.5, 8], [8, 0.5, -8], [0, 0.5, 0]
+    ];
 
-  return (
-    <>
-      <OrbitControls />
-      <ambientLight intensity={0.7} />
-      <pointLight position={[10, 10, 10]} />
-      <Grid 
-        infiniteGrid 
-        cellSize={1} 
-        sectionSize={3} 
-        cellThickness={0.4}
-        sectionThickness={0.8}
-        sectionColor="white"  
-      />
-      {initialPositions.map((position, index) => (
-        <AnimatedBox key={index} initialPosition={position} />
-      ))}
-    </>
-  );
+    return (
+        <>
+            <OrbitControls />
+            <ambientLight intensity={0.7} />
+            <pointLight position={[10, 10, 10]} />
+            <Grid 
+                infiniteGrid 
+                cellSize={1} 
+                sectionSize={3} 
+                cellThickness={0.4}
+                sectionThickness={0.8}
+                sectionColor="white"  
+            />
+            {initialPositions.map((position, index) => (
+                <AnimatedBox key={index} initialPosition={position} />
+            ))}
+        </>
+    );
 }
 
-// Intro Page
 const Intropage = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const [showLoginPopup, setShowLoginPopup] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
-  useEffect(() => {
-    // Hide common navbar when Intropage is loaded
-    const commonNavbar = document.getElementById("common-navbar");
-    if (commonNavbar) {
-      commonNavbar.style.display = "none";
-    }
+    useEffect(() => {
+        const commonNavbar = document.getElementById("common-navbar");
+        if (commonNavbar) {
+            commonNavbar.style.display = "none";
+        }
 
-    return () => {
-      // Show common navbar again when leaving Intropage
-      if (commonNavbar) {
-        commonNavbar.style.display = "flex";
-      }
+        return () => {
+            if (commonNavbar) {
+                commonNavbar.style.display = "flex";
+            }
+        };
+    }, []);
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            console.log("User Logged in successfully");
+            navigate('/Mainpage', { state: { userDetails: { email: user.email, displayName: user.displayName || '' } } });
+        } catch (error) {
+            alert(`Login failed: ${error.message}`);
+            console.log(error.message);
+        }
     };
-  }, []);
 
-  return (
-    <div className="intro-container">
-      <Canvas shadows camera={{ position: [40, 40, 40], fov: 50 }} className="canvas-bg">
-        <Scene />
-      </Canvas>
+    return (
+        <div className="intro-container">
+            <Canvas shadows camera={{ position: [40, 40, 40], fov: 50 }} className="canvas-bg">
+                <Scene />
+            </Canvas>
 
-      <div className="overlay"></div>
+            <div className="overlay"></div>
 
-      {/* Navbar for Intropage */}
-      <nav id="intropage-navbar" className="navbar">
-        <div className="logo">Next Enti?</div>
-        <button className="animated-button" onClick={() => navigate('/Login')}>Log In</button>
-      </nav>
+            <nav id="intropage-navbar" className="navbar">
+                <div className="logo">Next Enti?</div>
+                <button className="animated-button" onClick={() => setShowLoginPopup(true)}>Log In</button>
+            </nav>
 
-      <main className="main-content">
-        <h1 className="center-title">
-          Personalized career guidance, enhanced by <span className="highlight-text"> AI </span>
-        </h1>
-        <p className="intro-text">
-          Your career journey starts here! 
-          <br />
-          We simplify career planning with AI-driven insights tailored to your interests, creating a personalized roadmap to help you pursue a career that truly excites you.
-        </p>
-        <button className="animated-get-button" onClick={() => navigate('/Signup')}>
-          Get Started ➝
-        </button>
-      </main>
+            <main className="main-content">
+                <h1 className="center-title">
+                    Personalized career guidance, enhanced by <span className="highlight-text"> AI </span>
+                </h1>
+                <p className="intro-text">
+                    Your career journey starts here! 
+                    <br />
+                    We simplify career planning with AI-driven insights tailored to your interests, creating a personalized roadmap to help you pursue a career that truly excites you.
+                </p>
+                <button className="animated-get-button" onClick={() => navigate('/Signup')}>
+                    Get Started ➝
+                </button>
+            </main>
+
+            {showLoginPopup && (
+                <div className="popup-overlay" onClick={() => setShowLoginPopup(false)}>
+                    <div className="login-popup-card" onClick={(e) => e.stopPropagation()}>
+                        <h2>Login</h2>
+                        <form onSubmit={handleLogin}>
+                            <div className="input-group">
+                                <label>Email</label>
+                                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
+                            </div>
+                            <div className="input-group">
+                                <label>Password</label>
+                                <div className="password-wrapper">
+                                    <input type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
+                                    <span className="password-toggle-icon" onClick={() => setShowPassword(!showPassword)}>
+                                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                    </span>
+                                </div>
+                            </div>
+                            <button type="submit">Login</button>
+                        </form>
+                        <p>New user? <span className="create-account" onClick={() => navigate('/Signup')}>Create an account</span></p>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default Intropage;
+*/
+
+
+import React, { useState, useRef, useEffect } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls, Grid } from '@react-three/drei';
+import { useNavigate } from 'react-router-dom';
+import * as THREE from 'three';
+import '../components/Styles/Intropage.css'; 
+import '../index.css';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { auth, db } from "../components/firebase";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { setDoc, doc } from "firebase/firestore";
+
+function AnimatedBox({ initialPosition }) {
+    const meshRef = useRef(null);
+    const [targetPosition, setTargetPosition] = useState(new THREE.Vector3(...initialPosition));
+    const currentPosition = useRef(new THREE.Vector3(...initialPosition));
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const newPosition = new THREE.Vector3(
+                Math.max(-30, Math.min(30, initialPosition[0] + (Math.random() - 0.5) * 6)),
+                0.5,
+                Math.max(-30, Math.min(30, initialPosition[2] + (Math.random() - 0.5) * 6))
+            );
+            setTargetPosition(newPosition);
+        }, 2000);
+        return () => clearInterval(interval);
+    }, [initialPosition]);
+
+    useFrame(() => {
+        if (meshRef.current) {
+            currentPosition.current.lerp(targetPosition, 0.1);
+            meshRef.current.position.copy(currentPosition.current);
+        }
+    });
+
+    return (
+        <mesh ref={meshRef} position={initialPosition}>
+            <boxGeometry args={[1, 1, 1]} />
+            <meshStandardMaterial color="#82cded" opacity={0.9} transparent />
+        </mesh>
+    );
+}
+
+
+function Scene() {
+    const initialPositions = [
+      [-25, 0.5, -25], [25, 0.5, 25], [-20, 0.5, 15], [20, 0.5, -15], [10, 0.5, -25],
+      [-10, 0.5, 25], [-30, 0.5, -10], [30, 0.5, 10], [-15, 0.5, 20], [15, 0.5, -20],
+      [-5, 0.5, 5], [5, 0.5, -5], [-22, 0.5, -22], [22, 0.5, 22], [-18, 0.5, 18], [18, 0.5, -18],
+      [-12, 0.5, -12], [12, 0.5, 12], [-8, 0.5, 8], [8, 0.5, -8], [0, 0.5, 0]
+    ];
+
+    return (
+        <>
+            <OrbitControls />
+            <ambientLight intensity={0.7} />
+            <pointLight position={[10, 10, 10]} />
+            <Grid infiniteGrid cellSize={1} sectionSize={3} />
+            {initialPositions.map((position, index) => (
+                <AnimatedBox key={index} initialPosition={position} />
+            ))}
+        </>
+    );
+}
+
+const Intropage = () => {
+    const navigate = useNavigate();
+    const [showLoginPopup, setShowLoginPopup] = useState(false);
+    const [showSignupPopup, setShowSignupPopup] = useState(false);
+    const [loginEmail, setLoginEmail] = useState('');
+    const [loginPassword, setLoginPassword] = useState('');
+    const [showLoginPassword, setShowLoginPassword] = useState(false);
+    const [signupEmail, setSignupEmail] = useState('');
+    const [signupPassword, setSignupPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [showSignupPassword, setShowSignupPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    useEffect(() => {
+        const commonNavbar = document.getElementById("common-navbar");
+        if (commonNavbar) commonNavbar.style.display = "none";
+        return () => {
+            if (commonNavbar) commonNavbar.style.display = "flex";
+        };
+    }, []);
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+            navigate('/Mainpage');
+        } catch (error) {
+            alert(`Login failed: ${error.message}`);
+        }
+    };
+    const handleSignup = async (e) => {
+        e.preventDefault();
+        if (signupPassword !== confirmPassword) {
+            alert('Passwords do not match.');
+            return;
+        }
+        if (signupPassword.length < 6 || !/[A-Z]/.test(signupPassword)) {
+            alert('Password must be at least 6 characters and contain one uppercase letter.');
+            return;
+        }
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, signupEmail, signupPassword);
+            await setDoc(doc(db, "Users", userCredential.user.uid), { firstName });
+            navigate('/Mainpage');
+        } catch (error) {
+            alert(`Signup failed: ${error.message}`);
+        }
+    };
+    const googleLogin = () => {
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(auth, provider)
+            .then(result => {
+                navigate('/Mainpage', { state: { userDetails: { displayName: result.user.displayName, email: result.user.email } } });
+            })
+            .catch(error => alert(`Google Sign-In failed: ${error.message}`));
+    };
+    return (
+        <div className="intro-container">
+            <Canvas shadows camera={{ position: [40, 40, 40], fov: 50 }}>
+                <Scene />
+            </Canvas>
+            <div className="overlay"></div>
+            {/* Navbar */}
+            <nav id="intropage-navbar" className="navbar">
+                <div className="logo">Next Enti?</div>
+                <button className="animated-button" onClick={() => setShowLoginPopup(true)}>Log In</button>
+            </nav>
+            {/* Main Text */}
+            <main className="main-content">
+                <h1 className="center-title">Personalized career guidance, enhanced by <span className="highlight-text"> AI </span></h1>
+                <p className="intro-text">
+                    Your career journey starts here! We simplify career planning with AI-driven insights tailored to your interests, 
+                    creating a personalized roadmap to help you pursue a career that truly excites you.
+                </p>
+                <button className="animated-get-button" onClick={() => setShowSignupPopup(true)}>Get Started ➝</button>
+            </main>
+            {/* Login Pop-up */}
+            {/* Login Pop-up */}
+            {showLoginPopup && (
+    <div className="popup-overlay" onClick={() => setShowLoginPopup(false)}>
+        <div className="login-popup-card" onClick={(e) => e.stopPropagation()}>
+            <h2>Login</h2>
+            <form onSubmit={handleLogin}>
+                <div className="input-group">
+                    <label>Email</label>
+                    <input type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} placeholder="Email" required />
+                </div>
+                <div className="input-group">
+                    <label>Password</label>
+                    <div className="password-wrapper">
+                        <input type={showLoginPassword ? 'text' : 'password'} value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} placeholder="Password" required />
+                        <span className="password-toggle-icon" onClick={() => setShowLoginPassword(!showLoginPassword)}>
+                            {showLoginPassword ? <FaEyeSlash /> : <FaEye />}
+                        </span>
+                    </div>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+
+            {/* ✅ "New User? Create an Account" Link */}
+            <p className="new-user-text">
+                New user? <span className="create-account" onClick={() => { setShowLoginPopup(false); setShowSignupPopup(true); }}>Create an account</span>
+            </p>
+        </div>
     </div>
-  );
+)}
+
+{/* Signup Pop-up */}
+{showSignupPopup && (
+    <div className="popup-overlay" onClick={() => setShowSignupPopup(false)}>
+        <div className="login-popup-card" onClick={(e) => e.stopPropagation()}>
+            <h2>Sign Up</h2>
+            <form onSubmit={handleSignup}>
+                <div className="input-group">
+                    <label>Name</label>
+                    <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Name" required />
+                </div>
+                <div className="input-group">
+                    <label>Email</label>
+                    <input type="email" value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} placeholder="Email" required />
+                </div>
+                <div className="input-group">
+                    <label>Password</label>
+                    <div className="password-wrapper">
+                        <input type={showSignupPassword ? 'text' : 'password'} value={signupPassword} onChange={(e) => setSignupPassword(e.target.value)} placeholder="Password" required />
+                        <span className="password-toggle-icon" onClick={() => setShowSignupPassword(!showSignupPassword)}>
+                            {showSignupPassword ? <FaEyeSlash /> : <FaEye />}
+                        </span>
+                    </div>
+                </div>
+                <div className="input-group">
+                    <label>Confirm Password</label>
+                    <div className="password-wrapper">
+                        <input type={showConfirmPassword ? 'text' : 'password'} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password" required />
+                        <span className="password-toggle-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                        </span>
+                    </div>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+            <button className="google-login-btn" onClick={googleLogin}>
+                <img src={require('../assets/googlo.png')} alt="Google Logo" className="google-icon" />
+                Sign in with Google
+            </button>
+        </div>
+    </div>
+)}
+        </div>
+    );
 };
 
 export default Intropage;
