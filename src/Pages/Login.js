@@ -363,7 +363,7 @@ import '../components/Styles/Login.css';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from "../components/firebase";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import loginBackground from '../assets/spiral.jpg'; // Import background image
+
 
 function Login() {
     const navigate = useNavigate();
@@ -393,7 +393,7 @@ function Login() {
     return (
         <div 
             className="login-page" 
-            style={{ backgroundImage: `url(${loginBackground})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+            
         >
             {/* Animated Text */}
             <div className="animated-text">

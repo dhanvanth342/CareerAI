@@ -1,6 +1,6 @@
 import React from 'react';
 import '../components/Styles/Team.css';
-
+import '../index.css';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { FaEnvelope } from 'react-icons/fa';
 import { Card, CardMedia, Typography, Box, Link } from '@mui/material';
@@ -15,47 +15,47 @@ const experts = [
     {
         id: 1,
         image: expert1,
-        name: 'Sarah Johnson',
-        role: 'AI Researcher',
+        name: 'Varshith Chandramukhi',
+        role: 'Batman',
         email: 'sarah@careerai.com',
-        github: 'sahithi-reddy14',        
-        linkedin: 'sahithi-reddy-etikala' 
+        github: 'varsh2001',        
+        linkedin: 'varshith1902' 
     },
     {
         id: 2,
         image: expert2,
-        name: 'Michael Chen',
-        role: 'Software Engineer',
-        email: 'michael@careerai.com',
-        github: 'mchendev',
-        linkedin: 'michael-chen-tech'
+        name: 'Sahithi Balerao',
+        role: 'Frontend Developer',
+        email: 'baleraosahithi@gmail.com',
+        github: 'sahithi-cloud',
+        linkedin: 'sahithi-balerao29'
     },
     {
         id: 3,
         image: expert3,
-        name: 'Aisha Williams',
-        role: 'Data Scientist',
-        email: 'aisha@careerai.com',
-        github: 'aishawilliams',
-        linkedin: 'aisha-williams'
+        name: 'Satya Jaidev Nethi',
+        role: 'SDE',
+        email: 'nsatyajaidev21@gmail.com',
+        github: 'SatyaJaidev',
+        linkedin: 'satyajaidev'
     },
     {
         id: 4,
         image: expert4,
-        name: 'David Miller',
-        role: 'AI Developer',
-        email: 'david@careerai.com',
-        github: 'davidmiller-dev',
-        linkedin: 'david-miller-ai'
+        name: 'Sahithi Etikala',
+        role: 'SDE',
+        email: 'sahithietikalar@gmail.com',
+        github: 'sahithi-reddy14',
+        linkedin: 'sahithi-reddy-etikala'
     },
     {
         id: 5,
         image: expert5,
-        name: 'James Wilson',
-        role: 'UX Designer',
+        name: 'Dhanvanth Voona',
+        role: 'GenAI Engineer',
         email: 'james@careerai.com',
-        github: 'jwilson-tech',
-        linkedin: 'james-wilson-dev'
+        github: 'dhanvanth342',
+        linkedin: 'dv-63192b18b'
     }
 ];
 
@@ -65,7 +65,8 @@ const Team = () => {
             <NavBar/>
             <div className="teams-header">
                 <h1>Meet our team..</h1>
-                <p>Partner with our team of scientists, thinkers and industry experts to take your talent strategy to the next level. We have consulted with the world's top minds and created innovative solutions that transform talent.</p>
+                <p>Through seamless collaboration and unmatched expertise, we brought CareerAI to life.
+                Our team’s dedication delivered impactful results, driving innovation and making a lasting impact.</p>
             </div>
             <div className="experts-grid">
                 {experts.map(expert => (
