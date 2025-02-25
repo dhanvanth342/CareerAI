@@ -83,7 +83,7 @@ function Mainpage() {
                             <li>🚀 Get AI-powered job insights</li>
                         </ul>
                     </div>
-                    <FaArrowRight className="arrow-icon" onClick={() => navigate("/PromptPage")} />
+                    <FaArrowRight className="arrow-icon" onClick={() => navigate("/WritePrompt")} />
                 </div>
             </div>
         </div>
