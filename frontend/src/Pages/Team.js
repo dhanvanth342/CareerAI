@@ -181,7 +181,7 @@ const experts = [
         id: 2,
         image: expert2,
         name: 'Sahithi Balerao',
-        role: 'Frontend Developer',
+        role: 'SDE',
         email: 'baleraosahithi@gmail.com',
         github: 'sahithi-cloud',
         linkedin: 'sahithi-balerao29'

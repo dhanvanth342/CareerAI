@@ -152,6 +152,7 @@ const QuestionsPage = () => {
 export default QuestionsPage;
 */
 
+
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
@@ -222,7 +223,7 @@ const QuestionsPage = () => {
     }
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-prompt`, {
+      const response = await fetch('http://localhost:5000/generate-prompt', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -294,7 +295,8 @@ const QuestionsPage = () => {
               <h2 className="question-text">{questions[currentQuestionIndex]?.question}</h2>
 
               {/* Choices */}
-              <div className="choices-container">
+{/* Choices */}
+  <div className="choices-container">
   {questions[currentQuestionIndex]?.choices && questions[currentQuestionIndex]?.choices.length > 0 ? (
     questions[currentQuestionIndex]?.choices?.map((choice, idx) => (
       <label key={idx} className={`choice-label ${answers[currentQuestionIndex]?.includes(choice) ? 'selected' : ''}`}>
@@ -313,6 +315,7 @@ const QuestionsPage = () => {
           <input
             type="text"
             className="text-answer"
+            style={{ color: 'black' }}
             value={answers[currentQuestionIndex]?.find(a => a.startsWith('Other:'))?.replace('Other: ', '') || ''}
             onChange={(e) => handleOtherTextChange(currentQuestionIndex, e.target.value)}
             placeholder="Enter your custom answer..."
