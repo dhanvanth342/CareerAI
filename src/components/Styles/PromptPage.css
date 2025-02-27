@@ -1,104 +1,14 @@
-
-/*
-.logout-btn {
-  background-color: #82cded;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/*
-
-
-.prompt-text {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-}
-
-.dropdown-section {
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.dropdown-box {
-  flex: 1;
-}
-
-.dropdown-box label {
-  display: block;
-  font-size: 1rem;
-  margin-bottom: 5px;
-}
-
-.dropdown-box select {
-  width: 100%;
-  padding: 8px;
-  border-radius: 5px;
-  border: none;
-  background-color: #fff;
-  color: #000;
-}
-
-.response-box {
-  width: 100%;
-  margin-top: 10px;
-}
-
-.generated-text {
-  width: 100%;
-  height: 150px;
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  background-color: rgba(255, 255, 255, 0.8);
-  color: #000;
-  font-size: 1rem;
-}
-
-.button-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.icon-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #82cded;
-  color: white;
-  cursor: pointer;
-}
-
-.icon-btn:hover {
-  background-color: #483D8B;
-}
-*/
-
-/* Remove the box styling */
-
-/* General Styling */
-
-
-/* Overall Container */
-/* Overall Container */
-
-
 .prompt-container {
   margin: 0;
   font-family: 'Questrial', sans-serif;
   color: white;
-  background: linear-gradient(180deg, #0a192f 53%, #172a45 100%);
+ 
   height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   padding: 20px;
-  box-sizing: border-box; /* Ensure proper alignment */
+  box-sizing: border-box;
 }
 
 
