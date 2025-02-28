@@ -47,7 +47,7 @@ const WritePrompt = () => {
     setOpenAccordions((prev) => ({ ...prev, [index]: !prev[index] }));
     if (!expandedData[index]) {
       try {
-        const response = await fetch('http://localhost:5000/generate-roadmap', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-roadmap`  , {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_prompt: userPrompt, job_title: jobRole }),
@@ -83,7 +83,7 @@ const WritePrompt = () => {
     setLoading(true);
     setInitialSubmit(false);
     try {
-      const response = await fetch('http://localhost:5000/generate-recommendations', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-recommendations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
