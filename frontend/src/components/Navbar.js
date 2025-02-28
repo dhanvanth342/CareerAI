@@ -24,7 +24,7 @@ const Navbar = () => {
 
     const handleLogoutClick = () => {
         console.log("Logout button clicked");
-        navigate("/");
+        navigate("/",{replace: true});
     };
 
     // Hide Navbar on Intropage
