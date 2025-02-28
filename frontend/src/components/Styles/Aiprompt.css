@@ -103,7 +103,7 @@ html, body {
   background: transparent;
   color: rgb(32, 32, 32); 
   border: none;
-
+  font-family: 'Questrial', sans-serif;
 }
 
 .static-text {
@@ -150,6 +150,7 @@ html, body {
   white-space: nowrap;
   cursor: pointer;
   display: flex;
+  font-family: 'Questrial', sans-serif;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s;
 }
 

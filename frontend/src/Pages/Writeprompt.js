@@ -21,6 +21,8 @@ const WritePrompt = () => {
   const count = useMotionValue(10);
   const rounded = useTransform(count, Math.round);
   const [loadingText, setLoadingText] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
+
 
   useEffect(() => {
     if (loading) {
@@ -33,10 +35,13 @@ const WritePrompt = () => {
     }
   }, [loading]);
 
-  const handleTextChange = (e) => setPrompt(e.target.value);
-  const handleEditClick = () => setIsEditable(true);
+  useEffect(() => {
+    console.log("Updated expandedData:", expandedData);
+  }, [expandedData]);
   
 
+  const handleTextChange = (e) => setPrompt(e.target.value);
+  const handleEditClick = () => setIsEditable(true);
 
   const handleAccordionToggle = async (index, jobRole, userPrompt) => {
     setOpenAccordions((prev) => ({ ...prev, [index]: !prev[index] }));
@@ -49,6 +54,9 @@ const WritePrompt = () => {
         });
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         const data = await response.json();
+        console.log("Received Roadmap Data:", data); // Debugging line
+
+        if (data) {
         setExpandedData((prevData) => ({
           ...prevData,
           [index]: {
@@ -57,6 +65,7 @@ const WritePrompt = () => {
             loaded: true,
           },
         }));
+      }
       } catch (error) {
         console.error("Error fetching roadmap data:", error);
       }
@@ -64,11 +73,17 @@ const WritePrompt = () => {
   };
 
   const handleSubmit = async () => {
+    if (!prompt.trim()) {
+      // Display an error message if the prompt is empty
+      setErrorMessage('Please write a prompt before submitting.');
+      return;
+    }
+    setErrorMessage('');
     setIsEditable(false);
     setLoading(true);
     setInitialSubmit(false);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-recommendations`, {
+      const response = await fetch('http://localhost:5000/generate-recommendations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
@@ -79,11 +94,11 @@ const WritePrompt = () => {
       setRecommendations([]);
     }
   };
+  // Handle card click to update prompt
+const handleCardClick = (text) => {
+  setPrompt(text);
+  };
 
-    // Handle card click to update prompt
-    const handleCardClick = (text) => {
-      setPrompt(text);
-    };
   return (
     <>
       <NavBar />
@@ -112,7 +127,7 @@ const WritePrompt = () => {
             </Card>
           </div>
 
-          <div className="textbox-container">
+          <div className="textboxx-container">
             {isEditable ? (
               <textarea className="ai-text" value={prompt} onChange={handleTextChange} />
             ) : (
@@ -132,7 +147,7 @@ const WritePrompt = () => {
         </div>
 
         {initialSubmit ? (
-          <div className="initial-submit-container">
+          <div className="initial-submitt-container">
             <button className="initial-submit-button" onClick={handleSubmit}>Load recommendations</button>
           </div>
         ) : loading ? (
@@ -142,12 +157,19 @@ const WritePrompt = () => {
           </div>
         ) : (
           recommendations.map((rec, index) => (
-            <Accordion key={index} expanded={openAccordions[index]} onChange={() => handleAccordionToggle(index, rec.job_role, prompt)}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography component={'div'}>
-                  <h1><span className="job-title-blue">{rec.job_role}:</span> </h1>
-                  <div className="job-description">{rec.description}</div>
-                </Typography>
+            <Accordion variant='div' key={index} expanded={openAccordions[index]} onChange={() => handleAccordionToggle(index, rec.job_role, prompt)}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />} className="accordion-header">
+                <div className="job-accordion-left">
+                  <Typography component={'div'}>
+                    <h1><span className="job-title-blue">{rec.job_role}:</span> </h1>
+                    <div className="job-description">{rec.description}</div>
+                  </Typography>
+                </div>
+                <div className="match-container">
+                  <Typography className="match-percentage">
+                    {rec.match_percentage} <div className="match-rate-text">Match Rate</div>
+                  </Typography>
+                </div>
               </AccordionSummary>
               <AccordionDetails>
                 <div className={`accordion-content ${expandedData[index]?.loaded ? "loaded" : ""}`}>
@@ -155,12 +177,29 @@ const WritePrompt = () => {
                     <ExpandableImageHolder
                       imageUrl={`data:image/png;base64,${expandedData[index]?.flowchart ?? ''}`}
                       altText="Job Role Visual"
+                      className="accordion-image-holder"
                     />
                   ) : (
                     <div className="image-placeholder">Loading image...</div>
                   )}
-                  <Typography><strong>What does a {rec.job_role} do?</strong></Typography>
-                  <Typography>{expandedData[index]?.explanation?.job_description || 'Loading...'}</Typography>
+                  <div className="accordion-text-container">
+                  <div className="accordion-text">
+                    <Typography className="question-heading"><strong>What does a {rec.job_role} do?</strong></Typography>
+                    <Typography className="answer-text">{expandedData[index]?.explanation?.job_description || <div className="loading-container">
+                      <motion.h1 className="loading-text">{loadingText}</motion.h1>
+                      <motion.h1 className="countdown">{rounded}</motion.h1>
+                    </div>}</Typography>
+
+                    <Typography className="question-heading"><strong>How it aligns with your requirements?</strong></Typography>
+                    <Typography className="answer-text">{expandedData[index]?.explanation?.alignment || 'Loading...'}</Typography>
+
+                    <Typography className="question-heading"><strong>Average Salary</strong>:</Typography>
+                    <ul>
+                      <li className="answer-text"><strong>Local Salary:</strong> {expandedData[index]?.explanation?.average_salary?.local_salary || 'XX,XXX - YY,YYY [Currency]'}</li>
+                      <li className="answer-text"><strong>USA Salary:</strong> {expandedData[index]?.explanation?.average_salary?.usa_salary || 'XX,XXX - YY,YYY USD'}</li>
+                    </ul>
+                  </div>
+                  </div>
                 </div>
               </AccordionDetails>
             </Accordion>
