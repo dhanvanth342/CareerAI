@@ -105,7 +105,7 @@ function Login() {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             console.log("User Logged in successfully");
-            navigate('/Mainpage', { state: { userDetails: { email: user.email, displayName: user.displayName || '' } } });
+            navigate('/Mainpage', { state: { userDetails: { email: user.email, displayName: user.displayName || '' } } },{replace: true});
         } catch (error) {
             if (error.code === 'auth/wrong-password') {
                 alert('The password you entered does not match. Please try again.');
@@ -164,7 +164,7 @@ function Login() {
                         </form>
 
                         <div className="options">
-                            <p>New user? <span className="create-account" onClick={() => navigate('/signup')}>Create an account</span></p>
+                            <p>New user? <span className="create-account" onClick={() => navigate('/signup',{replace: true})}>Create an account</span></p>
                         </div>
                     </div>
                 </div>
