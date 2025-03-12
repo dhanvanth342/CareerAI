@@ -48,15 +48,25 @@ class LLMHandler:
         prompt = f"""Based on the user's initial context: {initial_context},
         highest education level: {highest_education}, and country user lives in: {country}.
 
-        Generate 8-12 focused questions to gather necessary information
-        for creating personalized career advice. Include multiple choice
+        Generate between 12 and 18 focused questions to gather necessary information
+        for creating personalized career advice. Include multiple-choice
         options where appropriate.
+
+        The generated questions should be tailored to the user's highest education level and country. 
+        Ensure that questions are relevant to their education stage, local job market, and career opportunities.
 
         The questions should help understand:
         - Career interests
         - Skills
         - Personal preferences
+        - Work Experience & Industry Exposure (If Applicable) (for e.g. Do you have any work experience, including internships or freelance projects? )
         - Professional goals
+        - Financial limitations, including affordability concerns, willingness to take student loans, and interest in scholarships. 
+          Ensure these questions align with potential education and training costs relevant to the user's country and chosen career path.
+        - Study abroad considerations: Evaluate whether studying abroad is a **viable** option based on the user's financial situation, career aspirations, and interest in international education. 
+          If applicable, generate a follow-up question to assess their willingness to study abroad.
+        
+        
 
         Provide output in strict JSON format with optional choices.
         Return the questions in this exact JSON format:
@@ -66,10 +76,8 @@ class LLMHandler:
             {{"question": "Question 3", "choices": ["Choice 1", "Choice 2", "Choice 3"]}}
         ]
 
-        For multiple choice questions, keep Other as compulsory option as must. 
-
-
-        """
+        For multiple-choice questions, always include "Other" as an option to accommodate diverse responses.  
+    """
 
         default_questions = [
             {
@@ -80,7 +88,19 @@ class LLMHandler:
                 "question": "If you were to wake up in your dream job, what would make you jump out of bed with excitement?",
                 "choices": ["Making an Impact", "Learning something new every day", "Money",
                             "Freedom and Flexibility at work", "Other"]
+            },
+            {
+                "question": "Which skill do you most want to develop in your career?",
+                "choices": ["Technical expertise", "Leadership and management", "Problem-solving and critical thinking",
+                            "Communication and networking", "Other"]
+            },
+            {
+                "question": "Which of these best describes your future career goal?",
+                "choices": ["Working in a corporate job", "Starting my own business",
+                            "Pursuing research or higher studies", "Freelancing or flexible work", "Not sure yet", "Other"]
             }
+
+
         ]
 
         try:
@@ -112,7 +132,7 @@ class LLMHandler:
             print(f"Error in generate_questions: {e}")
             return default_questions, initial_context
 
-    def generate_prompt(self, initial_context, questions, answers):
+    def generate_prompt(self, initial_context, questions, answers, highest_education, country ):
         """
         Generate a comprehensive prompt for career recommendations
         """
@@ -125,22 +145,33 @@ class LLMHandler:
 
         prompt = f"""Your task is to generate a prompt for career recommendation generation using the below context and answers:
 
-                Initial Context given by user: {initial_context}
+                        Initial Context given by user: {initial_context}
 
-                Detailed User Responses:
-                {answers_text}
-                Please follow the below instructions while drafting the prompt: 
-                1. Use the complete information in the context and answers.
-                2. You should draft best suitable prompt that can be used for generating personalized career recommendations based on information provided by user.
-                3. Generate only the prompt and STRICTLY NO PREAMBLE.
+                        Detailed User Responses:
+                        {answers_text}
 
-                The goal is by using this prompt, the user can obtain personalized career recommendation that gives extreme clarity on what career paths you would choose."""
+                        Please follow these instructions while drafting the prompt: 
+                        1. Use the complete information in the context and answers.
+                        2. Ensure the prompt accounts for key career-related factors, including skills, past work experience, 
+                        financial constraints, work-life balance preferences, and long-term aspirations.
+                        3. Include the user's highest education: {highest_education} and the country they live in: {country}.
+                        4. The output should be a detail well-structured paragraph without unnecessary line breaks or bullet points.
+                        5. The prompt should be designed to generate career recommendations that are detailed, actionable, 
+                        and highly relevant to the user's background and goals.
+
+                        Generate only the prompt text and STRICTLY NO PREAMBLE.
+                    """
 
         try:
             response = self.groq_client.invoke(prompt)
             return response.content
         except Exception as e:
             return f"Unable to generate personalized prompt. Error: {str(e)}"
+
+    import json
+    import logging
+
+    logger = logging.getLogger(__name__)
 
     def generate_recommendations(self, prompt):
         """
@@ -156,26 +187,37 @@ class LLMHandler:
             }
 
         # System prompt
-        system_prompt = """You are a career advisor expert. Based on the user's information,  
-        provide the top 5 career recommendations. For each recommendation, include:  
-        1. Job role title  
-        2. Brief description of the role in less than 30 words
-        3. The match percentage of how well the recommendation aligns with the input prompt, in percentage (e.g., 75%).
+        system_prompt = """You are a career advisor expert. Based on the user's information, provide the top 4 most aligned career recommendations, and 
+            the 5th recommendation should be a role that faces a major domestic talent shortage in the user's country while still aligning with the user's background. 
 
-        Provide the output strictly in a valid, well-structured JSON format.  
-        Ensure the recommedations order is sorted based on the match percentage, highest being at the top.
-        STRICTLY the response should **only** contain a JSON object without extra text.  
+            For these 5 recommendations, include:   
+            1. Job role title  
+            2. A brief description of the role (limited to 30 words).  
+            3. A match percentage (as an integer) indicating how well the recommendation aligns with the user’s profile, based on skill relevance, education fit, prior experience, and preferences.  
+            4. For the domestic talent shortage role, include an additional field `"is_talent_shortage": true`.  
 
-        ### Example Output Format:  
-        {
-          "career_recommendations": [
+            Provide the output **strictly** in valid, well-structured JSON format.  
+            Ensure the recommendations are **sorted by match percentage** in descending order.  
+            If two roles have the same match percentage, sort them **alphabetically by job title**.  
+            STRICTLY the response should **only** contain a JSON object without extra text.  
+
+            ### Example Output Format:  
             {
-              "job_role": "Example Job Role",
-              "description": "Brief description of the role.",
-              "match_percentage": "85%"
+                "career_recommendations": [
+                    {
+                        "job_role": "Example Job Role",
+                        "description": "Brief description of the role.",
+                        "match_percentage": 85,
+                        "is_talent_shortage": false
+                    },
+                    {
+                        "job_role": "Cloud Engineer",
+                        "description": "Manages cloud infrastructure and solutions.",
+                        "match_percentage": 75,
+                        "is_talent_shortage": true
+                    }
+                ]
             }
-          ]
-        }
         """
 
         try:
@@ -186,23 +228,37 @@ class LLMHandler:
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": prompt}
                 ],
-                temperature=0.7,
+                temperature=0.3,
                 max_tokens=1500
             )
 
             # Extract response content
             response_content = response.choices[0].message.content.strip()
 
-            # **Fix: Remove triple backticks if present**
+            # **Fix 1: Remove unnecessary formatting (like triple backticks)**
             if response_content.startswith("```json"):
                 response_content = response_content[7:]  # Remove ```json\n
             if response_content.endswith("```"):
                 response_content = response_content[:-3]  # Remove \n```
 
-            # Parse JSON
-            parsed_response = json.loads(response_content)
+            # **Fix 2: Ensure valid JSON format**
+            try:
+                parsed_response = json.loads(response_content)
+            except json.JSONDecodeError:
+                # Try to clean up common formatting issues
+                response_content = response_content.replace("\n", "").replace("\t", "")
+                try:
+                    parsed_response = json.loads(response_content)
+                except json.JSONDecodeError as json_err:
+                    logger.error(f"JSON Parsing Error: {json_err}")
+                    logger.error(f"Problematic Response Content: {response_content}")
+                    return {
+                        "error": "Failed to parse model response",
+                        "raw_response": response_content,
+                        "career_recommendations": []
+                    }
 
-            # Validate structure
+            # **Fix 3: Validate structure before returning**
             if isinstance(parsed_response, dict) and "career_recommendations" in parsed_response:
                 logger.info("Recommendations generated successfully")
                 return parsed_response
@@ -211,15 +267,6 @@ class LLMHandler:
             logger.error("Unexpected response structure")
             return {
                 "error": "Unexpected response structure",
-                "raw_response": response_content,
-                "career_recommendations": []
-            }
-
-        except json.JSONDecodeError as json_err:
-            logger.error(f"JSON Parsing Error: {json_err}")
-            logger.error(f"Problematic Response Content: {response_content}")
-            return {
-                "error": "Failed to parse model response",
                 "raw_response": response_content,
                 "career_recommendations": []
             }
@@ -245,24 +292,25 @@ class LLMHandler:
         system_prompt = (
 
             f"You are responsible for generating DOT language code to create a clear and visually understandable education roadmap. "
+            f"Firstly extract all the key information of user from the user prompt like highest level of education, country they live in, "
+            f"career-related factors, including skills, past work experience, financial constraints, work-life balance preferences, and long-term aspirations. "
             f"This roadmap should illustrate the educational journey a user must take from their current education level (extract from the user prompt) "
             f"to achieving the target job title: {job_title}. The roadmap can have multiple branches or a single path, depending on what best fits the user's background. "
 
             f"Follow these **guidelines** while generating the DOT code:\n\n"
-            f"1. Begin the DOT code with [resolution=900] to ensure high resolution.\n"
+            f"1. Begin the DOT code with [resolution=200] to ensure high resolution.\n"
             f"2. STRICTLY The graph name **must not** contain spaces, but node and edge names may include spaces."
             f"  - for example [digraph machinelearningengineer] is right way of naming a graph, but not [digraph machine learning engineer]\n"
             f"3. The DOT code must define the appropriate graph type (e.g., digraph for directed graphs or graph for undirected graphs) based on the user's query \n "
+            f"4. The DOT code when rendered, make sure the road map is in horizontal view, as it suits the diagram layout. "
             f"4. Choose the most suitable layout engine [dot, neato, fdp, sfdp, circo, twopi, osage, and patchwork] for rendering the graph, "
             f"considering factors such as clarity, visual appeal, and the structure of the relationships being depicted. \n"
-            f"5. Use valid Graphviz-supported or custom hexadecimal colors (\"#4CAF50\").\n"
-            f"6. If the user query does not specify colors, default to pastel shades that are visually suitable for flowcharts with good text contrast to ensure readability.\n"
+            f"5. Use only valid Graphviz-supported or custom hexadecimal colors and color coding be like **light blue** for general nodes and **dark blue** for key steps.\n"
+            f"6. Maintain strong **contrast between text and background** for readability.."
             f"7. Validate the DOT code to ensure it adheres to Graphviz syntax, including the use of valid node names and avoiding reserved keywords. \n"
             f"This is the example structure you can follow for the parameters to include in the start of the code:\n"
-            f"digraph nameofgraph {{resolution = 900 layout= circo; rest of the code}}"
-            f"8. If the input cannot be expressed in a flowchart (e.g., typos or meaningless queries), generate a generic response stating to elaborate the query"
-            f"in the dot code with one square border to the text.:\n"
-            f"9. The output should only be DOT CODE, STRICTLY Avoid preamble, unnecessary comments, or extraneous symbols,  \n\n"
+            f"digraph nameofgraph {{resolution = 200 layout= circo; rest of the code}}"          
+            f"8. The output should only be DOT CODE, STRICTLY Avoid preamble, unnecessary comments, or extraneous symbols,  \n\n"
 
         )
 
@@ -307,7 +355,7 @@ class LLMHandler:
             f"2. Ensure the graph name does not contain spaces. For example, [digraph EducationRoadmap] is correct, but not [digraph Education Roadmap].\n"
             f"3. If node or edge labels include spaces, enclose them in double quotes to avoid syntax errors.\n"
             f"   - Example: [\"High School\" -> \"Bachelor's Degree\"] is valid.\n"
-            f"4. Set the resolution of the DOT code as 900 [resolution=900] at the beginning.\n"
+            f"4. Set the resolution of the DOT code as 200 [resolution=200] at the beginning.\n"
             f"5. The corrected DOT code must preserve the intended roadmap structure, ensuring logical education progression towards the given job title.\n"
             f"6. The response DOT code MUST use 'digraph' since education roadmaps represent a directional progression.\n"
             f"7. Validate the DOT code to ensure compliance with Graphviz syntax, avoiding reserved keywords or invalid node names.\n"
@@ -342,39 +390,85 @@ class LLMHandler:
         except Exception as e:
             raise Exception(f"Error in OpenRouter API call: {e}")
 
-    def generate_text_response(self, job_title, user_prompt):
+    def generate_text_response(self, job_title, user_prompt, is_talent_shortage, dot_code):
         """
         Generate a textual explanation using Groq/Llama.
         """
-        system_prompt = (
-            f"You are an AI career advisor. Your task is to generate a structured response based on the given job title and user prompt."
-            f" Provide insights into the job role, why it aligns with the user's background and interests, and the average salary range."
-            f"\n\nFollow these **guidelines** while generating the response:\n"
-            f"1. Explain what the job title '{job_title}' entails in **less than 50 words**.\n"
-            f"2. Provide a brief explanation of why this role aligns with the user based on their prompt: '{user_prompt}'.\n"
-            f"3. Determine the salary based on the user's origin country given in the prompt, if users country is not mentioned give the salary based in USA.\n"
-            f"4. If the user mentions interest in studying abroad, generate:\n"
-            f"   - The average salary range in their origin country.\n"
-            f"   - The salary range for this job in the USA (if applicable).\n"
-            f"5. Return the response strictly in **JSON format** with the following keys:\n\n"
-            f"Example JSON structure:\n"
-            f"{{\n"
-            f'  "job_description": "Brief job description in less than 50 words.",\n'
-            f'  "alignment": "Explanation based on user prompt.",\n'
-            f'  "average_salary": {{\n'
-            f'      "local_salary": "XX,XXX - YY,YYY [Currency]",\n'
-            f'      "usa_salary ": "XX,XXX - YY,YYY USD"\n'
-            f"  }}\n"
-            f"}}\n\n"
-            f"Ensure that the JSON output is **well-structured, accurate, and free from unnecessary text**."
-            f"STRICTLY the response should **only** contain a JSON object without extra text."
-        )
+        if is_talent_shortage:
+            system_prompt = (
+                f"You are an AI career advisor. "
+                f" Your task is to provide insights on why the job title aligns with the user's background and interests, the average salary range,"
+                f" and a summary of the roadmap based on the given job title and user prompt. "
 
+
+                f"\n\nFollow these **guidelines** while generating the response:\n"
+                f"1. Extract the Input Data: user prompt: {user_prompt}, this is the suggested Job title: {job_title} which is chosen by "
+                f"aligning user background, interests, and other preferences with Domestic talent shortage career opportunities of the origin country the user belongs."
+                f"2.  **Reasons behind domestic talent shortage:** Briefly explain the meaning of domestic talent shortage and the main reasons for the domestic talent "
+                f"shortage in this specific role in the user's country of origin "
+             
+                f"3.  **User Alignment:** Explain why this role aligns with the user's background, focusing on their skills, experience, or interests mentioned in user_prompt'.\n"
+                f"3. **Salary Estimation:**\n"
+                f"   - Provide the average salary range of {job_title}for the origin country mentioned in user_prompt.\n"
+                f"   - The average salary range for this job in the USA.\n"
+                f"4. **Education Roadmap Summary:** The following Dot Code represents an educational roadmap that outlines steps the user may take to achieve their career goal. Generate a concise summary using these guidelines:\n"
+                f"   - Extract key information from the Dot Code: {dot_code}\n"
+                f"   - Summarize the roadmap in 100–150 words, focusing on key decision points (e.g., Bachelor's/Master’s programs, relevant courses, required skills).\n"
+                f"   - If there are multiple pathways, clarify the options and conclude with a final takeaway that helps the user understand the roadmap at a glance.\n"
+                f"   - No need for section names; keep the summary in a **clear, continuous format*"
+                f"5. Return the response strictly in **JSON format** with the following keys:\n\n"
+                f"Example JSON structure:\n"
+                f"{{\n"
+                f'  "Reasons_of_talent_shortage: "Explain the reasons of domestic talent shortage (70 - 90 words)", \n '
+                f'  "alignment": "Explanation based on user prompt.",\n'
+                f'  "average_salary": {{\n'
+                f'      "local_salary": "XX,XXX - YY,YYY [Currency]",\n'
+                f'      "usa_salary ": "XX,XXX - YY,YYY USD"\n'
+                f"  }}\n"
+                f'  "Summary": "Summary of road map (100 - 150 words), \n '
+                f"}}\n\n"
+                f"Ensure that the JSON output is **well-structured, accurate, and free from unnecessary text**."
+                f"STRICTLY the response should **only** contain a JSON object without extra text."
+
+            )
+        else:
+            system_prompt = (
+
+                f"You are an AI career advisor. Your task is to provide insights on why the job title aligns with the user's background and interests, the average salary range,"
+                f" and a summary of the roadmap based on the given job title and user prompt. "
+               
+
+                f"\n\nFollow these **guidelines** while generating the response:\n"
+                f"1. This is the Input Data: user prompt {user_prompt}, Job title or career choice is {job_title}"
+                f"2.  **User Alignment:** Explain why this role aligns with the user's background, focusing on their skills, experience, or interests mentioned in user_prompt'.\n"
+                f"3. **Salary Estimation:**\n"
+                f"   - Provide the average salary range of {job_title}for the origin country mentioned in user_prompt.\n"
+                f"   - The average salary range for this job in the USA.\n"
+                f"4. **Education Roadmap Summary:** The following Dot Code represents an educational roadmap that outlines steps the user may take to achieve their career goal. Generate a concise summary using these guidelines:\n"
+                f"   - Extract key information from the Dot Code: {dot_code}\n"
+                f"   - Summarize the roadmap in 100–150 words, focusing on key decision points (e.g., Bachelor's/Master’s programs, relevant courses, required skills).\n"
+                f"   - If there are multiple pathways, clarify the options and conclude with a final takeaway that helps the user understand the roadmap at a glance.\n"
+                f"   - No need for section names; keep the summary in a **clear, continuous format*"
+                f"5. Return the response strictly in **JSON format** with the following keys:\n\n"
+                f"Example JSON structure:\n"
+                f"{{\n"
+                
+                f'  "alignment": "Explanation based on user prompt.",\n'
+                f'  "average_salary": {{\n'
+                f'      "local_salary": "XX,XXX - YY,YYY [Currency]",\n'
+                f'      "usa_salary ": "XX,XXX - YY,YYY USD"\n'
+                f"  }}\n"
+                f'  "Summary": "Summary of road map (100 - 150 words), \n '
+                f"}}\n\n"
+                f"Ensure that the JSON output is **well-structured, accurate, and free from unnecessary text**."
+                f"STRICTLY the response should **only** contain a JSON object without extra text."
+
+            )
         try:
             response = self.groq_client.invoke(system_prompt)
             response_content = response.content.strip()
-
-        # Debugging: Print raw response
+            response_content = response_content.strip("`")
+            # Debugging: Print raw response
             print("Raw Response from LLM:", repr(response_content))
 
         # **Fix: Remove triple backticks if present**
@@ -404,11 +498,13 @@ class LLMHandler:
 
         # Ensure correct format
             explanation = {
-            "job_description": normalized_response.get("job_description", ""),
+            #"job_description": normalized_response.get("job_description", ""),
+            "Reasons_of_talent_shortage": normalized_response.get("reasons_of_talent_shortage", ""),
             "alignment": normalized_response.get("alignment", ""),
             "average_salary": {
                 "local_salary": normalized_response.get("average_salary", {}).get("local_salary", ""),
-                "usa_salary": normalized_response.get("average_salary", {}).get("usa_salary", "")
+                "usa_salary": normalized_response.get("average_salary", {}).get("usa_salary", ""),
+                "Summary": normalized_response.get("summary", "")
             }
         }
 
@@ -431,6 +527,7 @@ class LLMHandler:
                 os.environ["PATH"] += os.pathsep + graphviz_path
 
                 src = Source(dot_code, format="jpeg", engine="dot")
+                #print()
                 output_path = src.render(output_file, cleanup=True)
                 return output_path
             except Exception as e:
