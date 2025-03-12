@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar'; // Import Navbar
@@ -57,6 +56,7 @@ const PromptPage = ({ onQuestionsGenerated = () => {} }) => {
 
       if (!response.ok) throw new Error(`Server error: ${response.status}`);
 
+
       const result = await response.json();
       if (result.error) throw new Error(result.error);
       onQuestionsGenerated(result.questions);
@@ -64,6 +64,7 @@ const PromptPage = ({ onQuestionsGenerated = () => {} }) => {
 
     } catch (error) {
       setError(`Error: ${error.message || 'Failed to generate questions'}`);
+
     } finally {
       setIsLoading(false);
     }
@@ -80,35 +81,35 @@ const PromptPage = ({ onQuestionsGenerated = () => {} }) => {
         {error && <div className="error-message">{error}</div>}
 
         <div className="question-boxes">
-        <div className="question-box">
-    <p className="input-label">What is your current education level?</p> {/* Label for education input */}
-    <input
-        type="text"
-        id="question1"
-        value={question1}
-        onChange={(e) => setQuestion1(e.target.value)}
-        placeholder= "e.g., B.S. in Electrical Engineering, 3rd year"
-        className="input-education"
-    />
+    {/* First Question Box - Input Field */}
+    <div className="question-box input-box">
+        <p className="input-label">What is your current education level?</p>
+        <input
+            type="text"
+            id="education-input"
+            value={question1}
+            onChange={(e) => setQuestion1(e.target.value)}
+            placeholder="e.g., B.S. in Electrical Engineering, 3rd year"
+            className="education-input"
+        />
+    </div>
+
+    {/* Second Question Box - Dropdown */}
+    <div className="question-box dropdown-box">
+        <p className="input-label">Which country</p>
+        <select
+            id="country-dropdown"
+            value={question2}
+            onChange={(e) => setQuestion2(e.target.value)}
+            className="country-dropdown"
+        >
+            <option value="" disabled hidden>Choose your country</option>
+            {countries.map((country, index) => (
+                <option key={index} value={country}>{country}</option>
+            ))}
+        </select>
+    </div>
 </div>
-
-<div className="question-box">
-    <p className="input-label">Which country</p>
-    <select
-        id="question2"
-        value={question2}
-        onChange={(e) => setQuestion2(e.target.value)}
-        style={{ color: question2 ? 'white' : 'rgba(248, 242, 242, 0.7)' }}  // Dynamically set the color
-    >
-        <option value="" disabled hidden>Choose your country </option>
-        {countries.map((country, index) => (
-            <option key={index} value={country}>{country}</option>
-        ))}
-    </select>
-</div>
-
-
-        </div>
 
         <div className="response-box">
           <textarea className="generated-text" value={text} onChange={(e) => setText(e.target.value)}

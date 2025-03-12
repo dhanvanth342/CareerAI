@@ -106,6 +106,7 @@ const handleCardClick = (text) => {
         < div className="prompt-box">
           <h4>Write your prompt here!</h4>
           <p>Need inspiration? Check out these examples for your prompt! </p>
+          <h6>Note: Specify your country for better salary predictions!!</h6>
           <div className="example-prompts">
           <Card className="example-card" onClick={() => handleCardClick('What are the best career options for a software engineer?')}>
               <CardContent>
