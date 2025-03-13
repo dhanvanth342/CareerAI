@@ -612,6 +612,11 @@ class LLMHandler:
         except Exception as e:
             return f"Unable to generate personalized prompt. Error: {str(e)}"
 
+    import json
+    import logging
+
+    logger = logging.getLogger(__name__)
+
     def generate_recommendations(self, prompt):
         """
         Generate career recommendations based on the provided prompt
@@ -626,37 +631,38 @@ class LLMHandler:
             }
 
         # System prompt
-        system_prompt = f"""You are a career advisor expert. Based on the user's information, provide the top 4 most aligned career recommendations, and 
-                the 5th recommendation should be a role that faces a major domestic talent shortage in the user's country while still aligning with the user's background. 
+        system_prompt = """You are a career advisor expert. Based on the user's information, provide the top 4 most aligned career recommendations, and 
+            the 5th recommendation should be a role that faces a major domestic talent shortage in the user's country while still aligning with the user's background. 
 
-                For these 5 recommendations, include:   
-                1. Job role title  
-                2. A brief description of the role (limited to 30 words).  
-                3. A match percentage (as an integer) indicating how well the recommendation aligns with the user’s profile, based on skill relevance, education fit, prior experience, and preferences.  
-                4. For the domestic talent shortage role, include an additional field `"is_talent_shortage": true`.  
+            For these 5 recommendations, include:   
+            1. Job role title  
+            2. A brief description of the role (limited to 30 words).  
+            3. A match percentage (as an integer) indicating how well the recommendation aligns with the user’s profile, based on skill relevance, education fit, prior experience, and preferences.  
+            4. For the domestic talent shortage role, include an additional field `"is_talent_shortage": true`.  
 
-                Provide the output **strictly** in valid, well-structured JSON format.  
-                Ensure the recommendations are **sorted by match percentage** in descending order.  
-                If two roles have the same match percentage, sort them **alphabetically by job title**.  
-                STRICTLY the response should **only** contain a JSON object without extra text.  
+            Provide the output **strictly** in valid, well-structured JSON format.  
+            Ensure the recommendations are **sorted by match percentage** in descending order.  
+            If two roles have the same match percentage, sort them **alphabetically by job title**.  
+            STRICTLY the response should **only** contain a JSON object without extra text.  
 
-                ### Example Output Format:  
-                {
-        "career_recommendations": [
+            ### Example Output Format:  
+            {
+                "career_recommendations": [
                     {
-        "job_role": "Example Job Role",
-                      "description": "Brief description of the role.",
-                      "match_percentage": 85,
-                      "is_talent_shortage": false
+                        "job_role": "Example Job Role",
+                        "description": "Brief description of the role.",
+                        "match_percentage": 85,
+                        "is_talent_shortage": false
                     },
                     {
-        "job_role": "Cloud Engineer",
-                      "description": "Manages cloud infrastructure and solutions.",
-                      "match_percentage": 75,
-                      "is_talent_shortage": true
+                        "job_role": "Cloud Engineer",
+                        "description": "Manages cloud infrastructure and solutions.",
+                        "match_percentage": 75,
+                        "is_talent_shortage": true
                     }
-                  ]
-                }"""
+                ]
+            }
+        """
 
         try:
             # API Call
@@ -673,16 +679,30 @@ class LLMHandler:
             # Extract response content
             response_content = response.choices[0].message.content.strip()
 
-            # **Fix: Remove triple backticks if present**
+            # **Fix 1: Remove unnecessary formatting (like triple backticks)**
             if response_content.startswith("```json"):
                 response_content = response_content[7:]  # Remove ```json\n
             if response_content.endswith("```"):
                 response_content = response_content[:-3]  # Remove \n```
 
-            # Parse JSON
-            parsed_response = json.loads(response_content)
+            # **Fix 2: Ensure valid JSON format**
+            try:
+                parsed_response = json.loads(response_content)
+            except json.JSONDecodeError:
+                # Try to clean up common formatting issues
+                response_content = response_content.replace("\n", "").replace("\t", "")
+                try:
+                    parsed_response = json.loads(response_content)
+                except json.JSONDecodeError as json_err:
+                    logger.error(f"JSON Parsing Error: {json_err}")
+                    logger.error(f"Problematic Response Content: {response_content}")
+                    return {
+                        "error": "Failed to parse model response",
+                        "raw_response": response_content,
+                        "career_recommendations": []
+                    }
 
-            # Validate structure
+            # **Fix 3: Validate structure before returning**
             if isinstance(parsed_response, dict) and "career_recommendations" in parsed_response:
                 logger.info("Recommendations generated successfully")
                 return parsed_response
@@ -691,15 +711,6 @@ class LLMHandler:
             logger.error("Unexpected response structure")
             return {
                 "error": "Unexpected response structure",
-                "raw_response": response_content,
-                "career_recommendations": []
-            }
-
-        except json.JSONDecodeError as json_err:
-            logger.error(f"JSON Parsing Error: {json_err}")
-            logger.error(f"Problematic Response Content: {response_content}")
-            return {
-                "error": "Failed to parse model response",
                 "raw_response": response_content,
                 "career_recommendations": []
             }
@@ -900,8 +911,8 @@ class LLMHandler:
         try:
             response = self.groq_client.invoke(system_prompt)
             response_content = response.content.strip()
-
-        # Debugging: Print raw response
+            response_content = response_content.strip("`")
+            # Debugging: Print raw response
             print("Raw Response from LLM:", repr(response_content))
 
         # **Fix: Remove triple backticks if present**
@@ -931,11 +942,13 @@ class LLMHandler:
 
         # Ensure correct format
             explanation = {
-            "job_description": normalized_response.get("job_description", ""),
+            #"job_description": normalized_response.get("job_description", ""),
+            "Reasons_of_talent_shortage": normalized_response.get("reasons_of_talent_shortage", ""),
             "alignment": normalized_response.get("alignment", ""),
             "average_salary": {
                 "local_salary": normalized_response.get("average_salary", {}).get("local_salary", ""),
-                "usa_salary": normalized_response.get("average_salary", {}).get("usa_salary", "")
+                "usa_salary": normalized_response.get("average_salary", {}).get("usa_salary", ""),
+                "Summary": normalized_response.get("summary", "")
             }
         }
 

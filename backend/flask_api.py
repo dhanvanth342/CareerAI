@@ -292,8 +292,9 @@ def road_map():
         if not job_title:
             return jsonify(({'error': 'Could not fetch job title'})), 400
         is_talent_shortage = data.get('is_talent_shortage')
-        if not is_talent_shortage:
+        if is_talent_shortage is None:
             return jsonify({'error': 'Could not fetch is_talent_shortage'}), 400
+
         #query_handler = GrokHandler()
         dot_code = llm_handler.generate_dot_code(user_prompt, job_title)
         if not dot_code:

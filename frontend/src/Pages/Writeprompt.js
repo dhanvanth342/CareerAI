@@ -185,6 +185,7 @@ const handleCardClick = (text) => {
                   <div className="accordion-text-container">
                   <div className="accordion-text">
                     <Typography className="question-heading"><strong>What does a {rec.job_role} do?</strong></Typography>
+                    <Typography className="question-heading"><strong>{rec.is_talent_shortage}</strong></Typography>
                     <Typography className="answer-text">{expandedData[index]?.explanation?.job_description || <div className="loading-container">
                       <motion.h1 className="loading-text">{loadingText}</motion.h1>
                       <motion.h1 className="countdown">{rounded}</motion.h1>
