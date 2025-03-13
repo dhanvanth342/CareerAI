@@ -50,7 +50,7 @@ const WritePrompt = () => {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-roadmap`  , {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ user_prompt: userPrompt, job_title: jobRole }),
+          body: JSON.stringify({ user_prompt: userPrompt, job_title: jobRole,is_talent_shortage: false }),
         });
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         const data = await response.json();
@@ -185,6 +185,7 @@ const handleCardClick = (text) => {
                   <div className="accordion-text-container">
                   <div className="accordion-text">
                     <Typography className="question-heading"><strong>What does a {rec.job_role} do?</strong></Typography>
+                    <Typography className="answer-text"><strong> Talent shortage : {rec.is_talent_shortage} </strong></Typography>
                     <Typography className="answer-text">{expandedData[index]?.explanation?.job_description || <div className="loading-container">
                       <motion.h1 className="loading-text">{loadingText}</motion.h1>
                       <motion.h1 className="countdown">{rounded}</motion.h1>
