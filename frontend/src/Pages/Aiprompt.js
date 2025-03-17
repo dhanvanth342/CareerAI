@@ -367,16 +367,19 @@ const Aiprompt = () => {
                         </>
                       )}
 
-                      <Typography className="question-heading"><strong>What does a {rec.job_role} do?</strong></Typography>
-                      <Typography className="answer-text">{expandedData[index]?.explanation?.job_description || 'Loading...'}</Typography>
-                      
                       <Typography className="question-heading"><strong>How it aligns with your requirements</strong></Typography>
-                      <Typography className="answer-text">{expandedData[index]?.explanation?.alignment || 'Loading...'}</Typography>
+                      <Typography className="answer-text">
+                        {expandedData[index]?.explanation?.alignment || 'Loading...'}
+                      </Typography>
 
-                      <Typography className="question-heading"><strong>Average Salary</strong>:</Typography>
+                      <Typography className="question-heading"><strong>Average Salary</strong></Typography>
                       <ul>
-                        <li className="answer-text"><strong>Local Salary:</strong> {expandedData[index]?.explanation?.average_salary?.local_salary || 'XX,XXX - YY,YYY [Currency]'}</li>
-                        <li className="answer-text"><strong>USA Salary:</strong> {expandedData[index]?.explanation?.average_salary?.usa_salary || 'XX,XXX - YY,YYY USD'}</li>
+                        <li className="answer-text">
+                          <strong>Local Salary:</strong> {expandedData[index]?.explanation?.average_salary?.local_salary || 'Loading...'}
+                        </li>
+                        <li className="answer-text">
+                          <strong>USA Salary:</strong> {expandedData[index]?.explanation?.average_salary?.usa_salary || 'Loading...'}
+                        </li>
                       </ul>
 
                       <Typography className="question-heading"><strong>Education Roadmap Summary</strong></Typography>
