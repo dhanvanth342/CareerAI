@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import '../components/Styles/Writeprompt.css';
 import NavBar from '../components/Navbar';
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Card, CardContent } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Typography, Card, CardContent, Chip } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditIcon from '@mui/icons-material/Edit';
 import SendIcon from '@mui/icons-material/Send';
@@ -23,7 +23,6 @@ const WritePrompt = () => {
   const [loadingText, setLoadingText] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
 
-
   useEffect(() => {
     if (loading) {
       setLoadingText("Career Paths loading in ");
@@ -39,33 +38,38 @@ const WritePrompt = () => {
     console.log("Updated expandedData:", expandedData);
   }, [expandedData]);
   
-
   const handleTextChange = (e) => setPrompt(e.target.value);
   const handleEditClick = () => setIsEditable(true);
 
-  const handleAccordionToggle = async (index, jobRole, userPrompt) => {
+  const handleAccordionToggle = async (index, jobRole, userPrompt, isTalentShortage) => {
     setOpenAccordions((prev) => ({ ...prev, [index]: !prev[index] }));
     if (!expandedData[index]) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-roadmap`  , {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-roadmap`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ user_prompt: userPrompt, job_title: jobRole,is_talent_shortage: false }),
+          body: JSON.stringify({ 
+            user_prompt: userPrompt, 
+            job_title: jobRole,
+            is_talent_shortage: isTalentShortage 
+          }),
         });
+        
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         const data = await response.json();
         console.log("Received Roadmap Data:", data); // Debugging line
 
         if (data) {
-        setExpandedData((prevData) => ({
-          ...prevData,
-          [index]: {
-            flowchart: data.flowchart,
-            explanation: data.explanation,
-            loaded: true,
-          },
-        }));
-      }
+          setExpandedData((prevData) => ({
+            ...prevData,
+            [index]: {
+              flowchart: data.flowchart,
+              explanation: data.explanation,
+              loaded: true,
+              is_talent_shortage: isTalentShortage
+            },
+          }));
+        }
       } catch (error) {
         console.error("Error fetching roadmap data:", error);
       }
@@ -94,20 +98,21 @@ const WritePrompt = () => {
       setRecommendations([]);
     }
   };
+
   // Handle card click to update prompt
-const handleCardClick = (text) => {
-  setPrompt(text);
+  const handleCardClick = (text) => {
+    setPrompt(text);
   };
 
   return (
     <>
       <NavBar />
       <div className="writeprompt-container">
-        < div className="prompt-box">
+        <div className="prompt-box">
           <h4>Write your prompt here!</h4>
           <p>Need inspiration? Check out these examples for your prompt! </p>
           <div className="example-prompts">
-          <Card className="example-card" onClick={() => handleCardClick('What are the best career options for a software engineer?')}>
+            <Card className="example-card" onClick={() => handleCardClick('What are the best career options for a software engineer?')}>
               <CardContent>
                 <Typography variant="h6"></Typography>
                 <Typography variant="body2">"What are the best career options for a software engineer?"</Typography>
@@ -132,10 +137,10 @@ const handleCardClick = (text) => {
               <textarea className="ai-text" value={prompt} onChange={handleTextChange} />
             ) : (
               <textarea
-                  className="ai-text"
-                  value={prompt}
-                  onChange={handleTextChange}
-                  placeholder="Type your prompt here..."
+                className="ai-text"
+                value={prompt}
+                onChange={handleTextChange}
+                placeholder="Type your prompt here..."
               />
             )}
             {!initialSubmit && (
@@ -144,6 +149,7 @@ const handleCardClick = (text) => {
               </div>
             )}
           </div>
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
         </div>
 
         {initialSubmit ? (
@@ -157,17 +163,33 @@ const handleCardClick = (text) => {
           </div>
         ) : (
           recommendations.map((rec, index) => (
-            <Accordion variant='div' key={index} expanded={openAccordions[index]} onChange={() => handleAccordionToggle(index, rec.job_role, prompt)}>
+            <Accordion 
+              variant='div' 
+              key={index} 
+              expanded={openAccordions[index]} 
+              onChange={() => handleAccordionToggle(index, rec.job_role, prompt, rec.is_talent_shortage)}
+            >
               <AccordionSummary expandIcon={<ExpandMoreIcon />} className="accordion-header">
                 <div className="job-accordion-left">
                   <Typography component={'div'}>
-                    <h1><span className="job-title-blue">{rec.job_role}:</span> </h1>
+                    <h1>
+                      <span className="job-title-blue">{rec.job_role}:</span>
+                      {rec.is_talent_shortage && 
+                        <Chip 
+                          label="Talent Shortage" 
+                          color="primary" 
+                          size="small" 
+                          className="talent-shortage-chip"
+                          style={{ marginLeft: '10px', fontSize: '0.7rem' }}
+                        />
+                      }
+                    </h1>
                     <div className="job-description">{rec.description}</div>
                   </Typography>
                 </div>
                 <div className="match-container">
                   <Typography className="match-percentage">
-                    {rec.match_percentage} <div className="match-rate-text">Match Rate</div>
+                    {rec.match_percentage}% <div className="match-rate-text">Match Rate</div>
                   </Typography>
                 </div>
               </AccordionSummary>
@@ -183,23 +205,37 @@ const handleCardClick = (text) => {
                     <div className="image-placeholder">Loading image...</div>
                   )}
                   <div className="accordion-text-container">
-                  <div className="accordion-text">
-                    <Typography className="question-heading"><strong>What does a {rec.job_role} do?</strong></Typography>
-                    <Typography className="answer-text"><strong> Talent shortage : {rec.is_talent_shortage} </strong></Typography>
-                    <Typography className="answer-text">{expandedData[index]?.explanation?.job_description || <div className="loading-container">
-                      <motion.h1 className="loading-text">{loadingText}</motion.h1>
-                      <motion.h1 className="countdown">{rounded}</motion.h1>
-                    </div>}</Typography>
+                    <div className="accordion-text">
+                      {/* Conditionally display content based on is_talent_shortage */}
+                      {expandedData[index]?.is_talent_shortage && (
+                        <>
+                          <Typography className="question-heading"><strong>Reasons for Talent Shortage</strong></Typography>
+                          <Typography className="answer-text">
+                            {expandedData[index]?.explanation?.Reasons_of_talent_shortage || 'Loading...'}
+                          </Typography>
+                        </>
+                      )}
 
-                    <Typography className="question-heading"><strong>How it aligns with your requirements?</strong></Typography>
-                    <Typography className="answer-text">{expandedData[index]?.explanation?.alignment || 'Loading...'}</Typography>
+                      <Typography className="question-heading"><strong>How it aligns with your requirements</strong></Typography>
+                      <Typography className="answer-text">
+                        {expandedData[index]?.explanation?.alignment || 'Loading...'}
+                      </Typography>
 
-                    <Typography className="question-heading"><strong>Average Salary</strong>:</Typography>
-                    <ul>
-                      <li className="answer-text"><strong>Local Salary:</strong> {expandedData[index]?.explanation?.average_salary?.local_salary || 'XX,XXX - YY,YYY [Currency]'}</li>
-                      <li className="answer-text"><strong>USA Salary:</strong> {expandedData[index]?.explanation?.average_salary?.usa_salary || 'XX,XXX - YY,YYY USD'}</li>
-                    </ul>
-                  </div>
+                      <Typography className="question-heading"><strong>Average Salary</strong></Typography>
+                      <ul>
+                        <li className="answer-text">
+                          <strong>Local Salary:</strong> {expandedData[index]?.explanation?.average_salary?.local_salary || 'Loading...'}
+                        </li>
+                        <li className="answer-text">
+                          <strong>USA Salary:</strong> {expandedData[index]?.explanation?.average_salary?.usa_salary || 'Loading...'}
+                        </li>
+                      </ul>
+
+                      <Typography className="question-heading"><strong>Education Roadmap Summary</strong></Typography>
+                      <Typography className="answer-text">
+                        {expandedData[index]?.explanation?.average_salary?.Summary || 'Loading...'}
+                      </Typography>
+                    </div>
                   </div>
                 </div>
               </AccordionDetails>
