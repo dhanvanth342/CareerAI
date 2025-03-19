@@ -266,21 +266,18 @@
 
 }
 
-
 .initial-submitt-container {
   display: flex;
   margin-top: 20px;
   justify-content: center;
 }
 
-
 .error-message {
   color: red;
   font-size: 14px;
-  margin-top: 10px;
+  margin-top: 3px !important;
+  text-align: center;
 }
-
-
 
 @media (max-width: 768px) {
   .example-prompts {
@@ -303,8 +300,8 @@
   .example-container {
     max-width: 80%;
   }
-
   .example-card {
     max-width: 70%;
   }
+  
 }

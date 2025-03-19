@@ -42,8 +42,8 @@ const WritePrompt = () => {
   useEffect(() => {
     console.log("Updated expandedData:", expandedData);
   }, [expandedData]);
-  
 
+    
   const handleTextChange = (e) => setPrompt(e.target.value);
   const handleEditClick = () => setIsEditable(true);
 
@@ -90,7 +90,7 @@ const WritePrompt = () => {
   const handleSubmit = async () => {
     if (!prompt.trim()) {
       // Display an error message if the prompt is empty
-      setErrorMessage('Please write a prompt before submitting.');
+      setErrorMessage('⚠️ Please write a prompt before submitting.');
       return;
     }
     setErrorMessage('');
@@ -156,15 +156,23 @@ const handleCardClick = (text) => {
             )}
             {!initialSubmit && (
               <div className="icon-container">
-                {isEditable ? <SendIcon className="submit-icon" onClick={handleSubmit} /> : <EditIcon className="edit-icon" onClick={handleEditClick} />}
+                 {isEditable ? (
+        <SendIcon className="submit-icon" onClick={handleSubmit} />
+      ) : (
+        <EditIcon className="edit-icon" onClick={handleEditClick} />
+      )}
               </div>
             )}
           </div>
         </div>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
 
         {initialSubmit ? (
-          <div className="initial-submitt-container">
-            <button className="initial-submit-button" onClick={handleSubmit}>Load recommendations</button>
+            <div className="initial-submitt-container">
+              
+            <button className="initial-submit-button" onClick={handleSubmit}>
+              Load recommendations
+            </button>
           </div>
         ) : loading ? (
           <div className="loading-container">
