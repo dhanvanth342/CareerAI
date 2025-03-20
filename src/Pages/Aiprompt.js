@@ -8,6 +8,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditIcon from '@mui/icons-material/Edit';
 import SendIcon from '@mui/icons-material/Send';
 import ExpandableImageHolder from '../components/ExpandableImageHolder';
+import Footer from '../components/Footer';
 
 const Aiprompt = () => {
   const [isEditable, setIsEditable] = useState(false);
@@ -231,6 +232,7 @@ const Aiprompt = () => {
           </div>
         </div>
       )}
+      <Footer />
     </>
   );
 };

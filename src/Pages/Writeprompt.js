@@ -9,6 +9,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditIcon from '@mui/icons-material/Edit';
 import SendIcon from '@mui/icons-material/Send';
 import ExpandableImageHolder from '../components/ExpandableImageHolder';
+import Footer from '../components/Footer';
 
 const WritePrompt = () => {
   const [isEditable, setIsEditable] = useState(false);
@@ -268,6 +269,7 @@ const handleCardClick = (text) => {
           </div>
         </div>
       )}
+      <Footer/>
     </>
   );
 };

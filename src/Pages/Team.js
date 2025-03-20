@@ -25,7 +25,7 @@ const experts = [
         id: 2,
         image: expert2,
         name: 'Sahithi Balerao',
-        role: 'Frontend Developer',
+        role: 'SDE',
         email: 'baleraosahithi@gmail.com',
         github: 'sahithi-cloud',
         linkedin: 'sahithi-balerao29'
@@ -43,7 +43,7 @@ const experts = [
         id: 4,
         image: expert4,
         name: 'Sahithi Etikala',
-        role: 'Frontend Developer',
+        role: 'SDE',
         email: 'sahithietikalar@gmail.com',
         github: 'sahithi-reddy14',
         linkedin: 'sahithi-reddy-etikala'
