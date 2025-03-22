@@ -44,9 +44,9 @@ const PromptPage = ({ onQuestionsGenerated = () => {} }) => {
     }
     setError('');
     setIsLoading(true);
-    const country="";
-    const highest_education="";
+    
     const requestData = { initial_context: text, highest_education: question1, country: question2 };
+    const { highest_education, country } = requestData;
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-questions`, {
         method: 'POST',

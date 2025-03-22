@@ -10,8 +10,8 @@ const QuestionsPage = () => {
   const navigate = useNavigate();
   const questions = location.state?.questions || [];
   const initial_context = location.state?.initial_context;
-  const country=location.state?.country;
-  const highest_education=location.state?.highest_education;
+  const country=location.state?.country||"Unknown";
+  const highest_education=location.state?.highest_education||"Not Specified";
   const [answers, setAnswers] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
