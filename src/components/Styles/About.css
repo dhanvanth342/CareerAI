@@ -75,6 +75,11 @@
   align-items: center; /* Center alignment */
 }
 
+.step-content p {
+  white-space: pre-line; /* This will preserve line breaks */
+}
+
+
 .about-steps {
   display: flex;
   flex-direction: column;
@@ -108,7 +113,7 @@
 
 .step-content {
   flex: 0 1 95%; /* Taking up almost all available space */
-  background: rgba(31, 67, 120, 0.594);
+  background: #f1f5f6;
   border-radius: 15px;
   backdrop-filter: blur(8px);
   padding: 60px; /* Increased internal padding */
@@ -120,7 +125,7 @@
 }
 
 .step-content h3 {
-  color: #83c9fc;
+  color: rgb(4 41 95);
   font-size: 2.2rem;
   margin: 0;
   font-weight: 600;
@@ -128,7 +133,7 @@
 }
 
 .step-content p {
-  color: #f1f5f6;
+  color: rgb(4 41 95);
   font-size: 1.1rem;
   line-height: 1.6;
   margin: 0;
@@ -143,6 +148,12 @@
   border-radius: 10px;
   margin-top: auto;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.step-content img.step-image {
+  max-width: 100%;  /* Ensure the image is responsive */
+  height: auto;     /* Maintain aspect ratio */
+  margin-top: 20px; /* Optional: Add margin to space the image from text */
 }
 
 /* Add hover effects */
@@ -246,7 +257,7 @@
 .step-content {
   flex: 0 1 70%; /* Take up 70% of the container width */
   margin: 0 30px;
-  background: rgba(31, 67, 120, 0.594);
+  background: #f1f5f6;
   border-radius: 15px;
   backdrop-filter: blur(8px);
   color: white;
@@ -254,25 +265,28 @@
   min-height: 400px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 8px;
 }
-
+/*
 .step-content h3 {
-  color: #83c9fc;
-  margin-bottom: 15px;
-  font-size: 2rem;
+  color: rgb(4 41 95);
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 2.5rem;
 }
-
+*/
 .step-content p {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  font-weight: bold;
   line-height: 1.6;
-  color: #f1f5f6;
-  margin-bottom: 20px;
+  color: rgb(4 41 95);
+  margin-bottom: 0px;
+  margin-top: 1px;
 }
 
 .step-content img {
   width: 100%;
-  max-height: 300px;
+  max-height: flex;
   object-fit: contain;
   border-radius: 10px;
   margin-top: auto;
@@ -289,6 +303,21 @@
   justify-content: center;
 }
 
+.navigation-top, .back-to-top {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.navi-button, .back-to-top-button {
+  background-color: transparent;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .step-container.odd,
@@ -296,12 +325,14 @@
     flex-direction: column;
     align-items: center;
   }
+  .step-content p {
+    font-size: 1.4rem;
+  }
 
   .step-content {
     flex: 0 1 90%;
     margin: 20px 0;
   }
-
   .step-number {
     margin: 0;
   }
@@ -367,7 +398,7 @@
 
 @media (max-width: 768px) {
   .step-content {
-    padding: 30px;
+    padding: 20px;
     min-height: 400px;
   }
 }

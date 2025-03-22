@@ -2,9 +2,16 @@ import React, { useEffect, useState } from 'react';
 import '../components/Styles/About.css';
 import NavBar from '../components/Navbar';
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useInView } from 'framer-motion';
+import page1 from '../assets/mainpage.png';
+import page2 from '../assets/promptpage.png';
+import page3 from '../assets/questionspage.png';
+import page4 from '../assets/recommendationspage.png';
+import page5 from '../assets/flowchart.png';
 
-const StepContainer = ({ number, title, description, isEven }) => {
+
+const StepContainer = ({ number, title, description, image, isEven }) => {
   const ref = React.useRef(null);
   const isInView = useInView(ref, { 
     margin: "-100px",
@@ -39,7 +46,7 @@ const StepContainer = ({ number, title, description, isEven }) => {
         <div className="step-content">
           <h3>{title}</h3>
           <p>{description}</p>
-          <img src="/path-to-your-screenshot.png" alt={title} />
+          {image && <img className="step-image" src={image} alt={title} />}
         </div>
       </motion.div>
     </div>
@@ -54,33 +61,47 @@ const About = () => {
     restDelta: 0.001
   });
 
+  const navigate = useNavigate();
+  const goToMainPage = () => {
+    navigate('/mainpage'); // Adjust the path to match your routing setup
+  };
+  
+  
   const steps = [
     {
       number: 1,
-      title: "AI-Powered Career Guidance",
-      description: "Our advanced AI system analyzes your skills, interests, and goals to provide personalized career recommendations that align with your aspirations."
+      description: (
+        <>
+          <span style={{backgroundColor: 'yellow' }}>
+            𝑷𝒊𝒄𝒌 𝒂 𝒘𝒂𝒚 𝒕𝒐 𝒄𝒓𝒂𝒇𝒕 𝒚𝒐𝒖𝒓 𝒄𝒂𝒓𝒆𝒆𝒓!{" "}
+          </span>{" "}
+          Let AI generate a prompt or write your own for expert recommendations.
+        </>
+      ),
+      image: page1,
     },
     {
       number: 2,
-      title: "Custom Career Roadmaps",
-      description: "Get detailed, step-by-step roadmaps tailored to your chosen career path, complete with specific milestones and skills to develop along the way."
+      description: "Don't hold back! Share your interests and key details for top career picks.",
+      image: page2
     },
     {
       number: 3,
-      title: "Real-Time Market Insights",
-      description: "Access up-to-date information about salary ranges, job requirements, and industry trends to make informed decisions about your career path."
+      description: "Your answers shape your career advice—be precise for the best results! ",
+      image: page3
     },
     {
       number: 4,
-      title: "Professional Development",
-      description: "Receive personalized guidance on certifications, courses, and skills needed to advance in your chosen career path and stay competitive."
+      description: "Discover top career matches with AI, ranked by your fit score! Plus, we match you with a role in fields that need talent, driving your country's growth.",
+      image: page4
     },
     {
       number: 5,
-      title: "Career Success Tracking",
-      description: "Monitor your progress, track achievements, and adjust your career path as you grow professionally with our comprehensive tracking system."
+      description: "Explore your career roadmap, with specific steps to reach your goals, alongside a quick summary of the role, including its main responsibilities and skills needed.",
+      image: page5
     }
   ];
+ 
 
   return (
     <>
@@ -90,6 +111,12 @@ const About = () => {
           <h1>How It Works</h1>
           <p>Discover your ideal career path with our AI-powered guidance system that adapts to your unique goals and aspirations.</p>
         </div>
+        <div className="navigation-top">
+  <button className="navi-button" onClick={goToMainPage}>
+   Skip to homepage →
+  </button>
+</div>
+
         <div className="about-steps">
           <div className="thread-container">
             <div className="thread-background" />
@@ -105,12 +132,18 @@ const About = () => {
             <StepContainer
               key={step.number}
               number={step.number}
-              title={step.title}
               description={step.description}
+              image={step.image}
               isEven={step.number % 2 === 0}
             />
           ))}
         </div>
+        <div className="back-to-top">
+        <button className="navi-button" onClick={goToMainPage}>
+   Continue to homepage  →
+  </button>
+</div>
+
       </div>
     </>
   );
