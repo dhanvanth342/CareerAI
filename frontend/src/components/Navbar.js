@@ -10,7 +10,7 @@ const Navbar = () => {
 
     // Changes navbar color on scroll
     useEffect(() => {
-        const changeColor = () => {
+        const changeColor = () => { 
             if (window.scrollY >= 50) {
                 setColor(true);
             } else {
@@ -24,7 +24,7 @@ const Navbar = () => {
 
     const handleLogoutClick = () => {
         console.log("Logout button clicked");
-        navigate("/",{replace: true});
+        navigate("/");
     };
 
     // Hide Navbar on Intropage

@@ -1,107 +1,119 @@
-import React from 'react';
-import { Box, Typography, Grid, Card, CardMedia, CardContent } from '@mui/material';
-import NavBar from '../components/Navbar';
+import React, { useEffect, useState } from 'react';
 import '../components/Styles/About.css';
-import '../index.css';
-import choose1 from '../assets/card1.png'; 
-import ques1 from '../assets/card2.png';
-import ai3 from '../assets/card3.png';
-import ai4 from '../assets/card4.png';
+import NavBar from '../components/Navbar';
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { useInView } from 'framer-motion';
 
-const HowItWorks = () => {
-  const data = [
-    {
-      id: 'Begin Your Career Journey',
-      image: choose1,
-      detailedText: 'Decide how you want to proceed—either generate a career prompt by answering a few basic questions or write your own prompt for personalized career insights.',
-      step: 'Step 1',
-      
+const StepContainer = ({ number, title, description, isEven }) => {
+  const ref = React.useRef(null);
+  const isInView = useInView(ref, { 
+    margin: "-100px",
+    amount: 0.3
+  });
+
+  const slideVariants = {
+    hidden: {
+      x: isEven ? -100 : 100,
+      opacity: 0
     },
-    {
-      id: 'Answer Career Questions',
-      image: ques1,
-      detailedText: 'If you choose to generate a prompt, provide your highest degree, country, and interests. Based on this, AI will generate tailored career-related questions to understand your preferences better.',
-      step: 'Step 2',  
-    },
-    {
-      id: 'Get Career Recommendations',
-      image: ai3,
-      detailedText: 'Once you answer the questions, AI will generate a detailed career prompt, which you can edit or submit as is. AI will then provide six career paths best suited to your profile.',
-      step: 'Step 3',
-    },
-    {
-      id: 'Explore Your Career Path',
-      image: ai4,
-      detailedText: 'Click on any recommended career to see a step-by-step roadmap in the form of a flowchart, along with key insights on how to become a professional in that field.',
-      step: 'Step 4',
-    },
-  ];
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
 
   return (
-    
-    <Box className="how-it-works-container">
-      <NavBar />
-      <Typography className="how-it-works-title">
-      Step-by-Step Guide
-      </Typography>
-      <Typography className="how-it-works-description">
-        Follow these steps to explore your career options and make informed decisions about your future.
-      </Typography>
-      <Box className="cards-container">
-      <Grid container spacing={6} justifyContent="center">
-        {data.map((item, index) => (
-          <Grid item xs={12} sm={4} md={4} lg={3} key={index}>
-            <Card className="custom-card">
-              <Box className="card-content">
-                <CardMedia
-                  component="img"
-                  height="150"
-                  image={item.image}
-                  alt={item.id}
-                  className="card-image"
-                />
-                <Box
-                  sx={{
-                    fontStyle: "'Questrial' sanserif",
-                      padding: 2.5,
-                      textAlign: 'center', 
-                  }}
-                >
-                <Typography
-                 sx={{
-                      fontStyle: "'Questrial' sanserif",
-                      fontSize: '1.5rem', 
-                      fontWeight: 'bold', 
-                      marginBottom: '1.7rem', 
-                      lineHeight: '1', 
-                    }}
-                 >
-                    {item.id}
-                  </Typography>
-                  
-                  <Typography variant="body2" className="detailed-text"  >
-                    {item.detailedText}
-                  </Typography>  
-                  
-                  <Typography
-                       sx={{
-                          fontStyle: "'Questrial' sanserif",
-                          fontSize: '1rem', // Slightly smaller font size for the step text
-                          color: '#0a77bc', // Use a subtle color for the step text
-                          fontWeight:'bold',
-                          marginTop: '1rem',
-                           }}
-                    >{item.step}
-                    </Typography>
-                  </Box>
-                </Box>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-    </Box>
+    <div className="step-wrapper">
+      <motion.div 
+        ref={ref}
+        className={`step-container ${number % 2 === 0 ? 'even' : 'odd'}`}
+        animate={isInView ? "visible" : "hidden"}
+        variants={slideVariants}
+        initial="hidden"
+      >
+        <div className="step-number">{number}</div>
+        <div className="step-content">
+          <h3>{title}</h3>
+          <p>{description}</p>
+          <img src="/path-to-your-screenshot.png" alt={title} />
+        </div>
+      </motion.div>
+    </div>
   );
 };
 
-export default HowItWorks;
+const About = () => {
+  const { scrollYProgress } = useScroll();
+  const scaleY = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  const steps = [
+    {
+      number: 1,
+      title: "AI-Powered Career Guidance",
+      description: "Our advanced AI system analyzes your skills, interests, and goals to provide personalized career recommendations that align with your aspirations."
+    },
+    {
+      number: 2,
+      title: "Custom Career Roadmaps",
+      description: "Get detailed, step-by-step roadmaps tailored to your chosen career path, complete with specific milestones and skills to develop along the way."
+    },
+    {
+      number: 3,
+      title: "Real-Time Market Insights",
+      description: "Access up-to-date information about salary ranges, job requirements, and industry trends to make informed decisions about your career path."
+    },
+    {
+      number: 4,
+      title: "Professional Development",
+      description: "Receive personalized guidance on certifications, courses, and skills needed to advance in your chosen career path and stay competitive."
+    },
+    {
+      number: 5,
+      title: "Career Success Tracking",
+      description: "Monitor your progress, track achievements, and adjust your career path as you grow professionally with our comprehensive tracking system."
+    }
+  ];
+
+  return (
+    <>
+      <NavBar />
+      <div className="about-container">
+        <div className="about-title">
+          <h1>How It Works</h1>
+          <p>Discover your ideal career path with our AI-powered guidance system that adapts to your unique goals and aspirations.</p>
+        </div>
+        <div className="about-steps">
+          <div className="thread-container">
+            <div className="thread-background" />
+            <motion.div 
+              className="thread-progress"
+              style={{
+                scaleY,
+                height: '100%'
+              }}
+            />
+          </div>
+          {steps.map((step) => (
+            <StepContainer
+              key={step.number}
+              number={step.number}
+              title={step.title}
+              description={step.description}
+              isEven={step.number % 2 === 0}
+            />
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default About;

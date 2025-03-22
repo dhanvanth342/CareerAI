@@ -41,7 +41,6 @@ function Login() {
             <div className="animated-text">
                 <h1>Oh! Looks like someone's back! </h1>
             </div>
-
             <div className="login-card">
                 <h2>Login</h2>
                 <form onSubmit={handleLogin}>
@@ -105,16 +104,8 @@ function Login() {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             console.log("User Logged in successfully");
-            navigate('/Mainpage', { 
-                state: { 
-                    userDetails: { 
-                        email: user.email, 
-                        displayName: user.displayName || '' 
-                    } 
-                },
-                replace: true  // Move replace inside the options object
-            });
-                } catch (error) {
+            navigate('/Mainpage', { state: { userDetails: { email: user.email, displayName: user.displayName || '' } } });
+        } catch (error) {
             if (error.code === 'auth/wrong-password') {
                 alert('The password you entered does not match. Please try again.');
             } else if (error.code === 'auth/user-not-found') {
@@ -172,7 +163,7 @@ function Login() {
                         </form>
 
                         <div className="options">
-                            <p>New user? <span className="create-account" onClick={() => navigate('/signup',{replace: true})}>Create an account</span></p>
+                            <p>New user? <span className="create-account" onClick={() => navigate('/signup')}>Create an account</span></p>
                         </div>
                     </div>
                 </div>

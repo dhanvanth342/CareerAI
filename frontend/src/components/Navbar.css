@@ -21,7 +21,9 @@
 
 /* Navbar background when scrolled */
 .header-bg {
-    background: linear-gradient(180deg, #0a192f 53%, #172a45 100%);
+    background-color: rgba(255, 255, 255, 0.3); /* Add some opacity for visibility */
+    backdrop-filter: blur(10px); /* Blur effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
 }
 
 .logo {
@@ -84,7 +86,7 @@
         position: absolute;
         top: 60px;
         right: 20px;
-        background-color: #0d6efd;
+        background-color: #f1f5f6;
         width: 200px;
         border-radius: 5px;
         padding: 10px;
@@ -96,9 +98,15 @@
 
     .nav-menu li {
         text-align: center;
-        padding: 10px 0;
+        padding: 8px 0;
     }
 
+    .nav-menu li a {
+        color: rgb(4 41 95);
+        text-decoration: none;
+        font-size: 25px;
+    }
+    
     .logo h1 {
         font-size: 20px;
     }

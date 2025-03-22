@@ -9,7 +9,7 @@ import QuestionsPage from './Pages/Questionspage';
 import Aiprompt from './Pages/Aiprompt';
 import Team from './Pages/Team';
 import HowItWorks from './Pages/About';
-import WritePrompt from './Pages/Writeprompt';
+import Writeprompt from './Pages/Writeprompt';
 
 
 function App() {
@@ -22,10 +22,10 @@ function App() {
                 <Route path="/Mainpage" element={<MainPage />} />
                 <Route path ="/PromptPage" element ={<PromptPage />} />
                 <Route path ="/questions" element ={<QuestionsPage/>} />
-                <Route path = "/Aiprompt" element={<Aiprompt/>} /> 
-                <Route path = "/WritePrompt" element={<WritePrompt/>} /> 
+                <Route path = "/Aiprompt" element={<Aiprompt/>} />
                 <Route path = "/About" element= {<HowItWorks/>}/>
                 <Route path = "/Team" element= {<Team/>}/>
+                <Route path = "/Writeprompt" element= {<Writeprompt/>}/>
                 {/* Future routes for new pages */}
             </Routes>
         </Router>
