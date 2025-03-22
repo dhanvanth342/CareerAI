@@ -51,7 +51,7 @@ const Aiprompt = () => {
   const handleTextChange = (e) => setPrompt(e.target.value);
   const handleEditClick = () => setIsEditable(true);
 
-  const handleAccordionToggle = async (index, jobRole, userPrompt) => {
+  const handleAccordionToggle = async (index, jobRole, userPrompt, isTalentShortage) => {
     setOpenAccordions((prev) => ({ ...prev, [index]: !prev[index] }));
 
     if (!expandedData[index]) {
@@ -65,10 +65,14 @@ const Aiprompt = () => {
       }, 16000);
 
       try {
-        const response = await fetch('http://localhost:5000/generate-roadmap', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-roadmap`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ user_prompt: userPrompt, job_title: jobRole }),
+          body: JSON.stringify({ 
+            user_prompt: userPrompt, 
+            job_title: jobRole,
+            is_talent_shortage: isTalentShortage 
+          }),
         });
 
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
@@ -80,9 +84,10 @@ const Aiprompt = () => {
             flowchart: data.flowchart,
             explanation: data.explanation,
             loaded: true,
+            is_talent_shortage: isTalentShortage
           },
         }));
-      } catch (error) {
+      }catch (error) {
         console.error("Error fetching roadmap data:", error);
       }
     }
@@ -94,7 +99,7 @@ const Aiprompt = () => {
     setInitialSubmit(false);
 
     try {
-      const response = await fetch('http://localhost:5000/generate-recommendations', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-recommendations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
@@ -139,11 +144,21 @@ const Aiprompt = () => {
           </div>
         ) : (
           recommendations.map((rec, index) => (
-            <Accordion variant='div' key={index} expanded={openAccordions[index]} onChange={() => handleAccordionToggle(index, rec.job_role, prompt)}>
+            <Accordion variant='div' key={index} expanded={openAccordions[index]} onChange={() => handleAccordionToggle(index, rec.job_role, rec.is_talent_shortage)}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />} className="accordion-header">
                 <div className="job-accordion-left">
                   <Typography component={'div'}>
-                    <h1><span className="job-title-blue">{rec.job_role}:</span> </h1>
+                    <h1><span className="job-title-blue">{rec.job_role}:</span> 
+                    {rec.is_talent_shortage && 
+                        <Chip 
+                          label="Talent Shortage" 
+                          color="primary" 
+                          size="small" 
+                          className="talent-shortage-chip"
+                          style={{ marginLeft: '10px', fontSize: '0.7rem' }}
+                        />
+                      }
+                    </h1>
                     <div className="job-description">{rec.description}</div>
                   </Typography>
                 </div>
@@ -169,25 +184,40 @@ const Aiprompt = () => {
                         altText="Job Role Visual"
                         className="accordion-image-holder"
                       />
-                      <div className="accordion-text-container">
-                        <div className="accordion-text">
-                          <Typography className="question-heading"><strong>What does a {rec.job_role} do?</strong></Typography>
-                          <Typography className="answer-text">{expandedData[index]?.explanation?.job_description || <div className="loading-container">
-                            <motion.h1 className="loading-text">{loadingText}</motion.h1>
-                            <motion.h1 className="countdown">{rounded}</motion.h1>
-                          </div>}</Typography>
+                   <div className="accordion-text-container">
+                    <div className="accordion-text">
+                      {/* Conditionally display content based on is_talent_shortage */}
+                      {expandedData[index]?.is_talent_shortage && (
+                        <>
+                          <Typography className="question-heading"><strong>Reasons for Talent Shortage</strong></Typography>
+                          <Typography className="answer-text">
+                            {expandedData[index]?.explanation?.Reasons_of_talent_shortage || 'Loading...'}
+                          </Typography>
+                        </>
+                      )}
 
-                          <Typography className="question-heading"><strong>How it aligns with your requirements?</strong></Typography>
-                          <Typography className="answer-text">{expandedData[index]?.explanation?.alignment || 'Loading...'}</Typography>
+                      <Typography className="question-heading"><strong>How it aligns with your requirements</strong></Typography>
+                      <Typography className="answer-text">
+                        {expandedData[index]?.explanation?.alignment || 'Loading...'}
+                      </Typography>
 
-                          <Typography className="question-heading"><strong>Average Salary</strong>:</Typography>
-                          <ul>
-                            <li className="answer-text"><strong>Local Salary:</strong> {expandedData[index]?.explanation?.average_salary?.local_salary || 'XX,XXX - YY,YYY [Currency]'}</li>
-                            <li className="answer-text"><strong>USA Salary:</strong> {expandedData[index]?.explanation?.average_salary?.usa_salary || 'XX,XXX - YY,YYY USD'}</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </>
+                      <Typography className="question-heading"><strong>Average Salary</strong></Typography>
+                      <ul>
+                        <li className="answer-text">
+                          <strong>Local Salary:</strong> {expandedData[index]?.explanation?.average_salary?.local_salary || 'Loading...'}
+                        </li>
+                        <li className="answer-text">
+                          <strong>USA Salary:</strong> {expandedData[index]?.explanation?.average_salary?.usa_salary || 'Loading...'}
+                        </li>
+                      </ul>
+
+                      <Typography className="question-heading"><strong>Education Roadmap Summary</strong></Typography>
+                      <Typography className="answer-text">
+                        {expandedData[index]?.explanation?.average_salary?.Summary || 'Loading...'}
+                      </Typography>
+                    </div>
+                  </div>
+                  </>
                   )}
                 </div>
               </AccordionDetails>

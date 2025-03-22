@@ -48,7 +48,7 @@ const WritePrompt = () => {
   const handleTextChange = (e) => setPrompt(e.target.value);
   const handleEditClick = () => setIsEditable(true);
 
-  const handleAccordionToggle = async (index, jobRole, userPrompt) => {
+  const handleAccordionToggle = async (index, jobRole, userPrompt,isTalentShortage) => {
     setOpenAccordions((prev) => ({ ...prev, [index]: !prev[index] }));
     
     if (!expandedData[index]) {
@@ -64,14 +64,18 @@ const WritePrompt = () => {
       }, 16000);
 
       try {
-        const response = await fetch('http://localhost:5000/generate-roadmap', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-roadmap`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ user_prompt: userPrompt, job_title: jobRole }),
+          body: JSON.stringify({ 
+            user_prompt: userPrompt, 
+            job_title: jobRole,
+            is_talent_shortage: isTalentShortage 
+          }),
         });
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         const data = await response.json();
-
+        console.log("Received Roadmap Data:", data); // Debugging line
         if (data) {
           setExpandedData((prevData) => ({
             ...prevData,
@@ -79,6 +83,7 @@ const WritePrompt = () => {
               flowchart: data.flowchart,
               explanation: data.explanation,
               loaded: true,
+              is_talent_shortage: isTalentShortage
             },
           }));
         }
@@ -99,7 +104,7 @@ const WritePrompt = () => {
     setLoading(true);
     setInitialSubmit(false);
     try {
-      const response = await fetch('http://localhost:5000/generate-recommendations', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-recommendations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
@@ -182,11 +187,21 @@ const handleCardClick = (text) => {
           </div>
         ) : (
           recommendations.map((rec, index) => (
-            <Accordion variant='div' key={index} expanded={openAccordions[index]} onChange={() => handleAccordionToggle(index, rec.job_role, prompt)}>
+            <Accordion variant='div' key={index} expanded={openAccordions[index]} onChange={() => handleAccordionToggle(index, rec.job_role, rec.is_talent_shortage)}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />} className="accordion-header">
                 <div className="job-accordion-left">
                   <Typography component={'div'}>
-                    <h1><span className="job-title-blue">{rec.job_role}:</span> </h1>
+                    <h1><span className="job-title-blue">{rec.job_role}:</span> 
+                    {rec.is_talent_shortage && 
+                        <Chip 
+                          label="Talent Shortage" 
+                          color="primary" 
+                          size="small" 
+                          className="talent-shortage-chip"
+                          style={{ marginLeft: '10px', fontSize: '0.7rem' }}
+                        />
+                      }
+                    </h1>
                     <div className="job-description">{rec.description}</div>
                   </Typography>
                 </div>
@@ -198,40 +213,61 @@ const handleCardClick = (text) => {
               </AccordionSummary>
               <AccordionDetails>
                 <div className={`accordion-content ${expandedData[index]?.loaded ? "loaded" : ""}`}>
-                  {expandedData[index] ? (
-                    <ExpandableImageHolder
-                      imageUrl={`data:image/png;base64,${expandedData[index]?.flowchart ?? ''}`}
-                      altText="Job Role Visual"
-                      className="accordion-image-holder"
-                    />
+                  {loadingStates[index] ? (
+                    <div className="loading-content-container">
+                      <div className="loading-message">
+                        <div className="loading-spinner"></div>
+                        Loading your path...
+                      </div>
+                    </div>
                   ) : (
-                    <div className="image-placeholder">Loading image...</div>
+                    <>
+                      <ExpandableImageHolder
+                        imageUrl={`data:image/png;base64,${expandedData[index]?.flowchart ?? ''}`}
+                        altText="Job Role Visual"
+                        className="accordion-image-holder"
+                      />
+                   <div className="accordion-text-container">
+                    <div className="accordion-text">
+                      {/* Conditionally display content based on is_talent_shortage */}
+                      {expandedData[index]?.is_talent_shortage && (
+                        <>
+                          <Typography className="question-heading"><strong>Reasons for Talent Shortage</strong></Typography>
+                          <Typography className="answer-text">
+                            {expandedData[index]?.explanation?.Reasons_of_talent_shortage || 'Loading...'}
+                          </Typography>
+                        </>
+                      )}
+
+                      <Typography className="question-heading"><strong>How it aligns with your requirements</strong></Typography>
+                      <Typography className="answer-text">
+                        {expandedData[index]?.explanation?.alignment || 'Loading...'}
+                      </Typography>
+
+                      <Typography className="question-heading"><strong>Average Salary</strong></Typography>
+                      <ul>
+                        <li className="answer-text">
+                          <strong>Local Salary:</strong> {expandedData[index]?.explanation?.average_salary?.local_salary || 'Loading...'}
+                        </li>
+                        <li className="answer-text">
+                          <strong>USA Salary:</strong> {expandedData[index]?.explanation?.average_salary?.usa_salary || 'Loading...'}
+                        </li>
+                      </ul>
+
+                      <Typography className="question-heading"><strong>Education Roadmap Summary</strong></Typography>
+                      <Typography className="answer-text">
+                        {expandedData[index]?.explanation?.average_salary?.Summary || 'Loading...'}
+                      </Typography>
+                    </div>
+                  </div>
+                  </>
                   )}
-                  <div className="accordion-text-container">
-                  <div className="accordion-text">
-                    <Typography className="question-heading"><strong>What does a {rec.job_role} do?</strong></Typography>
-                    <Typography className="answer-text">{expandedData[index]?.explanation?.job_description || <div className="loading-container">
-                      <motion.h1 className="loading-text">{loadingText}</motion.h1>
-                      <motion.h1 className="countdown">{rounded}</motion.h1>
-                    </div>}</Typography>
-
-                    <Typography className="question-heading"><strong>How it aligns with your requirements?</strong></Typography>
-                    <Typography className="answer-text">{expandedData[index]?.explanation?.alignment || 'Loading...'}</Typography>
-
-                    <Typography className="question-heading"><strong>Average Salary</strong>:</Typography>
-                    <ul>
-                      <li className="answer-text"><strong>Local Salary:</strong> {expandedData[index]?.explanation?.average_salary?.local_salary || 'XX,XXX - YY,YYY [Currency]'}</li>
-                      <li className="answer-text"><strong>USA Salary:</strong> {expandedData[index]?.explanation?.average_salary?.usa_salary || 'XX,XXX - YY,YYY USD'}</li>
-                    </ul>
-                  </div>
-                  </div>
                 </div>
               </AccordionDetails>
             </Accordion>
           ))
         )}
       </div>
-
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -248,11 +284,11 @@ const handleCardClick = (text) => {
                 <div className="thumbs-up">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7 22H4C3.46957 22 2.96086 21.7893 2.58579 21.4142C2.21071 21.0391 2 20.5304 2 20V13C2 12.4696 2.21071 11.9609 2.58579 11.5858C2.96086 11.2107 3.46957 11 4 11H7M14 9V5C14 4.20435 13.6839 3.44129 13.1213 2.87868C12.5587 2.31607 11.7956 2 11 2L7 11V22H18.28C18.7623 22.0055 19.2304 21.8364 19.5979 21.524C19.9654 21.2116 20.2077 20.7769 20.28 20.3L21.66 11.3C21.7035 11.0134 21.6842 10.7207 21.6033 10.4423C21.5225 10.1638 21.3821 9.90629 21.1919 9.68751C21.0016 9.46873 20.7661 9.29393 20.5016 9.17522C20.2371 9.0565 19.9499 8.99672 19.66 9H14Z" 
-                        stroke="#83c9fc" 
-                        strokeWidth="2" 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round"
-                        className="thumbs-up-path"/>
+                      stroke="#83c9fc" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                      className="thumbs-up-path"/>
                   </svg>
                 </div>
               )}
@@ -269,7 +305,7 @@ const handleCardClick = (text) => {
           </div>
         </div>
       )}
-      <Footer/>
+      <Footer />
     </>
   );
 };
