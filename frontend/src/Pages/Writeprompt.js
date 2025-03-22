@@ -187,7 +187,7 @@ const handleCardClick = (text) => {
           </div>
         ) : (
           recommendations.map((rec, index) => (
-            <Accordion variant='div' key={index} expanded={openAccordions[index]} onChange={() => handleAccordionToggle(index, rec.job_role, rec.is_talent_shortage)}>
+            <Accordion variant='div' key={index} expanded={openAccordions[index]} onChange={() => handleAccordionToggle(index, rec.job_role,prompt, rec.is_talent_shortage)}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />} className="accordion-header">
                 <div className="job-accordion-left">
                   <Typography component={'div'}>
