@@ -44,9 +44,9 @@ const PromptPage = ({ onQuestionsGenerated = () => {} }) => {
     }
     setError('');
     setIsLoading(true);
-
+    const country="";
+    const highest_education="";
     const requestData = { initial_context: text, highest_education: question1, country: question2 };
-
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-questions`, {
         method: 'POST',
@@ -60,7 +60,7 @@ const PromptPage = ({ onQuestionsGenerated = () => {} }) => {
       const result = await response.json();
       if (result.error) throw new Error(result.error);
       onQuestionsGenerated(result.questions);
-      navigate('/questions', { state: { questions: result.questions, initial_context: result.initial_context } });
+      navigate('/questions', { state: { questions: result.questions, initial_context: result.initial_context , country: country, highest_education: highest_education} });
 
     } catch (error) {
       setError(`Error: ${error.message || 'Failed to generate questions'}`);
