@@ -178,6 +178,7 @@ const QuestionsPage = () => {
     <input
       type="text"
       className="text-answer"
+      style={{ color: 'black' }}
       value={answers[currentQuestionIndex]?.[0] || ''}
       onChange={(e) => setAnswers({ ...answers, [currentQuestionIndex]: [e.target.value] })}
       placeholder="Enter your response..."
