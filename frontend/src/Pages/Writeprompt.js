@@ -4,7 +4,7 @@ import '../components/Styles/Writeprompt.css';
 import '../components/Styles/Aiprompt.css';
 import NavBar from '../components/Navbar';
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Card, CardContent } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Typography, Card, CardContent, Chip } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditIcon from '@mui/icons-material/Edit';
 import SendIcon from '@mui/icons-material/Send';
@@ -213,20 +213,14 @@ const handleCardClick = (text) => {
               </AccordionSummary>
               <AccordionDetails>
                 <div className={`accordion-content ${expandedData[index]?.loaded ? "loaded" : ""}`}>
-                  {loadingStates[index] ? (
-                    <div className="loading-content-container">
-                      <div className="loading-message">
-                        <div className="loading-spinner"></div>
-                        Loading your path...
-                      </div>
-                    </div>
-                  ) : (
-                    <>
+                  {expandedData[index]?(
                       <ExpandableImageHolder
                         imageUrl={`data:image/png;base64,${expandedData[index]?.flowchart ?? ''}`}
                         altText="Job Role Visual"
                         className="accordion-image-holder"
                       />
+                  ):(<div className="image-placeholder">Loading image...</div>
+                  )}
                    <div className="accordion-text-container">
                     <div className="accordion-text">
                       {/* Conditionally display content based on is_talent_shortage */}
@@ -260,8 +254,6 @@ const handleCardClick = (text) => {
                       </Typography>
                     </div>
                   </div>
-                  </>
-                  )}
                 </div>
               </AccordionDetails>
             </Accordion>

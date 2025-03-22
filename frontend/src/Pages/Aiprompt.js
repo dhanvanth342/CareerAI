@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import '../components/Styles/Aiprompt.css';
 import NavBar from '../components/Navbar';
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Typography,Chip } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditIcon from '@mui/icons-material/Edit';
 import SendIcon from '@mui/icons-material/Send';
