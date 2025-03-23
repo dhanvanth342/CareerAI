@@ -10,7 +10,6 @@ load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
-
 # Initialize LLM Handler
 llm_handler = LLMHandler()
 
@@ -67,6 +66,9 @@ def generate_prompt():
         initial_context = data.get('initial_context', '')
         questions = data.get('questions', [])
         answers = data.get('answers', {})
+        highest_education = data.get('highest_education', '')
+        country = data.get('country', '')
+
 
         # Validate input
         if not initial_context:
@@ -79,7 +81,9 @@ def generate_prompt():
         prompt = llm_handler.generate_prompt(
             initial_context=initial_context,
             questions=questions,
-            answers=answers
+            answers=answers,
+            highest_education=highest_education,
+            country=country
         )
 
         return jsonify({"prompt": prompt})
@@ -120,6 +124,10 @@ def road_map():
         job_title = data.get('job_title')
         if not job_title:
             return jsonify(({'error': 'Could not fetch job title'})), 400
+        is_talent_shortage = data.get('is_talent_shortage')
+        if is_talent_shortage is None:
+            return jsonify({'error': 'Could not fetch is_talent_shortage'}), 400
+
         #query_handler = GrokHandler()
         dot_code = llm_handler.generate_dot_code(user_prompt, job_title)
         if not dot_code:
@@ -131,9 +139,9 @@ def road_map():
         )
 
         if not output_image_path or not os.path.exists(output_image_path):
-            return jsonify({'error': 'Failed to generate flowchart image'}), 500
+            return jsonify({'error': 'Failed to generate flowchart image'}), 420
 
-        explanation = llm_handler.generate_text_response(job_title, user_prompt)
+        explanation = llm_handler.generate_text_response(job_title, user_prompt, is_talent_shortage, dot_code)
         if not explanation:
             return jsonify({'error': 'Failed to generate explanation'}), 500
 
@@ -141,7 +149,7 @@ def road_map():
             with open(output_image_path, "rb") as image_file:
                 encoded_image = base64.b64encode(image_file.read()).decode()
         except Exception as e:
-            return jsonify({'error': 'Failed to process the generated image'}), 500
+            return jsonify({'error': 'Failed to process the generated image'}), 450
 
         try:
             if os.path.exists(output_image_path):
@@ -161,4 +169,6 @@ def road_map():
         return jsonify({'error': 'An unexpected error occurred. Please try again.'}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Use the PORT environment variable for dynamic port binding
+    port = int(os.environ.get('PORT', 5000))  # Default to 5000 if not set
+    app.run(host='0.0.0.0', port=port)
