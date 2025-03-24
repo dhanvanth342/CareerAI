@@ -1,0 +1,405 @@
+/*
+.about-container {
+  padding: 0;
+  font-family: 'Questrial', sans-serif !important;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 90px;
+}
+
+.big-box-1, .big-box-3, .big-box-5 {
+  margin-right: 600; 
+}
+
+.big-box-2, .big-box-4 {
+  margin-left: 600;
+
+.big-box-1, .big-box-2, .big-box-3, .big-box-4, .big-box-5 {
+  width: 45%;
+  height: 60vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 2px solid white;
+}
+
+.text-content {
+  width: 45%;
+  padding: 200px; 
+  font-family: 'Questrial', sans-serif !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.text-content-right {
+  margin-left: 20px;
+}
+
+.text-content-left {
+  margin-right: 20px;
+}
+
+
+.text-content h1 {
+  font-size: 64px;
+  font-weight: 1100;
+  color: #83c9fc; 
+  padding: 5px; 
+}
+
+.text-content p {
+  color: white; 
+  font-size: 24px;
+}
+
+*/
+
+
+.about-container {
+  padding: 40px 0;
+  max-width: 100%;
+  margin: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center alignment */
+}
+
+.step-content p {
+  white-space: pre-line; /* This will preserve line breaks */
+}
+
+
+.about-steps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.step-wrapper {
+  width: 100%;
+  margin: -1520px 0; /* Even more negative margin */
+}
+
+.step-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  max-width: 2400px; /* Dramatically increased width */
+  margin: 0 auto;
+  transform: translateX(-5%); /* Shift all containers slightly left of center */
+}
+
+/* For odd numbered steps (1,3,5) */
+.step-container.odd {
+  transform: translateX(-3%); /* Slightly different offset for odd numbers */
+}
+
+/* For even numbered steps (2,4) */
+.step-container.even {
+  transform: translateX(-7%); /* Slightly different offset for even numbers */
+}
+
+.step-content {
+  flex: 0 1 95%; /* Taking up almost all available space */
+  background: #f1f5f6;
+  border-radius: 15px;
+  backdrop-filter: blur(8px);
+  padding: 60px; /* Increased internal padding */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 500px; /* Increased height as well */
+}
+
+.step-content h3 {
+  color: rgb(4 41 95);
+  font-size: 2.2rem;
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.step-content p {
+  color: rgb(4 41 95);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.9;
+  flex-grow: 1;
+}
+
+.step-content img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-top: auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.step-content img.step-image {
+  max-width: 100%;  /* Ensure the image is responsive */
+  height: auto;     /* Maintain aspect ratio */
+  margin-top: 20px; /* Optional: Add margin to space the image from text */
+}
+
+/* Add hover effects */
+.step-content:hover {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 1200px) {
+  .step-content {
+    flex: 0 1 88%;
+  }
+}
+
+@media (max-width: 768px) {
+  .step-wrapper {
+    margin: 10px 0;
+  }
+
+  .step-container,
+  .step-container.odd,
+  .step-container.even {
+    transform: translateX(0); /* No offset on mobile */
+  }
+
+  .step-content {
+    flex: 0 1 95%;
+    padding: 30px;
+  }
+
+  .step-content img {
+    height: 200px;
+  }
+
+  .step-number {
+    margin: 0 0 20px 0;
+  }
+}
+
+/* Add a page title */
+.about-title {
+  text-align: center;
+  margin-bottom: 10px; /* Reduced margin */
+}
+
+.about-title h1 {
+  font-size: 4.5rem;
+  color: #f6f8f9;
+  margin-bottom: 20px;
+}
+
+.about-title p {
+  font-size: 1.8rem;
+  color: #83c9fc;
+  max-width: 800px;
+  margin: 0 auto;
+  opacity: 0.9;
+}
+
+.about-steps {
+  position: relative;
+  padding: 40px 0;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.step-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin: 40px 0; /* Reduced gap between containers (was 120px) */
+}
+
+.step-container {
+  width: 75%;
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* For odd numbered steps (1,3,5) - content on left, number on right */
+.step-container.odd {
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+/* For even numbered steps (2,4) - content on right, number on left */
+.step-container.even {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.step-content {
+  flex: 0 1 70%; /* Take up 70% of the container width */
+  margin: 0 30px;
+  background: #f1f5f6;
+  border-radius: 15px;
+  backdrop-filter: blur(8px);
+  color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+/*
+.step-content h3 {
+  color: rgb(4 41 95);
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+}
+*/
+.step-content p {
+  font-size: 1.4rem;
+  font-weight: bold;
+  line-height: 1.6;
+  color: rgb(4 41 95);
+  margin-bottom: 0px;
+  margin-top: 1px;
+}
+
+.step-content img {
+  width: 100%;
+  max-height: flex;
+  object-fit: contain;
+  border-radius: 10px;
+  margin-top: auto;
+}
+
+.step-number {
+  font-size: 78px !important; /* Larger number */
+  color: #f1f4f7 !important;
+  font-weight: bold;
+  margin: 0 30px;
+  /* Removed width, height, border-radius, and background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation-top, .back-to-top {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.navi-button, .back-to-top-button {
+  background-color: transparent;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .step-container.odd,
+  .step-container.even {
+    flex-direction: column;
+    align-items: center;
+  }
+  .step-content p {
+    font-size: 1.4rem;
+  }
+
+  .step-content {
+    flex: 0 1 90%;
+    margin: 20px 0;
+  }
+  .step-number {
+    margin: 0;
+  }
+}
+
+/* First step special margin */
+.step-wrapper:first-child {
+  margin-top: 0;
+}
+
+/* Last step special margin */
+.step-wrapper:last-child {
+  margin-bottom: 0;
+}
+
+:root {
+  --step-gap: 120px;      /* Space between step containers */
+  --thread-gap: 5px;      /* Even smaller gap from container (was 10px) */
+  --thread-length: 160px; /* Much longer thread length (was 100px) */
+}
+
+.step-wrapper {
+  margin: var(--step-gap) 0;
+}
+
+.connecting-thread {
+  display: none;
+}
+/* If you want even wider on larger screens */
+@media (min-width: 1800px) {
+  .step-container {
+    max-width: 2000px; /* Even wider on very large screens */
+  }
+  
+  .step-content {
+    flex: 0 1 92%; /* Even wider cards on large screens */
+  }
+}
+
+/* Support for extra large screens */
+@media (min-width: 2400px) {
+  .step-container {
+    max-width: 2800px; /* Even wider on very large screens */
+  }
+  
+  .step-content {
+    flex: 0 1 96%;
+  }
+}
+
+/* Maintain reasonable size on smaller screens */
+@media (max-width: 1400px) {
+  .step-container,
+  .step-container.odd,
+  .step-container.even {
+    transform: translateX(-4%); /* Smaller offset on smaller screens */
+  }
+  
+  .step-content {
+    padding: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .step-content {
+    padding: 20px;
+    min-height: 400px;
+  }
+}
+

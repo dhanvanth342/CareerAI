@@ -1,0 +1,372 @@
+.prompt-container {
+  margin: 0;
+  font-family: 'Questrial', sans-serif;
+  color: white;
+ 
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+
+/* Navbar Styling */
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: none;
+  box-shadow: none;
+}
+
+/* Logo Styling */
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.logout-btn {
+  background: linear-gradient(135deg, #82cded, #0099ff);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+.logout-btn:hover {
+  background: linear-gradient(135deg, #0099ff, #0077cc);
+}
+
+/* Main Content Styling */
+.main-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Ensure everything aligns left */
+  gap: 20px;
+}
+
+.prompt-text {
+  font-size: 5.0rem !important; 
+  font-weight: bold;
+  color: #82cded;
+  margin-bottom: 20px;
+  text-align: left;
+  padding-left: 10px; /* Adjusted padding for proper alignment */
+  word-wrap: break-word; /* Ensures long words wrap if needed */
+  overflow: visible; /* Ensure text doesn't get clipped */
+  white-space: normal; /* Ensure text wraps properly */
+}
+
+/* Error Message - Align Left */
+.error-message {
+  color: red;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding-left: 0; /* Align error message to left */
+}
+
+
+.input-education {
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid white;
+  font-size: 1rem;
+  background: transparent;
+  color: white;
+  outline: none;
+}
+
+
+/* Question Boxes Container - Move Left */
+.question-boxes {
+  display: flex;
+  justify-content: flex-start; /* Align to left */
+  gap: 110px;
+  margin-top: 20px;
+  flex-wrap: nowrap;
+  padding-left: 0; /* Remove left padding */
+  width: 55%;
+}
+
+/* Ensure Each Question Box Has Equal Width */
+.question-box {
+  position: relative;
+  width: 100%;
+  max-width: 500px; /* Max width for questions */
+  flex: 1;
+}
+
+/* Transparent Dropdown Styled Like Input Box */
+.question-box select {
+  width: 100%;
+  padding: 15px;
+  padding-right: 50px; /* Extra padding for dropdown arrow */
+  border-radius: 8px;
+  border: 2px solid white; /* Add a subtle white border for visibility */
+  font-size: 1rem;
+  background: transparent; /* Transparent dropdown */
+  color: white; /* White text color */
+  appearance: none;
+  text-align: left;
+  outline: none; /* Remove default focus outline */
+}
+
+/* Dropdown Options Styling */
+.question-box select option {
+  background: rgba(10, 25, 47, 0.9); /* Semi-transparent dark background for dropdown options */
+  color: white; /* White text for options */
+  border: none; /* Remove border for a clean look */
+}
+
+/* Placeholder Styling */
+.question-box select:invalid {
+  color: rgba(255, 255, 255, 0.7); /* Lighter white for placeholder text */
+}
+
+
+/* Styling for Input Box */
+.input-box .education-input {
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid white;
+  font-size: 1rem;
+  background: transparent;
+  color: white;
+  outline: none;
+}
+
+/* Remove Dropdown Arrow from Input Field */
+.input-box .education-input::-webkit-inner-spin-button,
+.input-box .education-input::-webkit-calendar-picker-indicator {
+  display: none; /* Ensures no unwanted symbols appear */
+}
+
+/* Styling for Dropdown Box */
+.dropdown-box .country-dropdown {
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid white;
+  font-size: 1rem;
+  background: transparent;
+  color: white;
+  appearance: none; /* Removes default dropdown styling */
+}
+
+/* Custom Dropdown Arrow */
+.dropdown-box::after {
+  content: "▼";
+  font-size: 16px;
+  color: white;
+  position: absolute;
+  right: 15px;
+  top: 75%;
+  transform: translateY(-50%);
+}
+
+/* Expanding Textarea - Aligned Left & Increased Width */
+.response-box {
+  width: 100%;
+  max-width: 1450px; /* ⬆ Wider response box */
+  margin-top: 20px;
+  padding-left: 0; /* Remove left padding */
+  display: flex; /* Align button on the same row */
+  align-items: center;
+}
+
+/* Increased Width & Height of Text Box */
+.generated-text {
+  width: 90%; /* ⬆ Adjusted to fit space */
+  min-height: 150px; /* ⬆ Increased minimum height */
+  max-height: 300px; /* ⬆ Increased maximum height */
+  overflow-y: auto;
+  padding: 15px;
+  border-radius: 12px;
+  border: 2px solid white; /* White border for visibility */
+  font-size: 1rem;
+  background: white;
+  color: black;
+  resize: none;
+  transition: all 0.3s ease-in-out, height 0.2s ease-in-out;
+}
+
+/* Focus Effect */
+.generated-text:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(130, 205, 237, 0.8);
+}
+
+/* Button Container Aligned Below Response */
+.button-container {
+  display: flex;
+  justify-content: flex-start; /* Align it to the left under the response box */
+  /*margin-top: 10px; */
+  margin-right: 850px;
+   /*padding-left: 40px; Align perfectly with the response box's left padding */
+}
+
+/* Transparent Button with Glow Effect */
+.icon-btn {
+  padding: 14px 25px;
+  border: 2px solid white; /* Maintain border for visibility */
+  border-radius: 10px;
+  background: transparent; /* Transparent background */
+  color: white; /* White text color */
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.icon-btn:hover {
+  box-shadow: 0 0 15px rgba(130, 205, 237, 0.8); /* Glowing effect on hover */
+}
+
+/* Responsive Design - Stack on Smaller Screens */
+@media (max-width: 768px) {
+  .question-boxes {
+    flex-direction: column; /* Stack dropdowns on mobile */
+    gap: 20px;
+    padding-left: 0; /* Adjust alignment for smaller screens */
+  }
+
+  .response-box {
+    padding-left: 0; /* Align left on smaller screens */
+    max-width: 100%;
+    flex-direction: column; /* Stack input and button */
+    align-items: flex-start;
+  }
+
+  .generated-text {
+    width: 100%; /* Full width on smaller screens */
+  }
+
+  .button-container {
+    margin-left: 0; /* Align button to left below input */
+    margin-top: 10px; /* Small spacing */
+  }
+}
+/* Typewriter animation for the heading */
+@keyframes typewriter {
+  from {
+      width: 0;
+  }
+  to {
+      width: 100%;
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+      border-right-color: rgba(255, 255, 255, 0.75);
+  }
+  50% {
+      border-right-color: transparent;
+  }
+}
+
+/* Typewriter effect for the heading */
+.prompt-text.typewriter-effect {
+  font-family: 'Questrial', sans-serif;
+  font-size: 5.5rem;
+  color: #82cded;
+  margin-bottom: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid rgba(255, 255, 255, 0.75);
+  animation: typewriter 2s steps(30, end), blink 0.7s step-end infinite;
+}
+
+/* Stop cursor blinking after animation finishes */
+.prompt-text.typewriter-effect.no-cursor {
+  border-right: none;
+}
+
+/* Responsive Design for Small Screens (478px and below) */
+@media (max-width: 478px) {
+
+  .prompt-text {
+    font-size: 3.0rem !important; 
+    text-align:center;
+    margin-bottom: 15px;
+  }
+  
+  /* Adjust Question Boxes */
+  .question-boxes {
+      flex-direction: column; /* Stack boxes vertically */
+      gap: 15px; /* Reduce spacing between boxes */
+      width: 100%; /* Adjust width to fit smaller screens */
+      margin-top: 10px; /* Add spacing above question boxes */
+  }
+
+  /* Input Box Styling */
+  .input-box .education-input {
+      font-size: 0.8rem; /* Smaller font size for mobile */
+      padding: 10px; /* Reduce padding for compact look */
+      border-radius: 6px; /* Reduce border radius */
+  }
+
+  /* Dropdown Box Styling */
+  .dropdown-box .country-dropdown {
+      font-size: 0.8rem; /* Smaller font size for mobile */
+      padding: 10px; /* Adjust padding */
+      border-radius: 6px; /* Reduce border radius */
+  }
+
+  /* Error Message Styling */
+  .error-message {
+      font-size: 1rem; /* Adjust error message size for smaller screens */
+      padding-left: 0;
+  }
+
+  /* Response Box Styling */
+  .response-box {
+      flex-direction: column;
+      align-items: flex-start;
+      max-width: 100%; /* Full width on smaller screens */
+  }
+
+  .generated-text {
+      width: 100%;
+      min-height: 120px; /* Adjust minimum height for compact view */
+      font-size: 0.9rem;
+  }
+
+  .button-container {
+      margin-left: 0px;
+      margin-top: 10px;
+      justify-content: center; /* Center-align button below response box */
+  }
+
+  .icon-btn {
+    padding: 8px 16px; /* Adjust padding for compact look */
+    border-radius: 8px; /* Slightly reduce corner radius */
+}
+
+  /* Navbar Styling */
+  .navbar {
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+  }
+
+  .logo {
+      font-size: 1.5rem; /* Reduce logo size for smaller screens */
+  }
+
+  .logout-btn {
+      padding: 6px 10px;
+      font-size: 0.9rem;
+  }
+}
