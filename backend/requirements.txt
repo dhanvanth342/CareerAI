@@ -28,3 +28,5 @@ typing-extensions==4.11,<5
 
 # Async support (optional)
 asyncio==3.4.3
+# For docker support
+gunicorn==20.1.0
