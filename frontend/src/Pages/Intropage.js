@@ -9,6 +9,7 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithP
 import { auth, db } from "../components/firebase";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { setDoc, doc } from "firebase/firestore";
+import logoImg from '../assets/logot.png';
 
 function AnimatedBox({ initialPosition }) {
     const meshRef = useRef(null);
@@ -128,7 +129,7 @@ const Intropage = () => {
             <div className="overlay"></div>
             {/* Navbar */}
             <nav id="intropage-navbar" className="navbar">
-                <div className="logo">Next Enti?</div>
+            <img src={logoImg} alt="Logo" style={{ width: '95px', height: 'auto' }}/>
                 <button className="animated-button" onClick={() => setShowLoginPopup(true)}>Log In</button>
             </nav>
             {/* Main Text */}
