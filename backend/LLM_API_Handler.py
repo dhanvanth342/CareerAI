@@ -291,26 +291,38 @@ class LLMHandler:
             }
         system_prompt = (
 
-            f"You are responsible for generating DOT language code to create a clear and visually understandable education roadmap. "
-            f"Firstly extract all the key information of user from the user prompt like highest level of education, country they live in, "
-            f"career-related factors, including skills, past work experience, financial constraints, work-life balance preferences, and long-term aspirations. "
-            f"This roadmap should illustrate the educational journey a user must take from their current education level (extract from the user prompt) "
-            f"to achieving the target job title: {job_title}. The roadmap can have multiple branches or a single path, depending on what best fits the user's background. "
+           
+            f"You are responsible for generating valid DOT language code to create a clear, informative, and visually appealing educational roadmap." 
+            f" Begin by extracting relevant information from the user prompt, including:"
+            f" education level, country of residence, skills, work experience, financial constraints, work-life balance preferences, and long-term career goals."
+            f" Your task is to generate a DOT graph that shows the user's path from their current education level to the target job title: {job_title}."
+            f"In the roadmap, include relevant skills, focus areas at each stage, recommended certifications, and effective ways to gain hands-on experience—tailored to the user's background and current timeline" 
+            
+
+             #f"You are responsible for generating DOT language code to create a clear and visually understandable education roadmap. "
+           # f"Firstly extract all the key information of user from the user prompt like highest level of education, country they live in, "
+            #f"career-related factors, including skills, past work experience, financial constraints, work-life balance preferences, and long-term aspirations. "
+           # f"This roadmap should illustrate the educational journey a user must take from their current education level (extract from the user prompt) "
+           # f"to achieving the target job title: {job_title}. "
 
             f"Follow these **guidelines** while generating the DOT code:\n\n"
             f"1. Begin the DOT code with [resolution=200] to ensure high resolution.\n"
             f"2. STRICTLY The graph name **must not** contain spaces, but node and edge names may include spaces."
             f"  - for example [digraph machinelearningengineer] is right way of naming a graph, but not [digraph machine learning engineer]\n"
             f"3. The DOT code must define the appropriate graph type (e.g., digraph for directed graphs or graph for undirected graphs) based on the user's query \n "
-            f"4. The DOT code when rendered, make sure the road map is in horizontal view, as it suits the diagram layout. "
             f"4. Choose the most suitable layout engine [dot, neato, fdp, sfdp, circo, twopi, osage, and patchwork] for rendering the graph, "
-            f"considering factors such as clarity, visual appeal, and the structure of the relationships being depicted. \n"
-            f"5. Use only valid Graphviz-supported or custom hexadecimal colors and color coding be like **light blue** for general nodes and **dark blue** for key steps.\n"
-            f"6. Maintain strong **contrast between text and background** for readability.."
-            f"7. Validate the DOT code to ensure it adheres to Graphviz syntax, including the use of valid node names and avoiding reserved keywords. \n"
+            f"5. Use only valid **hexadecimal blue shades** for coloring nodes:\n"
+            f"   - Use **light blue** (e.g., `#ADD8E6`) for general steps.\n"
+            f"   - Use **dark blue** (e.g., `#00008B`) for key milestones (e.g., choosing a degree, switching career, or entering job market).\n"
+            f"6. Maintain strong **text-background contrast**:\n"
+            f"   - On dark blue nodes, text must be **white**.\n"
+            f"   - On light blue nodes, use **black or dark gray** text.\n"
+            f"7. The roadmap may have multiple branches [max = 3] or a single linear path depending on the user's profile.\n"
+            #f"6. Maintain strong **contrast between text and background** for readability, Ex: for dark blue nodes, the text should be white, and for light blue the text should be dark in color. \n "
+            f"8. Validate the DOT code to ensure it adheres to Graphviz syntax, including the use of valid node names and avoiding reserved keywords. \n"
             f"This is the example structure you can follow for the parameters to include in the start of the code:\n"
             f"digraph nameofgraph {{resolution = 200 layout= circo; rest of the code}}"          
-            f"8. The output should only be DOT CODE, STRICTLY Avoid preamble, unnecessary comments, or extraneous symbols,  \n\n"
+            f"9. The output should only be DOT CODE, STRICTLY Avoid preamble, unnecessary comments, or extraneous symbols,  \n\n"
 
         )
 
