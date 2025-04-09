@@ -43,13 +43,15 @@
 
 .main-title {
     text-align: center;
-    font-style: italic;
-    font-size: 1rem; /* Responsive base size */
+    font-size: 1.5rem; 
+  /* Responsive base size */
     margin: 0 auto;
     max-width: 90%;
     word-wrap: break-word;
   }
-  
+  .highlight{
+    color: #82cded;
+  }
   /* Optional: make it scale better on larger screens */
   @media (min-width: 768px) {
     .main-title {
@@ -57,10 +59,7 @@
     }
   }
   
-  .highlight {
-    color:rgb(146, 241, 255) /* Customize this */
-  }
-h2.center-title {
+h3.center-title {
     text-align: center;
 }
 /* Semi-transparent black overlay */
@@ -93,7 +92,7 @@ h2.center-title {
     margin: auto;
     z-index: 10; /* Ensure it's above the content */
     background: none; /* Keep it transparent */
-    backdrop-filter: blur(10px); /* Add slight glass effect */
+    backdrop-filter: blur(0px); /* Add slight glass effect */
     padding: 15px 30px;
 }
 
@@ -177,7 +176,7 @@ h2.center-title {
 }
 
 .center-title {
-    font-size: 4.6rem;
+    font-size: 4.2rem;
     font-weight: 900;
     color: white;
     margin-bottom: 0px;
@@ -344,7 +343,7 @@ h2.center-title {
     border-radius: 12px;
     width: 350px;
     text-align: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Adds depth to the pop-up */
+   /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Adds depth to the pop-up */
     z-index: 1000; /* Ensures pop-up is above the blurred background */
 }
 
