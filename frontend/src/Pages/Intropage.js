@@ -134,7 +134,10 @@ const Intropage = () => {
             </nav>
             {/* Main Text */}
             <main className="main-content">
-                <h1 className="center-title">Personalized career guidance, enhanced by <span className="highlight-text"> AI </span></h1>
+            <h6 className="main-title">
+                Introducing <span className="highlight">NextEnti</span>
+            </h6>
+                <h2 className="center-title">Personalized career guidance, enhanced by <span className="highlight-text"> AI </span></h2>
                 <p className="intro-text">
                     Your career journey starts here! We simplify career planning with AI-driven insights tailored to your interests, 
                     creating a personalized roadmap to help you pursue a career that truly excites you.

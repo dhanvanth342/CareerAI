@@ -187,8 +187,8 @@
 
 .example-card {
   flex: 1;
-  min-width: 25px;
-  max-width: 15%;
+  min-width: 30px;
+  max-width: 25%;
   text-align: center;
   background: transparent !important;
   border-radius: 20px !important;
@@ -205,9 +205,8 @@
 
 .example-card h6 {
   font-size: 1rem;
-  font-weight: bold;
   margin-bottom: 2px;
-  color:#f1f5f6;
+
 }
 
 .example-card p {

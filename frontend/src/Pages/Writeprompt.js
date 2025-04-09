@@ -125,26 +125,26 @@ const handleCardClick = (text) => {
       <NavBar />
       <div className="writeprompt-container">
         < div className="prompt-box">
-          <h4>Write your prompt here!</h4>
+          <h4>Tell us what you're looking for.</h4>
           <p>Need inspiration? Check out these examples for your prompt! </p>
           <h6>Note: Specify your country for better salary predictions!!</h6>
           <div className="example-prompts">
-          <Card className="example-card" onClick={() => handleCardClick('What are the best career options for a software engineer?')}>
+          <Card className="example-card" onClick={() => handleCardClick("I love coding and designing apps. I'm in my third year of a Bachelor's in Mechanical Engineering in India. What careers suit me best, and how can I start preparing? ")}>
               <CardContent>
                 <Typography variant="h6"></Typography>
-                <Typography variant="body2">"What are the best career options for a software engineer?"</Typography>
+                <Typography variant="body2">"I love coding and designing apps. I'm in my third year of a Bachelor's in Mechanical Engineering in India. What careers suit me best, and how can I start preparing? "</Typography>
               </CardContent>
             </Card>
-            <Card className="example-card" onClick={() => handleCardClick('How do I transition from marketing to data science?')}>
+            <Card className="example-card" onClick={() => handleCardClick(" I live in Australia and want to contribute to healthcare but don’t want to become a doctor. I have a Bachelor's in Psychology. What alternative roles can I explore? ")}>
               <CardContent>
                 <Typography variant="h6"></Typography>
-                <Typography variant="body2">"How do I transition from marketing to data science?"</Typography>
+                <Typography variant="body2">I live in Australia and want to contribute to healthcare but don’t want to become a doctor. I have a Bachelor's in Psychology. What alternative roles can I explore? </Typography>
               </CardContent>
             </Card>
-            <Card className="example-card" onClick={() => handleCardClick('What are the skills required for a career in AI?')}>
+            <Card className="example-card" onClick={() => handleCardClick("I'm good at public speaking and writing. I’ve completed a Bachelor’s in English Literature in the UK. What roles match my strengths, and what skills should I build? ")}>
               <CardContent>
                 <Typography variant="h6"></Typography>
-                <Typography variant="body2">"What are the skills required for a career in AI?"</Typography>
+                <Typography variant="body2">I'm good at public speaking and writing. I’ve completed a Bachelor’s in English Literature in the UK. What roles match my strengths, and what skills should I build? </Typography>
               </CardContent>
             </Card>
           </div>
