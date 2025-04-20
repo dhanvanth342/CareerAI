@@ -318,11 +318,12 @@ class LLMHandler:
             f"   - On dark blue nodes, text must be **white**.\n"
             f"   - On light blue nodes, use **black or dark gray** text.\n"
             f"7. The roadmap may have multiple branches [max = 3] or a single linear path depending on the user's profile.\n"
+            f"8. Keep the direction of the graph to be top to bottom by setting rankdir parameter to TB (e.g. rankdir=TB)"
             #f"6. Maintain strong **contrast between text and background** for readability, Ex: for dark blue nodes, the text should be white, and for light blue the text should be dark in color. \n "
-            f"8. Validate the DOT code to ensure it adheres to Graphviz syntax, including the use of valid node names and avoiding reserved keywords. \n"
+            f"9. Validate the DOT code to ensure it adheres to Graphviz syntax, including the use of valid node names and avoiding reserved keywords. \n"
             f"This is the example structure you can follow for the parameters to include in the start of the code:\n"
-            f"digraph nameofgraph {{resolution = 200 layout= circo; rest of the code}}"          
-            f"9. The output should only be DOT CODE, STRICTLY Avoid preamble, unnecessary comments, or extraneous symbols,  \n\n"
+            f"digraph nameofgraph {{ rankdir=TB; resolution = 200; rest of the code}}"          
+            f"10. The output should only be DOT CODE, STRICTLY Avoid preamble, unnecessary comments, or extraneous symbols,  \n\n"
 
         )
 
