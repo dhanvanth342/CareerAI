@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class LLMHandler:
-    def __init__(self, openrouter_model="anthropic/claude-3.5-haiku-20241022:beta",
+    def __init__(self, openrouter_model="anthropic/claude-3.5-haiku-20241022",
                  groq_model="llama-3.3-70b-versatile"):
         # OpenRouter initialization
         self.openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
